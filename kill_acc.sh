@@ -2,11 +2,13 @@
 
 cd ~/installs
 echo ------------------------------STOP ACCUMULO------------------------------
-~/installs/accumulo-1.8.1/bin/stop-all.sh
+accumulo-1.8.1/bin/stop-all.sh
+rm -rf accumulo-1.8.1/logs/*
 
 echo ------------------------------STOP ZOOKEEPER------------------------------
-~/installs/zookeeper-3.4.10/bin/zkServer.sh stop
+zookeeper-3.4.10/bin/zkServer.sh stop
 
 echo ------------------------------STOP HADOOP------------------------------
-~/installs/hadoop-2.7.3/sbin/stop-yarn.sh
-~/installs/hadoop-2.7.3/sbin/stop-dfs.sh
+hadoop-2.7.3/sbin/stop-yarn.sh
+hadoop-2.7.3/sbin/stop-dfs.sh
+rm -rf hadoop-2.7.3/logs/*

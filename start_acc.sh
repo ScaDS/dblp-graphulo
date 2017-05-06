@@ -2,11 +2,12 @@
 
 cd ~/installs
 echo ------------------------------START HADOOP------------------------------
-~/installs/hadoop-2.7.3/sbin/start-dfs.sh
+hadoop-2.7.3/sbin/start-yarn.sh
+hadoop-2.7.3/sbin/start-dfs.sh
 
 echo ------------------------------START ZOOKEEPER------------------------------
-~/installs/zookeeper-3.4.10/bin/zkServer.sh start
+zookeeper-3.4.10/bin/zkServer.sh start
 
 echo ------------------------------START ACCUMULO------------------------------
-~/installs/accumulo-1.8.1/bin/accumulo init
-~/installs/accumulo-1.8.1/bin/start-all.sh
+accumulo-1.8.1/bin/accumulo init
+accumulo-1.8.1/bin/start-all.sh

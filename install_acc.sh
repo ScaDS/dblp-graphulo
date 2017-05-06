@@ -76,3 +76,13 @@ echo "CHANGE XML-PROPERTY: instance.secret=acc"
 echo "CHANGE XML-PROPERTY: trace.token.property.password=acc"
 echo "ADD XML-PROPERTY: instance.volumes=hdfs://localhost:9000/accumulo"
 echo "INIT INSTANCE_NAME bdp PASSWORD acc: ~/Installs/accumulo-1.8.1/bin/accumulo init"
+
+echo ------------------------------INFO------------------------------
+echo IF HADOOP IS NOT STARTING
+echo CHECK IF OUTPUT OF jps CONTAINS NameNode
+echo IF NOT DO
+echo "hadoop-2.7.3/sbin/stop-dfs.sh # Stop Hadoop's nodes"
+echo "rm -rf hdfs_storage # Delete the namenode data"
+echo "rm -rf /tmp/hadoop-* # Delete the temporary directories"
+echo "hadoop-2.7.3/bin/hdfs namenode -format # Reformat the namenode"
+echo "hadoop-2.7.3/sbin/start-dfs.sh # Restart Hadoop"
