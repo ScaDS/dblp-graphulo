@@ -42,8 +42,10 @@ cp ~/installs/zookeeper-3.4.10/conf/zoo_sample.cfg ~/installs/zookeeper-3.4.10/c
 echo ------------------------------INSTALL ACCUMULO------------------------------
 tar -xvzf ~/downloads/accumulo-1.8.1-bin.tar.gz
 cp ~/installs/accumulo-1.8.1/conf/examples/512MB/standalone/* ~/installs/accumulo-1.8.1/conf/
+
 echo export HADOOP_HOME=~/installs/hadoop-2.7.3/ >> ~/.bashrc
 echo export ZOOKEEPER_HOME=~/installs/zookeeper-3.4.10/ >> ~/.bashrc
+echo export ACCUMULO_HOME=~/installs/accumulo-1.8.1/ >> ~/.bashrc
 
 . ~/.bashrc
 rm -rf ~/downloads
