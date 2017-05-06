@@ -1,5 +1,7 @@
 package de.alkern.author;
 
-public class AuthorAccumuloRepository {
+import de.alkern.infrastructure.Repository;
+
+public class AuthorAccumuloRepository implements Repository {
 
 }
