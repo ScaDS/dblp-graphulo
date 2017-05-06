@@ -6,7 +6,7 @@
 echo ------------------------------INSTALL JAVA------------------------------
 sudo apt-get update
 sudo apt-get install openjdk-8-jdk
-echo export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-i386 >> ~/.bashrc
+echo export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 >> ~/.bashrc
 
 echo ------------------------------INSTALL SSH------------------------------
 sudo apt-get install ssh rsync
@@ -51,15 +51,15 @@ rm -rf ~/downloads
 echo ------------------------------TODO------------------------------
 echo ------------------------------
 echo "sudo nano $JAVA_HOME/jre/lib/security/java.security"
-echo s"ecurerandom.source=file:/dev/./urandom"
+echo "CHANGE LINE TO: securerandom.source=file:/dev/./urandom"
 echo ------------------------------
 echo "ssh-keygen -P ''"
 echo "cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
-echo "ssh localhost (quit with exit)"
-echo "ssh 0.0.0.0 (quit with exit)"
+echo "ssh localhost (QUIT WITH EXIT)"
+echo "ssh 0.0.0.0 (QUIT WITH EXIT)"
 echo ------------------------------
 echo "nano ~/installs/hadoop-2.7.3/etc/hadoop/hadoop-env.sh"
-echo "CHANGE LINE TO: export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-i386"
+echo "CHANGE LINE TO: export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64"
 echo "CHANGE LINE TO: export HADOOP_OPTS=\"$HADOOP_OPTS -XX:-PrintWarnings -Djava.net.preferIPv4Stack=true\""
 echo "nano ~/installs/hadoop-2.7.3/etc/hadoop/core-site.xml"
 echo "ADD XML-PROPERTY: fs.defaultFS=hdfs://localhost:9000"
@@ -70,6 +70,7 @@ echo "ADD XML-PROPERTY: dfs.data.dir= hdfs_storage/data"
 echo ------------------------------
 echo "nano ~/installs/accumulo-1.8.1/conf/accumulo-env.sh"
 echo "CHANGE LINE TO: export ACCUMULO_MONITOR_BIND_ALL=\"true\""
+echo "SET JVM-SPACE HIGHER"
 echo "nano ~/installs/accumulo-1.8.1/conf/accumulo-site.xml"
 echo "CHANGE XML-PROPERTY: instance.secret=acc"
 echo "CHANGE XML-PROPERTY: trace.token.property.password=acc"
