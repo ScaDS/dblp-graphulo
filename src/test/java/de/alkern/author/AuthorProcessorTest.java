@@ -29,8 +29,7 @@ public class AuthorProcessorTest {
 
     @Test
     public void testProcess() {
-        DblpParser.load(authorProcessor, ExampleData.getExampleData());
-        List<String> relations = authorProcessor.scan();
+        List relations = authorProcessor.parse(ExampleData.EXAMPLE_DATA);
         assertEquals("E. F. Codd :C. J. Date   -> 1", relations.get(0));
         assertEquals("C. J. Date :E. F. Codd   -> 1", relations.get(1));
     }
