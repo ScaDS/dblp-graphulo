@@ -11,5 +11,6 @@ public class Main {
         AccumuloRepository repo = new AuthorRepository();
         AuthorProcessor processor = new AuthorProcessor(repo, 10);
         processor.parse(ExampleData.EXAMPLE_DATA);
+        //processor.clear();
     }
 }
