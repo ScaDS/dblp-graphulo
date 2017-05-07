@@ -13,7 +13,7 @@ public interface AccumuloRepository {
      * @param qualifier: end node label
      * @param value:     edge weight
      */
-    public void save(String row, String qualifier, long value);
+    public void save(String row, String qualifier, String value);
 
     /**
      * Scan the database

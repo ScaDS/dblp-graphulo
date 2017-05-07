@@ -22,7 +22,7 @@ public class AuthorProcessor extends GraphuloProcessor {
         for (String author1 : authors) {
             for (String author2 : authors) {
                 if (!author1.equals(author2)) {
-                    repo.save(author1, author2, 1L);
+                    repo.save(author1, author2, "1");
                 }
             }
         }

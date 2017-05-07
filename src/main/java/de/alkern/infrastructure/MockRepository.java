@@ -14,11 +14,11 @@ public class MockRepository implements AccumuloRepository {
     }
 
     @Override
-    public void save(String row, String qualifier, long value) {
+    public void save(String row, String qualifier, String value) {
         entries.add(buildExample(row, qualifier, value));
     }
 
-    private String buildExample(String row, String qualifier, long value) {
+    private String buildExample(String row, String qualifier, String value) {
         return row + " :" + qualifier + "   -> " + value;
     }
 
