@@ -10,11 +10,11 @@ import java.util.List;
 
 public abstract class GraphuloProcessor implements DblpElementProcessor {
 
-    protected AccumuloRepository repo;
+    protected Repository repo;
     private int size;
     private int count;
 
-    public GraphuloProcessor(AccumuloRepository repo, int size) {
+    public GraphuloProcessor(Repository repo, int size) {
         this.repo = repo;
         this.size = size;
         this.count = 0;

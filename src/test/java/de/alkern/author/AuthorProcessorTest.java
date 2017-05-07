@@ -1,9 +1,8 @@
 package de.alkern.author;
 
-import de.alkern.infrastructure.AccumuloRepository;
+import de.alkern.infrastructure.Repository;
 import de.alkern.infrastructure.ExampleData;
 import de.alkern.infrastructure.MockRepository;
-import org.dblp.parser.DblpParser;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,7 +17,7 @@ public class AuthorProcessorTest {
 
     @BeforeClass
     public static void init() {
-        AccumuloRepository repo = new MockRepository();
+        Repository repo = new MockRepository();
         authorProcessor = new AuthorProcessor(repo, 10);
     }
 

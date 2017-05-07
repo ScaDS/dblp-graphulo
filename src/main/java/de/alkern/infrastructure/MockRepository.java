@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Mockrepository for unit tests
  */
-public class MockRepository implements AccumuloRepository {
+public class MockRepository implements Repository {
 
     private List<String> entries;
 

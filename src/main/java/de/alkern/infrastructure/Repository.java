@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Interface for AccumuloRepositories used with Graphulo
  */
-public interface AccumuloRepository {
+public interface Repository {
     /**
      * Save an entry to the Accumulo-Instance
      *

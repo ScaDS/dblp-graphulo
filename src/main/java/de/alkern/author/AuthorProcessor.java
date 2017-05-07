@@ -1,6 +1,6 @@
 package de.alkern.author;
 
-import de.alkern.infrastructure.AccumuloRepository;
+import de.alkern.infrastructure.Repository;
 import de.alkern.infrastructure.GraphuloProcessor;
 import org.dblp.datastructures.DblpElement;
 
@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public class AuthorProcessor extends GraphuloProcessor {
 
-    public AuthorProcessor(AccumuloRepository repo, int size) {
+    public AuthorProcessor(Repository repo, int size) {
         super(repo, size);
     }
 
