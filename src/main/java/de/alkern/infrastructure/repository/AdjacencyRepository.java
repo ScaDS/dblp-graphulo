@@ -1,8 +1,8 @@
-package de.alkern.infrastructure;
+package de.alkern.infrastructure.repository;
 
+import de.alkern.infrastructure.AdjacencyEntry;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.client.admin.TableOperations;
-import org.apache.accumulo.core.client.security.tokens.PasswordToken;
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.data.Value;
@@ -43,7 +43,7 @@ public class AdjacencyRepository implements Repository {
     @Override
     public void save(String row, String qualifier, String value) {
         try {
-            Mutation mutation = getMutation(row, qualifier, value);
+            Mutation mutation = new AdjacencyEntry(row, qualifier, value).toMutation();
             writer.addMutation(mutation);
         } catch (AccumuloException e) {
             System.err.println("Could not save");
@@ -51,23 +51,10 @@ public class AdjacencyRepository implements Repository {
         }
     }
 
-    private Mutation getMutation(String row, String qualifier, String value) {
-        Text rowId = new Text(row);
-        Text colQual = new Text(qualifier);
-        Value v = new Value(value.getBytes());
-
-        Mutation mutation = new Mutation(rowId);
-        mutation.put(new Text(""), colQual, v);
-        return mutation;
-    }
-
     @Override
     public List scan() {
         for (Map.Entry<Key, Value> entry: scanner) {
-            Text row = entry.getKey().getRow();
-            Text colQual = entry.getKey().getColumnQualifier();
-            Value value = entry.getValue();
-            System.out.println(row + " :" + colQual + " []   -> " + value);
+            System.out.println(AdjacencyEntry.fromEntry(entry));
         }
         return null;
     }

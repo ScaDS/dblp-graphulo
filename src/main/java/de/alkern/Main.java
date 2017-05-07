@@ -1,9 +1,8 @@
 package de.alkern;
 
 import de.alkern.author.AuthorProcessor;
-import de.alkern.infrastructure.connector.AccumuloConnector;
-import de.alkern.infrastructure.AdjacencyRepository;
-import de.alkern.infrastructure.Repository;
+import de.alkern.infrastructure.repository.AdjacencyRepository;
+import de.alkern.infrastructure.repository.Repository;
 import de.alkern.infrastructure.ExampleData;
 import de.alkern.infrastructure.connector.LocalConnector;
 import org.apache.accumulo.core.client.AccumuloException;
@@ -19,6 +18,6 @@ public class Main {
         AuthorProcessor processor = new AuthorProcessor(repo, 10);
         processor.parse(ExampleData.EXAMPLE_DATA);
         processor.scan();
-        //processor.clear();
+        processor.clear();
     }
 }

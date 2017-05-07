@@ -1,5 +1,6 @@
 package de.alkern.infrastructure;
 
+import de.alkern.infrastructure.repository.Repository;
 import org.dblp.datastructures.DblpElement;
 import org.dblp.parser.DblpElementProcessor;
 import org.dblp.parser.DblpParser;

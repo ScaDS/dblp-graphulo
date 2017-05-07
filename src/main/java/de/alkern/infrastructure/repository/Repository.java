@@ -1,4 +1,4 @@
-package de.alkern.infrastructure;
+package de.alkern.infrastructure.repository;
 
 import java.util.List;
 

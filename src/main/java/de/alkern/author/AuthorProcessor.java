@@ -1,6 +1,6 @@
 package de.alkern.author;
 
-import de.alkern.infrastructure.Repository;
+import de.alkern.infrastructure.repository.Repository;
 import de.alkern.infrastructure.GraphuloProcessor;
 import org.dblp.datastructures.DblpElement;
 

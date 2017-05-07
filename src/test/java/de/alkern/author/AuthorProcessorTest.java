@@ -1,8 +1,8 @@
 package de.alkern.author;
 
-import de.alkern.infrastructure.Repository;
+import de.alkern.infrastructure.repository.Repository;
 import de.alkern.infrastructure.ExampleData;
-import de.alkern.infrastructure.MockRepository;
+import de.alkern.infrastructure.repository.MockRepository;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
