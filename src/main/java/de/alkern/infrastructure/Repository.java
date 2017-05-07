@@ -26,4 +26,9 @@ public interface Repository {
      * Delete all entries which belong to this repository
      */
     public void clear();
+
+    /**
+     * Close the used writer
+     */
+    public void close();
 }

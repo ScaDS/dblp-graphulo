@@ -29,6 +29,11 @@ public class MockRepository implements Repository {
 
     @Override
     public void clear() {
+        entries.clear();
+    }
+
+    @Override
+    public void close() {
 
     }
 }

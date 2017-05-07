@@ -25,6 +25,7 @@ public abstract class GraphuloProcessor implements DblpElementProcessor {
         size++;
         processLogic(element);
         if (count >= size) {
+            repo.close();
             throw new ParsingTerminationException();
         }
     }
@@ -40,7 +41,7 @@ public abstract class GraphuloProcessor implements DblpElementProcessor {
     }
 
     public List parse(String file) {
-        DblpParser.load(this, ExampleData.EXAMPLE_DATA);
+        DblpParser.load(this, file);
         return scan();
     }
 }
