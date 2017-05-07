@@ -1,5 +1,7 @@
 package de.alkern.infrastructure.repository;
 
+import de.alkern.infrastructure.entry.AccumuloEntry;
+
 import java.util.List;
 
 /**
@@ -9,18 +11,16 @@ public interface Repository {
     /**
      * Save an entry to the Accumulo-Instance
      *
-     * @param row:       start node label
-     * @param qualifier: end node label
-     * @param value:     edge weight
+     * @param entry: The entry to save
      */
-    public void save(String row, String qualifier, String value);
+    public void save(AccumuloEntry entry);
 
     /**
      * Scan the database
      *
      * @return all entries which belong to this repository
      */
-    public List scan();
+    public List<AccumuloEntry> scan();
 
     /**
      * Delete all entries which belong to this repository

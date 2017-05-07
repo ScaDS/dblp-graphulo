@@ -29,8 +29,8 @@ public class AuthorProcessorTest {
     @Test
     public void testProcess() {
         List relations = authorProcessor.parse(ExampleData.EXAMPLE_DATA);
-        assertEquals("E. F. Codd :C. J. Date   -> 1", relations.get(0));
-        assertEquals("C. J. Date :E. F. Codd   -> 1", relations.get(1));
+        assertEquals("E. F. Codd :C. J. Date []   -> 1", relations.get(0).toString());
+        assertEquals("C. J. Date :E. F. Codd []   -> 1", relations.get(1).toString());
     }
 
 }

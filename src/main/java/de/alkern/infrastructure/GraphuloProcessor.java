@@ -1,5 +1,6 @@
 package de.alkern.infrastructure;
 
+import de.alkern.infrastructure.entry.AccumuloEntry;
 import de.alkern.infrastructure.repository.Repository;
 import org.dblp.datastructures.DblpElement;
 import org.dblp.parser.DblpElementProcessor;
@@ -23,7 +24,7 @@ public abstract class GraphuloProcessor implements DblpElementProcessor {
 
     @Override
     public void process(DblpElement element) throws SAXException {
-        size++;
+        count++;
         processLogic(element);
         if (count >= size) {
             repo.close();
@@ -37,11 +38,11 @@ public abstract class GraphuloProcessor implements DblpElementProcessor {
         repo.clear();
     }
 
-    public List scan() {
+    public List<AccumuloEntry> scan() {
         return repo.scan();
     }
 
-    public List parse(String file) {
+    public List<AccumuloEntry> parse(String file) {
         DblpParser.load(this, file);
         return scan();
     }

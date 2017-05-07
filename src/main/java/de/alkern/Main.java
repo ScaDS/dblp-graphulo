@@ -17,7 +17,7 @@ public class Main {
         Repository repo = new AdjacencyRepository("authors", new LocalConnector().get());
         AuthorProcessor processor = new AuthorProcessor(repo, 10);
         processor.parse(ExampleData.EXAMPLE_DATA);
-        processor.scan();
+        processor.scan().forEach(System.out::println);
         processor.clear();
     }
 }

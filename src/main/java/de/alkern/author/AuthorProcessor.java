@@ -1,5 +1,6 @@
 package de.alkern.author;
 
+import de.alkern.infrastructure.entry.AdjacencyEntry;
 import de.alkern.infrastructure.repository.Repository;
 import de.alkern.infrastructure.GraphuloProcessor;
 import org.dblp.datastructures.DblpElement;
@@ -22,7 +23,7 @@ public class AuthorProcessor extends GraphuloProcessor {
         for (String author1 : authors) {
             for (String author2 : authors) {
                 if (!author1.equals(author2)) {
-                    repo.save(author1, author2, "1");
+                    repo.save(new AdjacencyEntry(author1, author2, "1"));
                 }
             }
         }

@@ -1,5 +1,7 @@
 package de.alkern.infrastructure.repository;
 
+import de.alkern.infrastructure.entry.AccumuloEntry;
+
 import java.util.*;
 
 /**
@@ -7,15 +9,15 @@ import java.util.*;
  */
 public class MockRepository implements Repository {
 
-    private List<String> entries;
+    private List<AccumuloEntry> entries;
 
     public MockRepository() {
         entries = new LinkedList<>();
     }
 
     @Override
-    public void save(String row, String qualifier, String value) {
-        entries.add(buildExample(row, qualifier, value));
+    public void save(AccumuloEntry entry) {
+        entries.add(entry);
     }
 
     private String buildExample(String row, String qualifier, String value) {
@@ -23,7 +25,7 @@ public class MockRepository implements Repository {
     }
 
     @Override
-    public List scan() {
+    public List<AccumuloEntry> scan() {
         return entries;
     }
 

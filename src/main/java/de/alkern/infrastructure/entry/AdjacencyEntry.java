@@ -1,4 +1,4 @@
-package de.alkern.infrastructure;
+package de.alkern.infrastructure.entry;
 
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Mutation;
@@ -7,7 +7,7 @@ import org.apache.hadoop.io.Text;
 
 import java.util.Map;
 
-public class AdjacencyEntry {
+public class AdjacencyEntry implements AccumuloEntry {
 
     private final Text startNode;
     private final Text endNode;
@@ -32,6 +32,7 @@ public class AdjacencyEntry {
         return new AdjacencyEntry(row, colQual, value);
     }
 
+    @Override
     public Mutation toMutation() {
         Mutation mutation = new Mutation(startNode);
         mutation.put(new Text(""), endNode, edgeWeight);

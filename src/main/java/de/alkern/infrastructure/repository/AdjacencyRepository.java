@@ -1,14 +1,15 @@
 package de.alkern.infrastructure.repository;
 
-import de.alkern.infrastructure.AdjacencyEntry;
+import de.alkern.infrastructure.entry.AccumuloEntry;
+import de.alkern.infrastructure.entry.AdjacencyEntry;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.client.admin.TableOperations;
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.Authorizations;
-import org.apache.hadoop.io.Text;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,9 +42,9 @@ public class AdjacencyRepository implements Repository {
     }
 
     @Override
-    public void save(String row, String qualifier, String value) {
+    public void save(AccumuloEntry entry) {
         try {
-            Mutation mutation = new AdjacencyEntry(row, qualifier, value).toMutation();
+            Mutation mutation = entry.toMutation();
             writer.addMutation(mutation);
         } catch (AccumuloException e) {
             System.err.println("Could not save");
@@ -52,11 +53,12 @@ public class AdjacencyRepository implements Repository {
     }
 
     @Override
-    public List scan() {
+    public List<AccumuloEntry> scan() {
+        List<AccumuloEntry> entries = new LinkedList<>();
         for (Map.Entry<Key, Value> entry: scanner) {
-            System.out.println(AdjacencyEntry.fromEntry(entry));
+            entries.add(AdjacencyEntry.fromEntry(entry));
         }
-        return null;
+        return entries;
     }
 
     @Override
