@@ -14,25 +14,48 @@ public abstract class GraphuloProcessor implements DblpElementProcessor {
 
     protected Repository repo;
     private int size;
-    private int count;
+    private int counter;
+    private boolean doesCount;
 
+    /**
+     * Processor which processes all given entries
+     * @param repo DB-Repository
+     */
+    public GraphuloProcessor(Repository repo) {
+        this.repo = repo;
+        this.size = 0;
+        this.counter = 0;
+        this.doesCount = false;
+    }
+
+    /**
+     * Processor which processes a certain number of entries
+     * @param repo DB-Repository
+     * @param size number of entries to process
+     */
     public GraphuloProcessor(Repository repo, int size) {
         this.repo = repo;
         this.size = size;
-        this.count = 0;
+        this.counter = 0;
+        this.doesCount = true;
     }
 
     @Override
     public void process(DblpElement element) throws SAXException {
-        count++;
         processLogic(element);
-        if (count >= size) {
+        incrementCounter();
+    }
+
+    protected abstract void processLogic(DblpElement element);
+
+    private void incrementCounter() throws ParsingTerminationException {
+        if (!doesCount) return;
+        counter++;
+        if (counter >= size) {
             repo.close();
             throw new ParsingTerminationException();
         }
     }
-
-    protected abstract void processLogic(DblpElement element);
 
     public void clear() {
         repo.clear();
