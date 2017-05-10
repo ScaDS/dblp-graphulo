@@ -47,6 +47,13 @@ echo export HADOOP_HOME=~/installs/hadoop-2.7.3/ >> ~/.bashrc
 echo export ZOOKEEPER_HOME=~/installs/zookeeper-3.4.10/ >> ~/.bashrc
 echo export ACCUMULO_HOME=~/installs/accumulo-1.8.1/ >> ~/.bashrc
 
+cd ~/bdp-scripts/templates
+cp core-site.xml ~/installs/hadoop-2.7.3/etc/hadoop/core-site.xml
+cp hadoop-env.sh ~/installs/hadoop-2.7.3/etc/hadoop/hadoop-env.sh
+cp hdfs-site.xml ~/installs/hadoop-2.7.3/etc/hadoop/hdfs-site.xml
+cp accumulo-env.sh ~/installs/accumulo-1.8.1/conf/accumulo-env.sh
+cp accumulo-site.xml ~/installs/accumulo-1.8.1/conf/accumulo-site.xml
+
 . ~/.bashrc
 rm -rf ~/downloads
 
@@ -60,23 +67,7 @@ echo "cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
 echo "ssh localhost (QUIT WITH EXIT)"
 echo "ssh 0.0.0.0 (QUIT WITH EXIT)"
 echo ------------------------------
-echo "nano ~/installs/hadoop-2.7.3/etc/hadoop/hadoop-env.sh"
-echo "CHANGE LINE TO: export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64"
-echo "CHANGE LINE TO: export HADOOP_OPTS=\"$HADOOP_OPTS -XX:-PrintWarnings -Djava.net.preferIPv4Stack=true\""
-echo "nano ~/installs/hadoop-2.7.3/etc/hadoop/core-site.xml"
-echo "ADD XML-PROPERTY: fs.defaultFS=hdfs://localhost:9000"
-echo "nano ~/installs/hadoop-2.7.3/etc/hadoop/hdfs-site.xml"
-echo "ADD XML-PROPERTY: dfs.replication=1"
-echo "ADD XML-PROPERTY: dfs.name.dir=hdfs_storage/name"
-echo "ADD XML-PROPERTY: dfs.data.dir= hdfs_storage/data"
-echo ------------------------------
-echo "nano ~/installs/accumulo-1.8.1/conf/accumulo-env.sh"
-echo "CHANGE LINE TO: export ACCUMULO_MONITOR_BIND_ALL=\"true\""
-echo "SET JVM-SPACE HIGHER"
-echo "nano ~/installs/accumulo-1.8.1/conf/accumulo-site.xml"
-echo "CHANGE XML-PROPERTY: instance.secret=acc"
-echo "CHANGE XML-PROPERTY: trace.token.property.password=acc"
-echo "ADD XML-PROPERTY: instance.volumes=hdfs://localhost:9000/accumulo"
+
 echo "INIT INSTANCE_NAME bdp PASSWORD acc: ~/Installs/accumulo-1.8.1/bin/accumulo init"
 
 echo ------------------------------INFO------------------------------
