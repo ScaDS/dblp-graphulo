@@ -23,13 +23,13 @@ cd ~/installs
 echo ------------------------------INSTALL HADOOP------------------------------
 tar -xvzf ~/downloads/hadoop-2.7.3.tar.gz
 touch ~/installs/hadoop-2.7.3/etc/hadoop/mapred-site.xml
-echo "<?xml version="1.0"?>" >> ~/installs/hadoop-2.7.3/etc/hadoop/mapred-site.xml
-echo "<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>" >> ~/installs/hadoop-2.7.3/etc/hadoop/mapred-site.xml
+echo "<?xml version=\"1.0\"?>" >> ~/installs/hadoop-2.7.3/etc/hadoop/mapred-site.xml
+echo "<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>" >> ~/installs/hadoop-2.7.3/etc/hadoop/mapred-site.xml
 echo "<configuration>" >> ~/installs/hadoop-2.7.3/etc/hadoop/mapred-site.xml
 echo "     <property>" >> ~/installs/hadoop-2.7.3/etc/hadoop/mapred-site.xml
 echo "         <name>mapred.job.tracker</name>" >> ~/installs/hadoop-2.7.3/etc/hadoop/mapred-site.xml
 echo "         <value>localhost:9001</value>" >> ~/installs/hadoop-2.7.3/etc/hadoop/mapred-site.xml
-echo "     </property> >>" ~/installs/hadoop-2.7.3/etc/hadoop/mapred-site.xml
+echo "     </property>" >> ~/installs/hadoop-2.7.3/etc/hadoop/mapred-site.xml
 echo "</configuration>" >> ~/installs/hadoop-2.7.3/etc/hadoop/mapred-site.xml
 cd ~/installs/hadoop-2.7.3/
 ~/installs/hadoop-2.7.3/bin/hdfs namenode -format
