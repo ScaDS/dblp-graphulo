@@ -9,6 +9,7 @@ import org.apache.accumulo.core.data.Mutation;
 import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.Authorizations;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,11 @@ public class AdjacencyRepository implements Repository {
             entries.add(AdjacencyEntry.fromEntry(entry));
         }
         return entries;
+    }
+
+    @Override
+    public Iterator<Map.Entry<Key, Value>> getIterator() {
+        return scanner.iterator();
     }
 
     @Override

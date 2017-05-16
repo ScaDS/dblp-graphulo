@@ -2,13 +2,17 @@ package de.alkern.infrastructure;
 
 import de.alkern.infrastructure.entry.AccumuloEntry;
 import de.alkern.infrastructure.repository.Repository;
+import org.apache.accumulo.core.data.Key;
+import org.apache.accumulo.core.data.Value;
 import org.dblp.datastructures.DblpElement;
 import org.dblp.parser.DblpElementProcessor;
 import org.dblp.parser.DblpParser;
 import org.dblp.parser.ParsingTerminationException;
 import org.xml.sax.SAXException;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public abstract class GraphuloProcessor implements DblpElementProcessor {
 
@@ -63,6 +67,10 @@ public abstract class GraphuloProcessor implements DblpElementProcessor {
 
     public List<AccumuloEntry> scan() {
         return repo.scan();
+    }
+
+    public Iterator<Map.Entry<Key, Value>> getIterator() {
+        return repo.getIterator();
     }
 
     public List<AccumuloEntry> parse(String file) {

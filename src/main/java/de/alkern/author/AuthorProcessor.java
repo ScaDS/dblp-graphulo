@@ -13,6 +13,9 @@ import java.util.Collection;
  */
 public class AuthorProcessor extends GraphuloProcessor {
 
+    public AuthorProcessor(Repository repo) {
+        super(repo);
+    }
     public AuthorProcessor(Repository repo, int size) {
         super(repo, size);
     }
@@ -21,6 +24,9 @@ public class AuthorProcessor extends GraphuloProcessor {
     protected void processLogic(DblpElement element) {
         Collection<String> authors = element.attributes.get("author");
         for (String author1 : authors) {
+            if (author1.startsWith("Shinnosu")) {
+                System.out.println(author1);
+            }
             for (String author2 : authors) {
                 if (!author1.equals(author2)) {
                     repo.save(new AdjacencyEntry(author1, author2, "1"));
