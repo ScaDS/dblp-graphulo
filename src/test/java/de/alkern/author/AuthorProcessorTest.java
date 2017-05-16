@@ -1,5 +1,6 @@
 package de.alkern.author;
 
+import de.alkern.infrastructure.entry.AccumuloEntry;
 import de.alkern.infrastructure.repository.Repository;
 import de.alkern.infrastructure.ExampleData;
 import de.alkern.infrastructure.repository.MockRepository;
@@ -28,9 +29,15 @@ public class AuthorProcessorTest {
 
     @Test
     public void testProcess() {
-        List relations = authorProcessor.parse(ExampleData.EXAMPLE_DATA);
+        List<AccumuloEntry> relations = authorProcessor.parse(ExampleData.EXAMPLE_DATA);
         assertEquals("E. F. Codd :C. J. Date []   -> 1", relations.get(0).toString());
         assertEquals("C. J. Date :E. F. Codd []   -> 1", relations.get(1).toString());
+    }
+
+    @Test
+    public void testErrorWithShinnosuke() {
+        List<AccumuloEntry> relations = authorProcessor.parse(ExampleData.SHORT_EXAMPLE);
+        assertEquals(6, relations.size());
     }
 
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dblp SYSTEM "dblp.dtd">
+<dblp>
+    <incollection mdate="2013-07-22" key="reference/nc/KariSS12">
+        <author>Lila Kari</author>
+        <author>Shinnosuke Seki</author>
+        <author>Petr SosXXXk</author>
+        <title>DNA Computing - Foundations and Implications.</title>
+        <pages>1073-1127</pages>
+        <year>2012</year>
+        <booktitle>Handbook of Natural Computing</booktitle>
+        <ee>http://dx.doi.org/10.1007/978-3-540-92910-9_33</ee>
+        <crossref>reference/nc/2012</crossref>
+        <url>db/reference/nc/nc2012.html#KariSS12</url>
+    </incollection>
+</dblp>
