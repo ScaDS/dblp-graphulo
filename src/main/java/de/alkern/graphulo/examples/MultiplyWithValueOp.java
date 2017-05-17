@@ -1,6 +1,8 @@
 package de.alkern.graphulo.examples;
 
 import com.google.common.collect.Iterators;
+import de.alkern.infrastructure.entry.AccumuloEntry;
+import de.alkern.infrastructure.entry.AdjacencyEntry;
 import edu.mit.ll.graphulo.apply.ApplyOp;
 import org.apache.accumulo.core.data.ByteSequence;
 import org.apache.accumulo.core.data.Key;
@@ -10,12 +12,10 @@ import org.apache.accumulo.core.iterators.IteratorEnvironment;
 import org.apache.hadoop.io.Text;
 
 import java.io.IOException;
-import java.util.AbstractMap;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
-public class MultiplyWithValue implements ApplyOp {
+public class MultiplyWithValueOp implements ApplyOp {
+
     @Override
     public void init(Map<String, String> options, IteratorEnvironment iteratorEnvironment) throws IOException {
 
@@ -30,5 +30,18 @@ public class MultiplyWithValue implements ApplyOp {
     @Override
     public void seekApplyOp(Range range, Collection<ByteSequence> collection, boolean b) throws IOException {
 
+    }
+
+    public List<AccumuloEntry> use(Iterator<? extends Map.Entry<Key, Value>> iter) {
+        List<AccumuloEntry> entries = new LinkedList<>();
+        iter.forEachRemaining(it -> {
+            try {
+                this.apply(it.getKey(), it.getValue()).forEachRemaining(transformed ->
+                        entries.add(AdjacencyEntry.fromEntry(transformed)));
+            } catch (IOException e) {
+                System.err.println("IOException in MultiplyWithValueOp at " + it);
+            }
+        });
+        return entries;
     }
 }
