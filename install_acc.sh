@@ -1,7 +1,8 @@
 #!/bin/bash
 
 #Source: https://www.digitalocean.com/community/tutorials/how-to-install-the-big-data-friendly-apache-accumulo-nosql-database-on-ubuntu-14-04
-#installs Java, Hadoop, Zookeeper and Accumulo
+#installs Java, Hadoop, Zookeeper and Accumulo on Ubuntu 16.04 (amd64)
+#printing out stuff to do manual in the end
 
 echo ------------------------------INSTALL JAVA------------------------------
 sudo apt-get update

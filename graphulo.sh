@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#Downloads and builds graphulo, inits a default config and test wrapper script
+
 cd ~/installs
 touch test.sh
 echo "#!/bin/bash" >> test.sh
