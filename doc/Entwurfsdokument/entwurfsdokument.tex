@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage[ngerman]{babel}
+\usepackage{setspace}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{hyperref}
+
+%für endliche Automaten und sonstige Zeichnungen
+%\usepackage{tikz}
+%\usetikzlibrary[arrows, automata]
+
+\parindent0cm
+\onehalfspacing
+
+\usepackage{scrpage2}
+\pagestyle{scrheadings}
+\clearscrheadfoot
+\ihead{A. Kern, A. Möller}
+\chead{Big Data Praktikum}
+\ohead{\today}
+
+\title{Analytics of Publication Data with Graphulo - Entwurfsdokument}
+\author{Alexander Kern \and Alexander Möller}
+
+\begin{document}
+\maketitle
+	
+\section{Aufgabenstellung}
+
+Das Ziel der Praktikumsaufgabe ist das Kennenlernen der Bibliothek Graphulo. Dabei handelt es sich um eine Java-Implementierung des GraphBLAS-Standards. Dieser umfasst grundlegende Matrixoperationen, mithilfe derer Entwickler Graphalgorithmen umsetzen können. \cite{graph}
+
+Graphulo nutzt die verteilte Key-Value-Datenbank Accumulo als Datenspeicher. Die Datenbank basiert auf dem Design von Googles BigTable und nutzt Technologien wie das Hadoop File System und Zookeeper. \cite{acc} 
+
+Beispielhaft soll im Rahmen des Praktikums der DBLP-Datensatz, zur Verfügung gestellt von der Universität Trier, untersucht werden. DBLP steht dabei für \glqq Digital Bibliography \& Library Project\grqq und umfasst Informationen über eine Vielzahl von Veröffentlichungen aus dem Bereich der Informatik. \cite{dblp}
+
+
+\section{Umsetzung}
+
+Die Umsetzung umfasst zwei verschiedene Schwerpunkte. 
+%TODO einerseits Top-Down-Analyse, Vergleich...
+%TODO aufwand für verteilte accumulo-installation bzw graphulo ausrollung auf solcher
+
+Außerdem ist es ein Ziel, Analysen auf dem DBLP-Datensatz durchzuführen. Der erste Schritt dafür ist, eine lokale Accumulo-Instanz zu installieren und lauffähig zu machen.
+
+Anschließend erweitern wir den \cite{pars} um eine Schnittstelle, die geparste Daten in ein von Graphulo nutzbares Format konvertiert und in einer Accumulo-Instanz speichert.
+
+Graphulo bietet neben Basismatrixoperationen bereits einige beispielhafte Graphalgorithmen an. Zuerst möchten wir versuchen, mithilfe dieser den Datensatz zu analysieren. Weitergehend möchten wir selbst einen Graphalgorithmus auf Basis der GraphBLAS-Operationen implementieren. Hierbei entschieden wir uns für einen Algorithmus zum Finden von Connected Components. 
+
+
+\section{Geplantes Ergebnis}
+
+%TODO das nichttechnische ergebnis...
+
+Das technische Ergebnis stellt eine einfache Java-Schnittstelle für Accumulo dar, die Daten in einem für Graphulo nutzbaren Format akzeptiert. Außerdem soll eine Implementierung eines Connected-Components-Algorithmus entstehen, der in Graphulo einsetzbar sein soll.
+
+
+
+\begin{thebibliography}{laengste Labelbreite}
+	\bibitem[Graphulo]{graph} \url{http://graphulo.mit.edu}, 19.05.2017
+	\bibitem[Accumulo]{acc} \url{https://accumulo.apache.org}, 19.05.207
+	\bibitem[DBLP]{dblp} \url{http://dblp.uni-trier.de}, 19.05.207
+	\bibitem[DBLP-Parser]{pars} \url{https://github.com/ScaDS/dblp-parser}, 19.05.207
+\end{thebibliography}
+
+\end{document}

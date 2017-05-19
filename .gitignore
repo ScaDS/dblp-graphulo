@@ -2,3 +2,7 @@
 .gradle
 build
 out
+*.aux
+*.log
+*.out
+*.synctex.gz
