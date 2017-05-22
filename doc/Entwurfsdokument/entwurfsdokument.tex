@@ -29,7 +29,7 @@
 
 Das Ziel der Praktikumsaufgabe ist das Kennenlernen der Bibliothek Graphulo. Dabei handelt es sich um eine Java-Implementierung des GraphBLAS-Standards. Dieser umfasst grundlegende Matrixoperationen, mithilfe derer Entwickler Graphalgorithmen umsetzen können. \cite{graph}
 
-Graphulo nutzt die verteilte Key-Value-Datenbank Accumulo als Datenspeicher. Die Datenbank basiert auf dem Design von Googles BigTable und nutzt Technologien wie das Hadoop File System und Zookeeper. \cite{acc} 
+Graphulo verwendet die verteilte Key-Value-Datenbank Accumulo als Datenspeicher. Die Datenbank basiert auf dem Design von Googles BigTable und nutzt Technologien wie das Hadoop File System und Zookeeper. \cite{acc} 
 
 Beispielhaft soll im Rahmen des Praktikums der DBLP-Datensatz, zur Verfügung gestellt von der Universität Trier, untersucht werden. DBLP steht dabei für \glqq Digital Bibliography \& Library Project\grqq und umfasst Informationen über eine Vielzahl von Veröffentlichungen aus dem Bereich der Informatik. \cite{dblp}
 
@@ -58,7 +58,7 @@ Die Schnittstelle für Java ist bereits umgesetzt und erstellt eine Adjazenzmatr
 
 %TODO das nichttechnische ergebnis...
 
-Das technische Ergebnis stellt eine einfache Java-Schnittstelle für Accumulo dar, die Daten in einem für Graphulo nutzbaren Format akzeptiert. Außerdem soll eine Implementierung eines Connected-Components-Algorithmus entstehen, der in Graphulo einsetzbar sein soll.
+Das technische Ergebnis stellt eine einfache Java-Schnittstelle für Accumulo dar, die Daten in einem für Graphulo nutzbaren Format akzeptiert. Diese soll der DBLP-Parser einsetzen. Außerdem entsteht eine Implementierung eines Connected-Components-Algorithmus, der in Graphulo einsetzbar sein soll.
 
 Neben der eigenen Implementierung eines Graphen möchten wir auch die von Graphulo mitgelieferten Algorithmen einsetzen und prüfen, welche Informationen mit diesen aus dem DBLP-Datensatz gewonnen werden können.
 
