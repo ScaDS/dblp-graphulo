@@ -47,12 +47,20 @@ Anschließend erweitern wir den \cite{pars} um eine Schnittstelle, die geparste 
 Graphulo bietet neben Basismatrixoperationen bereits einige beispielhafte Graphalgorithmen an. Zuerst möchten wir versuchen, mithilfe dieser den Datensatz zu analysieren. Weitergehend möchten wir selbst einen Graphalgorithmus auf Basis der GraphBLAS-Operationen implementieren. Hierbei entschieden wir uns für einen Algorithmus zum Finden von Connected Components. 
 
 
+\section{Aktueller Stand}
+
+Aufbauend auf der Installation von Hadoop, ZooKeeper und Accumulo auf einer virtuellen Maschine entstanden bereits Skripte, die den Prozess weitestgehend automatisieren. Diese sind auch für spätere Projekte die Accumulo benötigen einsetzbar und bieten die Möglichkeit beispielsweise ein Docker-Image mit einer lokalen Accumulo-Installation zu erstellen.
+
+Die Schnittstelle für Java ist bereits umgesetzt und erstellt eine Adjazenzmatrix mit den Kollaborationen verschiedener Autoren.
+
+
 \section{Geplantes Ergebnis}
 
 %TODO das nichttechnische ergebnis...
 
 Das technische Ergebnis stellt eine einfache Java-Schnittstelle für Accumulo dar, die Daten in einem für Graphulo nutzbaren Format akzeptiert. Außerdem soll eine Implementierung eines Connected-Components-Algorithmus entstehen, der in Graphulo einsetzbar sein soll.
 
+Neben der eigenen Implementierung eines Graphen möchten wir auch die von Graphulo mitgelieferten Algorithmen einsetzen und prüfen, welche Informationen mit diesen aus dem DBLP-Datensatz gewonnen werden können.
 
 
 \begin{thebibliography}{laengste Labelbreite}
