@@ -25,11 +25,14 @@ public class AdjacencyEntry implements AccumuloEntry {
         this.edgeWeight = edgeWeight;
     }
 
-    public static AdjacencyEntry fromEntry(Map.Entry<Key, Value> entry) {
-        Text row = entry.getKey().getRow();
-        Text colQual = entry.getKey().getColumnQualifier();
-        Value value = entry.getValue();
-        return new AdjacencyEntry(row, colQual, value);
+    public static class AdjacencyBuilder implements AccumuloEntry.Builder {
+        @Override
+        public AccumuloEntry fromMapEntry(Map.Entry<Key, Value> mapEntry) {
+            Text row = mapEntry.getKey().getRow();
+            Text colQual = mapEntry.getKey().getColumnQualifier();
+            Value value = mapEntry.getValue();
+            return new AdjacencyEntry(row, colQual, value);
+        }
     }
 
     @Override

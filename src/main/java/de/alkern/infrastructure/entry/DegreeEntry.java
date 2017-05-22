@@ -30,12 +30,15 @@ public class DegreeEntry implements AccumuloEntry {
         this.degrees = degrees;
     }
 
-    public static DegreeEntry fromEntry(Map.Entry<Key, Value> entry) {
-        Text row = entry.getKey().getRow();
-        Text colQual = entry.getKey().getColumnQualifier();
-        DegreeLabel label = colQual.toString().equals("IN") ? DegreeLabel.IN : DegreeLabel.OUT;
-        Value value = entry.getValue();
-        return new DegreeEntry(row, label, value);
+    public static class DegreeBuilder implements AccumuloEntry.Builder {
+        @Override
+        public AccumuloEntry fromMapEntry(Map.Entry<Key, Value> mapEntry) {
+            Text row = mapEntry.getKey().getRow();
+            Text colQual = mapEntry.getKey().getColumnQualifier();
+            DegreeLabel label = colQual.toString().equals("IN") ? DegreeLabel.IN : DegreeLabel.OUT;
+            Value value = mapEntry.getValue();
+            return new DegreeEntry(row, label, value);
+        }
     }
 
     @Override

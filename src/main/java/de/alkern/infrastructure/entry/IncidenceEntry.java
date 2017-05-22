@@ -30,13 +30,16 @@ public class IncidenceEntry implements AccumuloEntry {
         this.edgeWeight = edgeWeight;
     }
 
-    public static IncidenceEntry fromEntry(Map.Entry<Key, Value> entry) {
-        Text row = entry.getKey().getRow();
-        Text colQual = entry.getKey().getColumnQualifier();
-        String edgeDirection = colQual.toString().split(SEPARATOR)[0];
-        String nodeLabel = colQual.toString().split(SEPARATOR)[0];
-        Value value = entry.getValue();
-        return new IncidenceEntry(row, edgeDirection, nodeLabel, value);
+    public static class IncidenceBuilder implements AccumuloEntry.Builder {
+        @Override
+        public AccumuloEntry fromMapEntry(Map.Entry<Key, Value> mapEntry) {
+            Text row = mapEntry.getKey().getRow();
+            Text colQual = mapEntry.getKey().getColumnQualifier();
+            String edgeDirection = colQual.toString().split(SEPARATOR)[0];
+            String nodeLabel = colQual.toString().split(SEPARATOR)[0];
+            Value value = mapEntry.getValue();
+            return new IncidenceEntry(row, edgeDirection, nodeLabel, value);
+        }
     }
 
     @Override

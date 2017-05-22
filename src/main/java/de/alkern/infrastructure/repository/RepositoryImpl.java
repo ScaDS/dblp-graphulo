@@ -14,21 +14,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Repository to save entries in an adjacence-matrix
- */
-public class AdjacencyRepository implements Repository {
+public class RepositoryImpl implements Repository {
 
     private final String tableName;
     private final TableOperations operations;
     private final BatchWriter writer;
     private final Scanner scanner;
+    private final AccumuloEntry.Builder entryBuilder;
 
-    public AdjacencyRepository(String tableName, Connector connector)
+    public RepositoryImpl(String tableName, Connector connector, AccumuloEntry.Builder entryBuilder)
             throws TableExistsException, AccumuloSecurityException, AccumuloException, TableNotFoundException {
         super();
         this.tableName = tableName;
         operations = connector.tableOperations();
+        this.entryBuilder = entryBuilder;
         createTable();
         BatchWriterConfig config = new BatchWriterConfig();
         config.setMaxMemory(10000L);
@@ -57,7 +56,7 @@ public class AdjacencyRepository implements Repository {
     public List<AccumuloEntry> scan() {
         List<AccumuloEntry> entries = new LinkedList<>();
         for (Map.Entry<Key, Value> entry: scanner) {
-            entries.add(AdjacencyEntry.fromEntry(entry));
+            entries.add(entryBuilder.fromMapEntry(entry));
         }
         return entries;
     }
