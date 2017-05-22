@@ -25,9 +25,9 @@ public class AdjacencyEntry implements AccumuloEntry {
         this.edgeWeight = edgeWeight;
     }
 
-    public static class AdjacencyBuilder implements AccumuloEntry.Builder {
+    public static class AdjacencyBuilder implements AccumuloEntry.Builder<AdjacencyEntry> {
         @Override
-        public AccumuloEntry fromMapEntry(Map.Entry<Key, Value> mapEntry) {
+        public AdjacencyEntry fromMapEntry(Map.Entry<Key, Value> mapEntry) {
             Text row = mapEntry.getKey().getRow();
             Text colQual = mapEntry.getKey().getColumnQualifier();
             Value value = mapEntry.getValue();

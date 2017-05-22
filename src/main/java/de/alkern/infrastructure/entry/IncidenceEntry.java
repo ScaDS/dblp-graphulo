@@ -30,9 +30,9 @@ public class IncidenceEntry implements AccumuloEntry {
         this.edgeWeight = edgeWeight;
     }
 
-    public static class IncidenceBuilder implements AccumuloEntry.Builder {
+    public static class IncidenceBuilder implements AccumuloEntry.Builder<IncidenceEntry> {
         @Override
-        public AccumuloEntry fromMapEntry(Map.Entry<Key, Value> mapEntry) {
+        public IncidenceEntry fromMapEntry(Map.Entry<Key, Value> mapEntry) {
             Text row = mapEntry.getKey().getRow();
             Text colQual = mapEntry.getKey().getColumnQualifier();
             String edgeDirection = colQual.toString().split(SEPARATOR)[0];

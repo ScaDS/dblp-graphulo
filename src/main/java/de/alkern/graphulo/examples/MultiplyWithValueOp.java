@@ -34,10 +34,11 @@ public class MultiplyWithValueOp implements ApplyOp {
 
     public List<AccumuloEntry> use(Iterator<? extends Map.Entry<Key, Value>> iter) {
         List<AccumuloEntry> entries = new LinkedList<>();
+        AccumuloEntry.Builder entryBuilder = new AdjacencyEntry.AdjacencyBuilder();
         iter.forEachRemaining(it -> {
             try {
                 this.apply(it.getKey(), it.getValue()).forEachRemaining(transformed ->
-                        entries.add(AdjacencyEntry.fromEntry(transformed)));
+                        entries.add(entryBuilder.fromMapEntry(transformed)));
             } catch (IOException e) {
                 System.err.println("IOException in MultiplyWithValueOp at " + it);
             }

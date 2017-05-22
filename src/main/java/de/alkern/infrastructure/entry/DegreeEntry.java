@@ -30,9 +30,9 @@ public class DegreeEntry implements AccumuloEntry {
         this.degrees = degrees;
     }
 
-    public static class DegreeBuilder implements AccumuloEntry.Builder {
+    public static class DegreeBuilder implements AccumuloEntry.Builder<DegreeEntry> {
         @Override
-        public AccumuloEntry fromMapEntry(Map.Entry<Key, Value> mapEntry) {
+        public DegreeEntry fromMapEntry(Map.Entry<Key, Value> mapEntry) {
             Text row = mapEntry.getKey().getRow();
             Text colQual = mapEntry.getKey().getColumnQualifier();
             DegreeLabel label = colQual.toString().equals("IN") ? DegreeLabel.IN : DegreeLabel.OUT;

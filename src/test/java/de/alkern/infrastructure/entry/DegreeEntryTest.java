@@ -20,7 +20,7 @@ public class DegreeEntryTest {
         map.put(key, value);
         DegreeEntry e = null;
         for (Map.Entry<Key, Value> entry: map.entrySet()) {
-            e = DegreeEntry.fromEntry(entry);
+            e = new DegreeEntry.DegreeBuilder().fromMapEntry(entry);
         }
         assertEquals(e.getNode(), "1");
         assertEquals(e.getLabel(), DegreeEntry.DegreeLabel.IN);

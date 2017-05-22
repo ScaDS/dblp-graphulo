@@ -9,7 +9,7 @@ import java.util.Map;
 public interface AccumuloEntry {
     public Mutation toMutation();
 
-    interface Builder {
-        public AccumuloEntry fromMapEntry(Map.Entry<Key, Value> mapEntry);
+    interface Builder<T extends AccumuloEntry> {
+        public T fromMapEntry(Map.Entry<Key, Value> mapEntry);
     }
 }
