@@ -37,7 +37,7 @@ Beispielhaft soll im Rahmen des Praktikums der DBLP-Datensatz, zur Verfügung ge
 \section{Umsetzung}
 
 Die Umsetzung umfasst zwei verschiedene Schwerpunkte. 
-%TODO einerseits Top-Down-Analyse, Vergleich...
+Einerseits soll eine Top-Level-Evaluation erfolgen. Diese soll anhand der Analyse von Merkmalen, der Pflege des Produktes und Qualität der Dokumentation sowie einer Überprüfung der Verbreitung untersucht werden, inwieweit sich Graphulo für den praktischen Einsatz eignet und ob schon ein Einsatz erfolgt.  Zur Erfüllung dessen sollen einerseits die Erfahrungen aus dem Praktikum selbst, sowie die Recherche in gängigen Foren, hierfür wurden Stackoverflow und Quora ausgewählt, auf GitHub selbst und ein Vergleich mit anderen Graphdatenbanken erfolgen.
 %TODO aufwand für verteilte accumulo-installation bzw graphulo ausrollung auf solcher
 
 Außerdem ist es ein Ziel, Analysen auf dem DBLP-Datensatz durchzuführen. Der erste Schritt dafür ist, eine lokale Accumulo-Instanz zu installieren und lauffähig zu machen.
@@ -53,10 +53,19 @@ Aufbauend auf der Installation von Hadoop, ZooKeeper und Accumulo auf einer virt
 
 Die Schnittstelle für Java ist bereits umgesetzt und erstellt eine Adjazenzmatrix mit den Kollaborationen verschiedener Autoren.
 
+Das Projekt hat auf GitHub insgesamt 599 Commits. Davon entfallen ohne Merge Commits allein 465 auf einen Contributor. 16 und 6 weitere auf jeweils zwei andere (Stand 22.05.2017).
+Der Großteil der Aktivität fand im Jahre 2015 statt. Im Jahre 2016 nahm die Aktivität schon stark ab, 2017 sind gar nur noch drei Aktivitäten zu finden (Stand 22.05.2017). [github1]
+Weiterhin sind drei weitere Einträge in Zusammenhang mit Grapholu auf GitHub zu finden.
+•	bigweale/ grapholu-rest: Testcode für ein Graphulo Rest-Interface. [gitHub2]
+•	Bigweale/ graphulo-examples: Beispielcode für Graphulo [gitHub3]
+•	Bigweale/ graphulo-pig: Pig UDFs für die Integration mit dem Graphulo Framework. [gitHub4]
+Mit insgesamt 288 Commits hat graphulo-rest hierbei noch die größte Aktivität zu verzeichnen.  graphulo-pig und graphulo-examples sind mit jeweils 23 und 2 vertreten.  Die Recherche auf GitHub zeigt, dass die Aktivität von Grapholu noch sehr eingeschränkt ist. Ein ähnliches Bild ergibt eine Suche bei Stack Overflow und Quora. Bei beiden Onlineportalen ist kein Eintrag zu Graphulo zu finden. Dies kann darauf zurückzuführen sein, dass es sich bei Graphulo um eine relativ neue Lösung handelt. 
+
+
 
 \section{Geplantes Ergebnis}
 
-%TODO das nichttechnische ergebnis...
+Zum zweiten Testat soll die Top-Level-Evaluation weiter ausgebaut werden. 
 
 Das technische Ergebnis stellt eine einfache Java-Schnittstelle für Accumulo dar, die Daten in einem für Graphulo nutzbaren Format akzeptiert. Diese soll der DBLP-Parser einsetzen. Außerdem entsteht eine Implementierung eines Connected-Components-Algorithmus, der in Graphulo einsetzbar sein soll.
 
