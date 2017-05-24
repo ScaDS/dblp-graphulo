@@ -37,8 +37,10 @@ Beispielhaft soll im Rahmen des Praktikums der DBLP-Datensatz, zur Verfügung ge
 \section{Umsetzung}
 
 Die Umsetzung umfasst zwei verschiedene Schwerpunkte. 
-%TODO einerseits Top-Down-Analyse, Vergleich...
-%TODO aufwand für verteilte accumulo-installation bzw graphulo ausrollung auf solcher
+
+Einerseits soll eine Top-Level-Evaluation erfolgen. Dabei soll anhand der Analyse von Merkmalen, der Pflege des Produktes und Qualität der Dokumentation sowie einer Überprüfung der Verbreitung untersucht werden, inwieweit sich Graphulo für den praktischen Einsatz eignet und ob schon ein Einsatz erfolgt.  
+
+Zur Erfüllung dessen sollen einerseits die Erfahrungen aus dem Praktikum selbst, sowie die Recherche in gängigen Foren, hierfür wurden Stack Overflow und Quora ausgewählt, auf GitHub selbst und ein Vergleich mit anderen Graphdatenbanken erfolgen.
 
 Außerdem ist es ein Ziel, Analysen auf dem DBLP-Datensatz durchzuführen. Der erste Schritt dafür ist, eine lokale Accumulo-Instanz zu installieren und lauffähig zu machen.
 
@@ -53,10 +55,12 @@ Aufbauend auf der Installation von Hadoop, ZooKeeper und Accumulo auf einer virt
 
 Die Schnittstelle für Java ist bereits umgesetzt und erstellt eine Adjazenzmatrix mit den Kollaborationen verschiedener Autoren.
 
+Die Top-Level-Evaluation ist begonnen, ihr aktueller Stand findet sich in der Präsentation für das erste Testat.
+
 
 \section{Geplantes Ergebnis}
 
-%TODO das nichttechnische ergebnis...
+Bis zum zweiten Testat soll die Top-Level-Evaluation weiter ausgebaut werden.
 
 Das technische Ergebnis stellt eine einfache Java-Schnittstelle für Accumulo dar, die Daten in einem für Graphulo nutzbaren Format akzeptiert. Diese soll der DBLP-Parser einsetzen. Außerdem entsteht eine Implementierung eines Connected-Components-Algorithmus, der in Graphulo einsetzbar sein soll.
 
