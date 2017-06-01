@@ -2,6 +2,7 @@ package de.alkern.infrastructure;
 
 import de.alkern.infrastructure.entry.AccumuloEntry;
 import de.alkern.infrastructure.repository.Repository;
+import org.apache.accumulo.core.client.MutationsRejectedException;
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Value;
 import org.dblp.datastructures.DblpElement;
@@ -75,6 +76,11 @@ public abstract class GraphuloProcessor implements DblpElementProcessor {
 
     public List<AccumuloEntry> parse(String file) {
         DblpParser.load(this, file);
+        try {
+            repo.flush();
+        } catch (MutationsRejectedException e) {
+            e.printStackTrace();
+        }
         return scan();
     }
 }

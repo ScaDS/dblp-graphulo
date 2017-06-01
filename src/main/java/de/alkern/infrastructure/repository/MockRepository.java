@@ -1,6 +1,7 @@
 package de.alkern.infrastructure.repository;
 
 import de.alkern.infrastructure.entry.AccumuloEntry;
+import org.apache.accumulo.core.client.MutationsRejectedException;
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Value;
 
@@ -39,6 +40,11 @@ public class MockRepository implements Repository {
 
     @Override
     public void close() {
+
+    }
+
+    @Override
+    public void flush() throws MutationsRejectedException {
 
     }
 }

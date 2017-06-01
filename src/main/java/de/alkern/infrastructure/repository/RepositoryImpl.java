@@ -87,4 +87,9 @@ public class RepositoryImpl implements Repository {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void flush() throws MutationsRejectedException {
+        writer.flush();
+    }
 }

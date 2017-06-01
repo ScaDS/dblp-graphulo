@@ -1,6 +1,7 @@
 package de.alkern.infrastructure.repository;
 
 import de.alkern.infrastructure.entry.AccumuloEntry;
+import org.apache.accumulo.core.client.MutationsRejectedException;
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Value;
 
@@ -42,4 +43,9 @@ public interface Repository {
      * Close the used writer
      */
     public void close();
+
+    /**
+     * Flush saved mutations
+     */
+    void flush() throws MutationsRejectedException;
 }
