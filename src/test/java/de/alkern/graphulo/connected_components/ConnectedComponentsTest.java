@@ -22,18 +22,24 @@ public class ConnectedComponentsTest {
     public void find() throws Exception {
         //load test data into acccumulo
         Connector conn = AccumuloConnector.local();
-        Repository repo = new RepositoryImpl("test", conn, new AdjacencyEntry.AdjacencyBuilder());
-        GraphuloProcessor processor = new AuthorProcessor(repo);
-        processor.parse(ExampleData.TWO_COMPONENTS_EXAMPLE);
+//        Repository repo = new RepositoryImpl("test", conn, new AdjacencyEntry.AdjacencyBuilder());
+//        GraphuloProcessor processor = new AuthorProcessor(repo);
+//        processor.parse(ExampleData.TWO_COMPONENTS_EXAMPLE);
         Graphulo graphulo = GraphuloConnector.local(conn);
-        graphulo.generateDegreeTable("test", "test_deg", false);
+//        graphulo.generateDegreeTable("test", "test_deg", false);
 
         //find connected components
-        ConnectedComponents.find(graphulo, "test_cc");
-        TableOperations operations = conn.tableOperations();
-        assertTrue(operations.exists("test_cc1"));
-        assertTrue(operations.exists("test_cc2"));
-        assertFalse(operations.exists("test_cc3"));
+        ConnectedComponents.find(graphulo, "test", "test_deg", "Artikel1 Autor1,");
+//        TableOperations operations = conn.tableOperations();
+//        assertTrue(operations.exists("test_cc1"));
+//        assertTrue(operations.exists("test_cc2"));
+//        assertFalse(operations.exists("test_cc3"));
+
+        //clean up
+//        operations.delete("test");
+//        operations.delete("test_deg");
+//        operations.delete("test_cc1");
+//        operations.delete("test_cc2");
     }
 
 }

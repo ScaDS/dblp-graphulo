@@ -12,7 +12,9 @@ public class ConnectedComponents {
      * @param graphulo
      * @param table    for which to find components
      */
-    public static void find(Graphulo graphulo, String table) {
-
+    public static void find(Graphulo graphulo, String table, String degTable, String v0) {
+        String neighbours = graphulo.AdjBFS(table, v0, 1, null, null,
+                degTable, null, false, 0, Integer.MAX_VALUE);
+        System.out.println("Nachbarn: " + neighbours);
     }
 }

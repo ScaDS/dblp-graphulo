@@ -2,9 +2,9 @@
 <!DOCTYPE dblp SYSTEM "dblp.dtd">
 <dblp>
     <incollection mdate="2013-07-22" key="reference/nc/KariSS12">
-        <author>Lila Kari</author>
-        <author>Shinnosuke Seki</author>
-        <author>Petr SosXXXk</author>
+        <author>Artikel1 Autor1</author>
+        <author>Artikel1 Autor2</author>
+        <author>Artikel1 Autor3</author>
         <title>DNA Computing - Foundations and Implications.</title>
         <pages>1073-1127</pages>
         <year>2012</year>
@@ -15,7 +15,8 @@
     </incollection>
 
     <article mdate="2002-01-03" key="persons/Hall74">
-        <author>Patrick A. V. Hall</author>
+        <author>Artikel2 Autor1</author>
+        <author>Artikel2 Autor2</author>
         <title>Common Subexpression Identification in General Algebraic Systems.</title>
         <journal>Technical Rep. UKSC 0060, IBM United Kingdom Scientific Centre</journal>
         <month>November</month>
