@@ -1,18 +1,14 @@
 package de.alkern.graphulo.connected_components;
 
-import de.alkern.author.AuthorProcessor;
 import de.alkern.graphulo.GraphuloConnector;
-import de.alkern.infrastructure.ExampleData;
-import de.alkern.infrastructure.GraphuloProcessor;
 import de.alkern.infrastructure.connector.AccumuloConnector;
-import de.alkern.infrastructure.entry.AdjacencyEntry;
-import de.alkern.infrastructure.repository.Repository;
-import de.alkern.infrastructure.repository.RepositoryImpl;
 import edu.mit.ll.graphulo.Graphulo;
+import org.apache.accumulo.core.client.AccumuloException;
+import org.apache.accumulo.core.client.AccumuloSecurityException;
 import org.apache.accumulo.core.client.Connector;
-import org.apache.accumulo.core.client.Scanner;
-import org.apache.accumulo.core.client.admin.TableOperations;
 import org.junit.Test;
+
+import java.util.Collection;
 
 import static org.junit.Assert.*;
 
@@ -28,8 +24,8 @@ public class ConnectedComponentsTest {
         Graphulo graphulo = GraphuloConnector.local(conn);
 //        graphulo.generateDegreeTable("test", "test_deg", false);
 
-        //find connected components
-        ConnectedComponents.find(graphulo, "test", "test_deg", "Artikel1 Autor1,");
+        //splitConnectedComponents connected components
+        new ConnectedComponents(graphulo).splitConnectedComponents( "test", "test_deg", "Artikel1 Autor1,");
 //        TableOperations operations = conn.tableOperations();
 //        assertTrue(operations.exists("test_cc1"));
 //        assertTrue(operations.exists("test_cc2"));
@@ -40,6 +36,15 @@ public class ConnectedComponentsTest {
 //        operations.delete("test_deg");
 //        operations.delete("test_cc1");
 //        operations.delete("test_cc2");
+    }
+
+    @Test
+    public void testGetNeighbours() throws AccumuloSecurityException, AccumuloException {
+        Connector conn = AccumuloConnector.local();
+        Graphulo graphulo = GraphuloConnector.local(conn);
+        Collection<String> neighbours = new ConnectedComponents(graphulo).getNeighbours( "test",
+                "test_deg", "Artikel1 Autor1,");
+        assertEquals(2, neighbours.size());
     }
 
 }
