@@ -1,9 +1,11 @@
 package de.alkern.graphulo.connected_components;
 
+import de.alkern.infrastructure.entry.AdjacencyEntry;
+import edu.mit.ll.graphulo.DynamicIteratorSetting;
 import edu.mit.ll.graphulo.Graphulo;
-import org.apache.accumulo.core.client.BatchScanner;
-import org.apache.accumulo.core.client.Connector;
-import org.apache.accumulo.core.client.TableNotFoundException;
+import edu.mit.ll.graphulo.skvi.RemoteWriteIterator;
+import org.apache.accumulo.core.client.*;
+import org.apache.accumulo.core.client.admin.TableOperations;
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Range;
 import org.apache.accumulo.core.data.Value;
@@ -32,12 +34,12 @@ public class ConnectedComponents {
      *
      * @param table    for which to find components
      */
-    public void splitConnectedComponents(String table, String degTable, String v0) {
+    public void splitConnectedComponents(String table, String degTable) {
         visited.clear();
         toVisit.clear();
         this.table = table;
         this.degTable = degTable;
-        this.ccNumber = 1L;
+        this.ccNumber = 0L;
         Iterator<Map.Entry<Key, Value>> it = scanTable(graphulo.getConnector());
         it.forEachRemaining(this::visitEntry);
     }
@@ -45,7 +47,7 @@ public class ConnectedComponents {
     private void visitEntry(Map.Entry<Key, Value> entry) {
         String node = entry.getKey().getRow().toString();
         if (visited.contains(node)) return;
-        System.out.println("Found Connected component number " + ccNumber++);
+        System.out.println("Found connected component number " + ccNumber++);
         while (node != null && (!visited.contains(node) || !toVisit.isEmpty())) {
             visited.add(node);
             toVisit.addAll(this.getUnvisitedNeighbours(node));
@@ -59,7 +61,39 @@ public class ConnectedComponents {
      * @param node
      */
     private void copyAllEntriesForNode(String node) {
+//        Iterator<Map.Entry<Key, Value>> entriesForNode = scanTable(graphulo.getConnector(), new Range(node));
+//        entriesForNode.forEachRemaining(System.out::println);
+        BatchScanner bs;
+        try {
+            bs = graphulo.getConnector().createBatchScanner(table, Authorizations.EMPTY, 50);
+        } catch (TableNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        bs.setRanges(Collections.singleton(new Range(node)));
 
+        String currentComponentTable = table + COMPONENT_SUFFIX + ccNumber;
+        TableOperations operations = graphulo.getConnector().tableOperations();
+        try {
+            if (!operations.exists(currentComponentTable)) {
+                operations.create(currentComponentTable);
+            }
+        } catch (AccumuloException | AccumuloSecurityException | TableExistsException e) {
+            throw new RuntimeException(e);
+        }
+
+        DynamicIteratorSetting dis = new DynamicIteratorSetting(15, "copyAllEntriesForNode");
+        dis.append(new IteratorSetting(1, RemoteWriteIterator.class,
+                graphulo.basicRemoteOpts("", currentComponentTable, null, null)));
+        dis.addToScanner(bs);
+
+        AdjacencyEntry.AdjacencyBuilder builder = new AdjacencyEntry.AdjacencyBuilder();
+        try {
+            for (Map.Entry<Key, Value> entry : bs) {
+                System.out.println(builder.fromMapEntry(entry) + " added to " + currentComponentTable);
+            }
+        } finally {
+            bs.close();
+        }
     }
 
     private Collection<String> getUnvisitedNeighbours(String v0) {
@@ -73,17 +107,19 @@ public class ConnectedComponents {
      * @param conn
      * @return
      */
-    private Iterator<Map.Entry<Key, Value>> scanTable(Connector conn) {
+    private Iterator<Map.Entry<Key, Value>> scanTable(Connector conn, Range range) {
         BatchScanner bs;
         try {
             bs = conn.createBatchScanner(table, new Authorizations(), 50);
-            List<Range> ranges = new ArrayList<Range>();
-            ranges.add(new Range());
-            bs.setRanges(ranges);
+            bs.setRanges(Collections.singleton(range));
         } catch (TableNotFoundException e) {
             throw new RuntimeException(e);
         }
         return bs.iterator();
+    }
+
+    private Iterator<Map.Entry<Key, Value>> scanTable(Connector conn) {
+        return scanTable(conn, new Range());
     }
 
     /**
