@@ -25,7 +25,7 @@ public class ConnectedComponents {
 
     public ConnectedComponents(Graphulo graphulo) {
         this.graphulo = graphulo;
-        visited = new VisitedNodesList();
+        visited = new VisitedNodesTable(graphulo.getConnector());
         toVisit = new VisitQueueImpl();
     }
 
@@ -64,6 +64,7 @@ public class ConnectedComponents {
         if (visited.hasVisited(node)) return;
         System.out.println("Found connected component number " + ccNumber++);
         while (node != null) {
+            //@todo vielleicht beide VisitedNodes klassen kombiniert einsetzen, um nicht jeden Knoten einzeln in accumulo zu schreiben?
             if (!visited.hasVisited(node)) {
                 visited.visitNode(node);
                 toVisit.addAll(this.getUnvisitedNeighbours(node));
