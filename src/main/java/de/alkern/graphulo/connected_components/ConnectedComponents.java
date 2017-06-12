@@ -31,25 +31,39 @@ public class ConnectedComponents {
 
     /**
      * Finds all connected components and saves them in new tables
-     * Tables for the components have the –cc suffix with a number
+     * Tables for the components have the _cc suffix with a number
      *
-     * @param table    for which to find components
+     * @param table for which to find components
+     * @param degTable degree table for the table
      */
     public void splitConnectedComponents(String table, String degTable) {
+        // prepare the class to run the algorithm
         visited.clear();
         toVisit.clear();
         this.table = table;
         this.degTable = degTable;
         this.ccNumber = 0L;
-        Iterator<Map.Entry<Key, Value>> it = scanTable(graphulo.getConnector());
-        it.forEachRemaining(this::visitEntry);
+
+        // Iterate over the whole table once, to ensure every node is visited
+        BatchScanner bs;
+        try {
+            bs = graphulo.getConnector().createBatchScanner(table, Authorizations.EMPTY, 25);
+            bs.setRanges(Collections.singleton(new Range()));
+        } catch (TableNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (Map.Entry<Key, Value> entry : bs) {
+            visitEntry(entry);
+        }
+        bs.close();
     }
 
     private void visitEntry(Map.Entry<Key, Value> entry) {
         String node = entry.getKey().getRow().toString();
         if (visited.hasVisited(node)) return;
         System.out.println("Found connected component number " + ccNumber++);
-        while (node != null && (!visited.hasVisited(node) || !toVisit.isEmpty())) {
+        while (node != null && !(visited.hasVisited(node) && toVisit.isEmpty())) {
             visited.visitNode(node);
             toVisit.addAll(this.getUnvisitedNeighbours(node));
             this.copyAllEntriesForNode(node);
@@ -62,16 +76,15 @@ public class ConnectedComponents {
      * @param node
      */
     private void copyAllEntriesForNode(String node) {
-//        Iterator<Map.Entry<Key, Value>> entriesForNode = scanTable(graphulo.getConnector(), new Range(node));
-//        entriesForNode.forEachRemaining(System.out::println);
         BatchScanner bs;
         try {
             bs = graphulo.getConnector().createBatchScanner(table, Authorizations.EMPTY, 50);
+            bs.setRanges(Collections.singleton(new Range(node))); //just check entries for the given node
         } catch (TableNotFoundException e) {
             throw new RuntimeException(e);
         }
-        bs.setRanges(Collections.singleton(new Range(node)));
 
+        //create table for the current cc
         String currentComponentTable = table + COMPONENT_SUFFIX + ccNumber;
         TableOperations operations = graphulo.getConnector().tableOperations();
         try {
@@ -82,6 +95,7 @@ public class ConnectedComponents {
             throw new RuntimeException(e);
         }
 
+        //add a RemoteWriteIterator to the scanner to copy all entries
         DynamicIteratorSetting dis = new DynamicIteratorSetting(15, "copyAllEntriesForNode");
         dis.append(new IteratorSetting(1, RemoteWriteIterator.class,
                 graphulo.basicRemoteOpts("", currentComponentTable, null, null)));
@@ -100,26 +114,6 @@ public class ConnectedComponents {
     private Collection<String> getUnvisitedNeighbours(String v0) {
         Collection<String> neighbours = this.getNeighbours(v0);
         return visited.getUnvisitedNodes(neighbours);
-    }
-
-    /**
-     * Scan the table for all entries
-     * @param conn
-     * @return
-     */
-    private Iterator<Map.Entry<Key, Value>> scanTable(Connector conn, Range range) {
-        BatchScanner bs;
-        try {
-            bs = conn.createBatchScanner(table, new Authorizations(), 50);
-            bs.setRanges(Collections.singleton(range));
-        } catch (TableNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return bs.iterator();
-    }
-
-    private Iterator<Map.Entry<Key, Value>> scanTable(Connector conn) {
-        return scanTable(conn, new Range());
     }
 
     /**

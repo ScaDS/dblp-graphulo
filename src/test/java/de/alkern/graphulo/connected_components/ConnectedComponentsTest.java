@@ -54,6 +54,10 @@ public class ConnectedComponentsTest {
 
     @Test
     public void find() throws Exception {
+        //prepare
+        if (operations.exists("test_cc1")) operations.delete("test_cc1");
+        if (operations.exists("test_cc2")) operations.delete("test_cc2");
+
         //splitConnectedComponents connected components
         new ConnectedComponents(graphulo).splitConnectedComponents( "test", "test_deg");
         assertTrue(operations.exists("test_cc1"));
@@ -66,8 +70,8 @@ public class ConnectedComponentsTest {
         //clean up
 //        operations.delete("test");
 //        operations.delete("test_deg");
-        operations.delete("test_cc1");
-        operations.delete("test_cc2");
+//        operations.delete("test_cc1");
+//        operations.delete("test_cc2");
     }
 
     private long countEntries(String table) throws TableNotFoundException {
