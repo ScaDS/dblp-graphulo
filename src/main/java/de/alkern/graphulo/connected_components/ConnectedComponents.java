@@ -17,20 +17,21 @@ public class ConnectedComponents {
 
     private static final String COMPONENT_SUFFIX = "_cc";
     private Graphulo graphulo;
-    private List<String> visited;
-    private Queue<String> toVisit;
+    private VisitedNodes visited;
+    private VisitQueue toVisit;
     private String table;
     private String degTable;
     private Long ccNumber;
 
     public ConnectedComponents(Graphulo graphulo) {
         this.graphulo = graphulo;
-        visited = new ArrayList<>();
-        toVisit = new PriorityQueue<>();
+        visited = new VisitedNodesList();
+        toVisit = new VisitQueueImpl();
     }
 
     /**
      * Finds all connected components and saves them in new tables
+     * Tables for the components have the –cc suffix with a number
      *
      * @param table    for which to find components
      */
@@ -46,10 +47,10 @@ public class ConnectedComponents {
 
     private void visitEntry(Map.Entry<Key, Value> entry) {
         String node = entry.getKey().getRow().toString();
-        if (visited.contains(node)) return;
+        if (visited.hasVisited(node)) return;
         System.out.println("Found connected component number " + ccNumber++);
-        while (node != null && (!visited.contains(node) || !toVisit.isEmpty())) {
-            visited.add(node);
+        while (node != null && (!visited.hasVisited(node) || !toVisit.isEmpty())) {
+            visited.visitNode(node);
             toVisit.addAll(this.getUnvisitedNeighbours(node));
             this.copyAllEntriesForNode(node);
             node = toVisit.poll();
@@ -98,8 +99,7 @@ public class ConnectedComponents {
 
     private Collection<String> getUnvisitedNeighbours(String v0) {
         Collection<String> neighbours = this.getNeighbours(v0);
-        neighbours.removeAll(visited);
-        return neighbours;
+        return visited.getUnvisitedNodes(neighbours);
     }
 
     /**
