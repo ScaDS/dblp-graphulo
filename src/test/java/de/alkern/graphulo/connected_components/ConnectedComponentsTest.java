@@ -40,21 +40,31 @@ public class ConnectedComponentsTest {
         Connector conn = AccumuloConnector.local();
         graphulo = GraphuloConnector.local(conn);
         operations = conn.tableOperations();
-        if (!(operations.exists("test") || operations.exists("test_deg"))) {
-           fillDatabase(conn);
-        }
+        fillDatabase(conn);
     }
 
     private static void fillDatabase(Connector conn) throws Exception {
-        Repository repo = new RepositoryImpl("test", conn, new AdjacencyEntry.AdjacencyBuilder());
-        GraphuloProcessor processor = new AuthorProcessor(repo);
-        processor.parse(ExampleData.TWO_COMPONENTS_EXAMPLE);
-        graphulo.generateDegreeTable("test", "test_deg", false);
+        if (!operations.exists("test")) {
+            Repository repo = new RepositoryImpl("test", conn, new AdjacencyEntry.AdjacencyBuilder());
+            GraphuloProcessor processor = new AuthorProcessor(repo);
+            processor.parse(ExampleData.TWO_COMPONENTS_EXAMPLE);
+        }
+        if (!operations.exists("l")) {
+            Repository repo = new RepositoryImpl("l", conn, new AdjacencyEntry.AdjacencyBuilder());
+            GraphuloProcessor processor = new AuthorProcessor(repo);
+            processor.parse(ExampleData.CC_EXAMPLE);
+        }
+        if (!operations.exists("test_deg")) {
+            graphulo.generateDegreeTable("test", "test_deg", false);
+        }
+        if (!operations.exists("l_deg")) {
+            graphulo.generateDegreeTable("l", "l_deg", false);
+        }
     }
 
     @Test
-    public void find() throws Exception {
-        //prepare
+    public void shortExample() throws Exception {
+        //prepare if previous run failed
         if (operations.exists("test_cc1")) operations.delete("test_cc1");
         if (operations.exists("test_cc2")) operations.delete("test_cc2");
 
@@ -66,12 +76,36 @@ public class ConnectedComponentsTest {
 
         assertEquals(6, countEntries("test_cc1"));
         assertEquals(2, countEntries("test_cc2"));
+        assertEquals(countEntries("test"), countEntries("test_cc1") + countEntries("test_cc2"));
 
         //clean up
 //        operations.delete("test");
 //        operations.delete("test_deg");
-//        operations.delete("test_cc1");
-//        operations.delete("test_cc2");
+        operations.delete("test_cc1");
+        operations.delete("test_cc2");
+    }
+
+    @Test
+    public void longerExample() throws Exception {
+        //prepare if previous run failed
+        if (operations.exists("l_cc1")) operations.delete("l_cc1");
+        if (operations.exists("l_cc2")) operations.delete("l_cc2");
+
+        //splitConnectedComponents connected components
+        new ConnectedComponents(graphulo).splitConnectedComponents( "l", "l_deg");
+        assertTrue(operations.exists("l_cc1"));
+        assertTrue(operations.exists("l_cc2"));
+        assertFalse(operations.exists("l_cc3"));
+
+        assertEquals(10, countEntries("l_cc1"));
+        assertEquals(6, countEntries("l_cc2"));
+        assertEquals(countEntries("l"), countEntries("l_cc1") + countEntries("l_cc2"));
+
+        //clean up
+//        operations.delete("test");
+//        operations.delete("test_deg");
+        operations.delete("l_cc1");
+        operations.delete("l_cc2");
     }
 
     private long countEntries(String table) throws TableNotFoundException {

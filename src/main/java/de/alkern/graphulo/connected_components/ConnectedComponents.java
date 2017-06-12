@@ -63,10 +63,12 @@ public class ConnectedComponents {
         String node = entry.getKey().getRow().toString();
         if (visited.hasVisited(node)) return;
         System.out.println("Found connected component number " + ccNumber++);
-        while (node != null && !(visited.hasVisited(node) && toVisit.isEmpty())) {
-            visited.visitNode(node);
-            toVisit.addAll(this.getUnvisitedNeighbours(node));
-            this.copyAllEntriesForNode(node);
+        while (node != null) {
+            if (!visited.hasVisited(node)) {
+                visited.visitNode(node);
+                toVisit.addAll(this.getUnvisitedNeighbours(node));
+                this.copyAllEntriesForNode(node);
+            }
             node = toVisit.poll();
         }
     }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dblp SYSTEM "dblp.dtd">
+<dblp>
+    <incollection mdate="" key="">
+        <author>Autor1</author>
+        <author>Autor2</author>
+        <author>Autor3</author>
+    </incollection>
+
+    <article mdate="" key="">
+        <author>Autor4</author>
+        <author>Autor5</author>
+    </article>
+
+    <article mdate="" key="">
+        <author>Autor6</author>
+        <author>Autor7</author>
+        <author>Autor8</author>
+    </article>
+
+    <article mdate="" key="">
+        <author>Autor1</author>
+        <author>Autor4</author>
+    </article>
+
+    <article mdate="" key="">
+        <author>Autor9</author>
+    </article>
+
+    <article mdate="" key="">
+        <author>Autor4</author>
+        <author>Autor5</author>
+    </article>
+</dblp>
