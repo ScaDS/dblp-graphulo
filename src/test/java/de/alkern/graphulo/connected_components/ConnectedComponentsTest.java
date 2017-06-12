@@ -36,30 +36,8 @@ public class ConnectedComponentsTest {
 
     @BeforeClass
     public static void init() throws Exception {
-        //load test data into acccumulo
-        Connector conn = AccumuloConnector.local();
-        graphulo = GraphuloConnector.local(conn);
-        operations = conn.tableOperations();
-        fillDatabase(conn);
-    }
-
-    private static void fillDatabase(Connector conn) throws Exception {
-        if (!operations.exists("test")) {
-            Repository repo = new RepositoryImpl("test", conn, new AdjacencyEntry.AdjacencyBuilder());
-            GraphuloProcessor processor = new AuthorProcessor(repo);
-            processor.parse(ExampleData.TWO_COMPONENTS_EXAMPLE);
-        }
-        if (!operations.exists("l")) {
-            Repository repo = new RepositoryImpl("l", conn, new AdjacencyEntry.AdjacencyBuilder());
-            GraphuloProcessor processor = new AuthorProcessor(repo);
-            processor.parse(ExampleData.CC_EXAMPLE);
-        }
-        if (!operations.exists("test_deg")) {
-            graphulo.generateDegreeTable("test", "test_deg", false);
-        }
-        if (!operations.exists("l_deg")) {
-            graphulo.generateDegreeTable("l", "l_deg", false);
-        }
+        graphulo = TestUtils.init();
+        operations = graphulo.getConnector().tableOperations();
     }
 
     @Test
@@ -74,9 +52,9 @@ public class ConnectedComponentsTest {
         assertTrue(operations.exists("test_cc2"));
         assertFalse(operations.exists("test_cc3"));
 
-        assertEquals(6, countEntries("test_cc1"));
-        assertEquals(2, countEntries("test_cc2"));
-        assertEquals(countEntries("test"), countEntries("test_cc1") + countEntries("test_cc2"));
+        assertEquals(6, TestUtils.countEntries("test_cc1"));
+        assertEquals(2, TestUtils.countEntries("test_cc2"));
+        assertEquals(TestUtils.countEntries("test"), TestUtils.countEntries("test_cc1") + TestUtils.countEntries("test_cc2"));
 
         //clean up
 //        operations.delete("test");
@@ -97,27 +75,15 @@ public class ConnectedComponentsTest {
         assertTrue(operations.exists("l_cc2"));
         assertFalse(operations.exists("l_cc3"));
 
-        assertEquals(10, countEntries("l_cc1"));
-        assertEquals(6, countEntries("l_cc2"));
-        assertEquals(countEntries("l"), countEntries("l_cc1") + countEntries("l_cc2"));
+        assertEquals(10, TestUtils.countEntries("l_cc1"));
+        assertEquals(6, TestUtils.countEntries("l_cc2"));
+        assertEquals(TestUtils.countEntries("l"), TestUtils.countEntries("l_cc1") + TestUtils.countEntries("l_cc2"));
 
         //clean up
 //        operations.delete("test");
 //        operations.delete("test_deg");
         operations.delete("l_cc1");
         operations.delete("l_cc2");
-    }
-
-    private long countEntries(String table) throws TableNotFoundException {
-        BatchScanner scanner = graphulo.getConnector().createBatchScanner(table, Authorizations.EMPTY, 5);
-        scanner.setRanges(Collections.singleton(new Range()));
-        scanner.addScanIterator(new IteratorSetting(1, CountAllIterator.class));
-        long cnt = 0;
-        for (Map.Entry<Key, Value> entry : scanner) {
-            cnt += LongCombiner.STRING_ENCODER.decode(entry.getValue().get());
-        }
-        scanner.close();
-        return cnt;
     }
 
     @Test
