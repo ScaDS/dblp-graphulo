@@ -1,6 +1,7 @@
 package de.alkern.graphulo.connected_components;
 
 import edu.mit.ll.graphulo.Graphulo;
+import edu.mit.ll.graphulo.util.DebugUtil;
 import org.apache.accumulo.core.client.admin.TableOperations;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,11 +20,11 @@ public class LaplacianTest {
     }
 
     @Test
-//    @Ignore
     public void calculateLaplacian() throws Exception {
         Laplacian lap = new Laplacian(graphulo);
         lap.calculateLaplacian("test", "test_deg", "test_lap");
         assertEquals(13, TestUtils.countEntries("test_lap"));
+        DebugUtil.printTable("test_lap", graphulo.getConnector(), "test_lap");
     }
 
 }

@@ -1,4 +1,4 @@
-package de.alkern.graphulo.connected_components;
+package de.alkern.graphulo.connected_components.data;
 
 import java.util.ArrayList;
 import java.util.Collection;

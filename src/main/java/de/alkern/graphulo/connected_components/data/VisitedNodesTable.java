@@ -1,4 +1,4 @@
-package de.alkern.graphulo.connected_components;
+package de.alkern.graphulo.connected_components.data;
 
 import de.alkern.infrastructure.entry.AccumuloEntry;
 import de.alkern.infrastructure.entry.AdjacencyEntry;

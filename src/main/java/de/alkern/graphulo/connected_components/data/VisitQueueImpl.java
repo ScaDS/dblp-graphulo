@@ -1,4 +1,4 @@
-package de.alkern.graphulo.connected_components;
+package de.alkern.graphulo.connected_components.data;
 
 import javax.annotation.Nullable;
 import java.util.Collection;

@@ -1,5 +1,6 @@
 package de.alkern.graphulo.connected_components;
 
+import de.alkern.graphulo.connected_components.data.*;
 import de.alkern.infrastructure.entry.AdjacencyEntry;
 import edu.mit.ll.graphulo.DynamicIteratorSetting;
 import edu.mit.ll.graphulo.Graphulo;
@@ -25,7 +26,8 @@ public class ConnectedComponents {
 
     public ConnectedComponents(Graphulo graphulo) {
         this.graphulo = graphulo;
-        visited = new VisitedNodesTable(graphulo.getConnector());
+//        visited = new VisitedNodesTable(graphulo.getConnector());
+        visited = new VisitedNodesList();
         toVisit = new VisitQueueImpl();
     }
 
@@ -62,7 +64,7 @@ public class ConnectedComponents {
     private void visitEntry(Map.Entry<Key, Value> entry) {
         String node = entry.getKey().getRow().toString();
         if (visited.hasVisited(node)) return;
-        System.out.println("Found connected component number " + ccNumber++);
+        System.out.println("Found connected component number " + ++ccNumber);
         while (node != null) {
             //@todo vielleicht beide VisitedNodes klassen kombiniert einsetzen, um nicht jeden Knoten einzeln in accumulo zu schreiben?
             if (!visited.hasVisited(node)) {

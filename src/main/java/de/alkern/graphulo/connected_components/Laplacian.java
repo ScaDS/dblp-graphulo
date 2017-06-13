@@ -66,7 +66,7 @@ public class Laplacian {
         }
         DynamicIteratorSetting adjItSet = new DynamicIteratorSetting(1, "copyTables");
         adjItSet.append(MathTwoScalar.applyOpLong(5, false,
-                MathTwoScalar.ScalarOp.MIN, -1L, false));
+                MathTwoScalar.ScalarOp.TIMES, -1L, false));
         adjItSet.append(new IteratorSetting(10, RemoteWriteIterator.class,
                 graphulo.basicRemoteOpts("", resultTable, null, null)));
         adjItSet.addToScanner(adjTableScanner);
