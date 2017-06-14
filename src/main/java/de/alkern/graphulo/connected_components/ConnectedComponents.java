@@ -1,5 +1,6 @@
 package de.alkern.graphulo.connected_components;
 
+import de.alkern.graphulo.connected_components.data.*;
 import de.alkern.infrastructure.entry.AdjacencyEntry;
 import edu.mit.ll.graphulo.DynamicIteratorSetting;
 import edu.mit.ll.graphulo.Graphulo;
@@ -17,41 +18,60 @@ public class ConnectedComponents {
 
     private static final String COMPONENT_SUFFIX = "_cc";
     private Graphulo graphulo;
-    private List<String> visited;
-    private Queue<String> toVisit;
+    private VisitedNodes visited;
+    private VisitQueue toVisit;
     private String table;
     private String degTable;
     private Long ccNumber;
 
     public ConnectedComponents(Graphulo graphulo) {
         this.graphulo = graphulo;
-        visited = new ArrayList<>();
-        toVisit = new PriorityQueue<>();
+//        visited = new VisitedNodesTable(graphulo.getConnector());
+        visited = new VisitedNodesList();
+        toVisit = new VisitQueueImpl();
     }
 
     /**
      * Finds all connected components and saves them in new tables
+     * Tables for the components have the _cc suffix with a number
      *
-     * @param table    for which to find components
+     * @param table for which to find components
+     * @param degTable degree table for the table
      */
     public void splitConnectedComponents(String table, String degTable) {
+        // prepare the class to run the algorithm
         visited.clear();
         toVisit.clear();
         this.table = table;
         this.degTable = degTable;
         this.ccNumber = 0L;
-        Iterator<Map.Entry<Key, Value>> it = scanTable(graphulo.getConnector());
-        it.forEachRemaining(this::visitEntry);
+
+        // Iterate over the whole table once, to ensure every node is visited
+        BatchScanner bs;
+        try {
+            bs = graphulo.getConnector().createBatchScanner(table, Authorizations.EMPTY, 25);
+            bs.setRanges(Collections.singleton(new Range()));
+        } catch (TableNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (Map.Entry<Key, Value> entry : bs) {
+            visitEntry(entry);
+        }
+        bs.close();
     }
 
     private void visitEntry(Map.Entry<Key, Value> entry) {
         String node = entry.getKey().getRow().toString();
-        if (visited.contains(node)) return;
-        System.out.println("Found connected component number " + ccNumber++);
-        while (node != null && (!visited.contains(node) || !toVisit.isEmpty())) {
-            visited.add(node);
-            toVisit.addAll(this.getUnvisitedNeighbours(node));
-            this.copyAllEntriesForNode(node);
+        if (visited.hasVisited(node)) return;
+        System.out.println("Found connected component number " + ++ccNumber);
+        while (node != null) {
+            //@todo vielleicht beide VisitedNodes klassen kombiniert einsetzen, um nicht jeden Knoten einzeln in accumulo zu schreiben?
+            if (!visited.hasVisited(node)) {
+                visited.visitNode(node);
+                toVisit.addAll(this.getUnvisitedNeighbours(node));
+                this.copyAllEntriesForNode(node);
+            }
             node = toVisit.poll();
         }
     }
@@ -61,16 +81,15 @@ public class ConnectedComponents {
      * @param node
      */
     private void copyAllEntriesForNode(String node) {
-//        Iterator<Map.Entry<Key, Value>> entriesForNode = scanTable(graphulo.getConnector(), new Range(node));
-//        entriesForNode.forEachRemaining(System.out::println);
         BatchScanner bs;
         try {
             bs = graphulo.getConnector().createBatchScanner(table, Authorizations.EMPTY, 50);
+            bs.setRanges(Collections.singleton(new Range(node))); //just check entries for the given node
         } catch (TableNotFoundException e) {
             throw new RuntimeException(e);
         }
-        bs.setRanges(Collections.singleton(new Range(node)));
 
+        //create table for the current cc
         String currentComponentTable = table + COMPONENT_SUFFIX + ccNumber;
         TableOperations operations = graphulo.getConnector().tableOperations();
         try {
@@ -81,6 +100,7 @@ public class ConnectedComponents {
             throw new RuntimeException(e);
         }
 
+        //add a RemoteWriteIterator to the scanner to copy all entries
         DynamicIteratorSetting dis = new DynamicIteratorSetting(15, "copyAllEntriesForNode");
         dis.append(new IteratorSetting(1, RemoteWriteIterator.class,
                 graphulo.basicRemoteOpts("", currentComponentTable, null, null)));
@@ -98,28 +118,7 @@ public class ConnectedComponents {
 
     private Collection<String> getUnvisitedNeighbours(String v0) {
         Collection<String> neighbours = this.getNeighbours(v0);
-        neighbours.removeAll(visited);
-        return neighbours;
-    }
-
-    /**
-     * Scan the table for all entries
-     * @param conn
-     * @return
-     */
-    private Iterator<Map.Entry<Key, Value>> scanTable(Connector conn, Range range) {
-        BatchScanner bs;
-        try {
-            bs = conn.createBatchScanner(table, new Authorizations(), 50);
-            bs.setRanges(Collections.singleton(range));
-        } catch (TableNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return bs.iterator();
-    }
-
-    private Iterator<Map.Entry<Key, Value>> scanTable(Connector conn) {
-        return scanTable(conn, new Range());
+        return visited.getUnvisitedNodes(neighbours);
     }
 
     /**
