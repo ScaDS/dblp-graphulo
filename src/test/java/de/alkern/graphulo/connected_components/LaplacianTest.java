@@ -23,7 +23,7 @@ public class LaplacianTest {
     public void calculateLaplacian() throws Exception {
         Laplacian lap = new Laplacian(graphulo);
         lap.calculateLaplacian("test", "test_deg", "test_lap");
-        assertEquals(13, TestUtils.countEntries("test_lap"));
+        assertEquals(13, graphulo.countEntries("test_lap"));
         DebugUtil.printTable("test_lap", graphulo.getConnector(), "test_lap");
     }
 

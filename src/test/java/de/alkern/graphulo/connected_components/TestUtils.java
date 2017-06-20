@@ -56,15 +56,4 @@ public class TestUtils {
         }
     }
 
-    public static long countEntries(String table) throws TableNotFoundException {
-        BatchScanner scanner = graphulo.getConnector().createBatchScanner(table, Authorizations.EMPTY, 5);
-        scanner.setRanges(Collections.singleton(new Range()));
-        scanner.addScanIterator(new IteratorSetting(1, CountAllIterator.class));
-        long cnt = 0;
-        for (Map.Entry<Key, Value> entry : scanner) {
-            cnt += LongCombiner.STRING_ENCODER.decode(entry.getValue().get());
-        }
-        scanner.close();
-        return cnt;
-    }
 }

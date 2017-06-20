@@ -52,9 +52,9 @@ public class ConnectedComponentsTest {
         assertTrue(operations.exists("test_cc2"));
         assertFalse(operations.exists("test_cc3"));
 
-        assertEquals(6, TestUtils.countEntries("test_cc1"));
-        assertEquals(2, TestUtils.countEntries("test_cc2"));
-        assertEquals(TestUtils.countEntries("test"), TestUtils.countEntries("test_cc1") + TestUtils.countEntries("test_cc2"));
+        assertEquals(6, graphulo.countEntries("test_cc1"));
+        assertEquals(2, graphulo.countEntries("test_cc2"));
+        assertEquals(graphulo.countEntries("test"), graphulo.countEntries("test_cc1") + graphulo.countEntries("test_cc2"));
 
         //clean up
 //        operations.delete("test");
@@ -75,9 +75,10 @@ public class ConnectedComponentsTest {
         assertTrue(operations.exists("l_cc2"));
         assertFalse(operations.exists("l_cc3"));
 
-        assertEquals(10, TestUtils.countEntries("l_cc1"));
-        assertEquals(6, TestUtils.countEntries("l_cc2"));
-        assertEquals(TestUtils.countEntries("l"), TestUtils.countEntries("l_cc1") + TestUtils.countEntries("l_cc2"));
+        assertEquals(12, graphulo.countEntries("l_cc1"));
+        assertEquals(6, graphulo.countEntries("l_cc2"));
+        assertEquals(graphulo.countEntries("l"),
+                graphulo.countEntries("l_cc1") + graphulo.countEntries("l_cc2"));
 
         //clean up
 //        operations.delete("test");
