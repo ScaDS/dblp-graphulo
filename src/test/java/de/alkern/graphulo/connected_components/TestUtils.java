@@ -95,4 +95,42 @@ public class TestUtils {
         bw.close();
     }
 
+    public static void createWeakExampleMatrix(String table) throws TableExistsException, AccumuloSecurityException, AccumuloException, TableNotFoundException {
+        if (tops.exists(table)) {
+            return;
+        }
+        tops.create(table);
+
+        BatchWriterConfig config = new BatchWriterConfig();
+        config.setMaxMemory(10000L);
+        BatchWriter bw = conn.createBatchWriter(table, config);
+
+        List<String> entries = new LinkedList<>();
+        entries.add("ROW1:ROW2");
+        entries.add("ROW2:ROW3");
+        entries.add("ROW2:ROW5");
+        entries.add("ROW2:ROW6");
+        entries.add("ROW3:ROW4");
+        entries.add("ROW3:ROW7");
+        entries.add("ROW4:ROW3");
+        entries.add("ROW4:ROW8");
+        entries.add("ROW5:ROW1");
+        entries.add("ROW5:ROW6");
+        entries.add("ROW6:ROW7");
+        entries.add("ROW7:ROW6");
+        entries.add("ROW7:ROW8");
+        entries.add("ROW8:ROW8");
+        entries.add("ROW9:ROW10");
+
+        for (String entry : entries) {
+            byte[] row = entry.split(":")[0].getBytes();
+            byte[] column = entry.split(":")[1].getBytes();
+            Mutation m = new Mutation(row);
+            m.put("".getBytes(), column, "1".getBytes());
+            bw.addMutation(m);
+        }
+        bw.flush();
+        bw.close();
+    }
+
 }
