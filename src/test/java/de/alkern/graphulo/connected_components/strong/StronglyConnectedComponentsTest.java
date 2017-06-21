@@ -1,6 +1,7 @@
 package de.alkern.graphulo.connected_components.strong;
 
 import de.alkern.graphulo.GraphuloConnector;
+import de.alkern.graphulo.connected_components.TestUtils;
 import de.alkern.infrastructure.connector.AccumuloConnector;
 import edu.mit.ll.graphulo.Graphulo;
 import edu.mit.ll.graphulo.util.DebugUtil;
@@ -24,42 +25,7 @@ public class StronglyConnectedComponentsTest {
 
     @BeforeClass
     public static void init() throws AccumuloSecurityException, AccumuloException, TableNotFoundException, TableExistsException {
-        conn = AccumuloConnector.local();
-        tops = conn.tableOperations();
-        if (tops.exists(STRONG_EXAMPLE)) {
-            return;
-        }
-        tops.create(STRONG_EXAMPLE);
-
-        BatchWriterConfig config = new BatchWriterConfig();
-        config.setMaxMemory(10000L);
-        BatchWriter bw = conn.createBatchWriter(STRONG_EXAMPLE, config);
-
-        List<String> entries = new LinkedList<>();
-        entries.add("ROW1:ROW2");
-        entries.add("ROW2:ROW3");
-        entries.add("ROW2:ROW5");
-        entries.add("ROW2:ROW6");
-        entries.add("ROW3:ROW4");
-        entries.add("ROW3:ROW7");
-        entries.add("ROW4:ROW3");
-        entries.add("ROW4:ROW8");
-        entries.add("ROW5:ROW1");
-        entries.add("ROW5:ROW6");
-        entries.add("ROW6:ROW7");
-        entries.add("ROW7:ROW6");
-        entries.add("ROW7:ROW8");
-        entries.add("ROW8:ROW8");
-
-        for (String entry : entries) {
-            byte[] row = entry.split(":")[0].getBytes();
-            byte[] column = entry.split(":")[1].getBytes();
-            Mutation m = new Mutation(row);
-            m.put("".getBytes(), column, "1".getBytes());
-            bw.addMutation(m);
-        }
-        bw.flush();
-        bw.close();
+        TestUtils.createExampleMatrix(STRONG_EXAMPLE);
         DebugUtil.printTable(STRONG_EXAMPLE, conn, STRONG_EXAMPLE, 5);
     }
 
