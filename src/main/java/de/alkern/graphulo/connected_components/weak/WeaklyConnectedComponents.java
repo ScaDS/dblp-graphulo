@@ -1,5 +1,6 @@
 package de.alkern.graphulo.connected_components.weak;
 
+import de.alkern.graphulo.connected_components.data.VisitedNodes;
 import edu.mit.ll.graphulo.Graphulo;
 import edu.mit.ll.graphulo.skvi.RemoteWriteIterator;
 import edu.mit.ll.graphulo.util.GraphuloUtil;
@@ -10,7 +11,7 @@ import org.apache.accumulo.core.data.Range;
 import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.Authorizations;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.SortedSet;
 
@@ -22,20 +23,21 @@ public class WeaklyConnectedComponents {
     private Connector conn;
     private TableOperations tops;
     private String table;
-    private Map<String, String> components;
-    private String alreadyVisited;
+    private Components components;
+    private VisitedNodes alreadyVisited;
 
-    public WeaklyConnectedComponents(Graphulo g) {
+    public WeaklyConnectedComponents(Graphulo g, VisitedNodes visited) {
         this.g = g;
         this.conn = g.getConnector();
         this.tops = conn.tableOperations();
-        this.components = new HashMap<>();
+        this.components = new Components();
+        this.alreadyVisited = visited;
     }
 
     public void calculateConnectedComponents(String table) throws TableNotFoundException, TableExistsException, AccumuloSecurityException, AccumuloException {
         this.table = table;
         this.components.clear();
-        this.alreadyVisited = "";
+        this.alreadyVisited.clear();
         Scanner scanner = conn.createScanner(table, Authorizations.EMPTY);
         scanner.setRange(new Range());
         scanner.iterator().forEachRemaining(this::visit);
@@ -44,8 +46,8 @@ public class WeaklyConnectedComponents {
     }
 
     private void visit(Map.Entry<Key, Value> entry) {
-        String row = entry.getKey().getRow().toString() + ";";
-        if (alreadyVisited.contains(row)) {
+        String row = entry.getKey().getRow().toString();
+        if (alreadyVisited.hasVisited(row)) {
             return;
         }
         int counter = 1;
@@ -53,13 +55,14 @@ public class WeaklyConnectedComponents {
         String newNeighbours = "";
         do {
             oldNeighbours = newNeighbours;
-            newNeighbours = g.AdjBFS(table, row, counter++, null, null, null,
+            newNeighbours = g.AdjBFS(table, row + ";", counter++, null, null, null,
                     4, null, null, false, 0,
                     Integer.MAX_VALUE, null, null, null, true,
                     null);
         } while (!oldNeighbours.equals(newNeighbours));
-        alreadyVisited = alreadyVisited + row + newNeighbours;
-        components.put(row.replace(";", ""), newNeighbours);
+        alreadyVisited.visitNode(row);
+        Arrays.stream(newNeighbours.split(";")).forEach(alreadyVisited::visitNode);
+        components.put(row, newNeighbours);
     }
 
     private void copyComponents() throws TableNotFoundException, TableExistsException, AccumuloSecurityException, AccumuloException {

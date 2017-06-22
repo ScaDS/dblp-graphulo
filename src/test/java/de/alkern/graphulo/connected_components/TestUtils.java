@@ -59,15 +59,6 @@ public class TestUtils {
     }
 
     public static void createExampleMatrix(String table) throws TableExistsException, AccumuloSecurityException, AccumuloException, TableNotFoundException {
-        if (tops.exists(table)) {
-            return;
-        }
-        tops.create(table);
-
-        BatchWriterConfig config = new BatchWriterConfig();
-        config.setMaxMemory(10000L);
-        BatchWriter bw = conn.createBatchWriter(table, config);
-
         List<String> entries = new LinkedList<>();
         entries.add("ROW1:ROW2");
         entries.add("ROW2:ROW3");
@@ -83,28 +74,10 @@ public class TestUtils {
         entries.add("ROW7:ROW6");
         entries.add("ROW7:ROW8");
         entries.add("ROW8:ROW8");
-
-        for (String entry : entries) {
-            byte[] row = entry.split(":")[0].getBytes();
-            byte[] column = entry.split(":")[1].getBytes();
-            Mutation m = new Mutation(row);
-            m.put("".getBytes(), column, "1".getBytes());
-            bw.addMutation(m);
-        }
-        bw.flush();
-        bw.close();
+        writeTable(table, entries);
     }
 
     public static void createWeakExampleMatrix(String table) throws TableExistsException, AccumuloSecurityException, AccumuloException, TableNotFoundException {
-        if (tops.exists(table)) {
-            return;
-        }
-        tops.create(table);
-
-        BatchWriterConfig config = new BatchWriterConfig();
-        config.setMaxMemory(10000L);
-        BatchWriter bw = conn.createBatchWriter(table, config);
-
         List<String> entries = new LinkedList<>();
         entries.add("ROW1:ROW2");
         entries.add("ROW2:ROW3");
@@ -121,6 +94,25 @@ public class TestUtils {
         entries.add("ROW7:ROW8");
         entries.add("ROW8:ROW8");
         entries.add("ROW9:ROW10");
+        writeTable(table, entries);
+    }
+
+    public static void createDirectedErrorCase(String table) throws AccumuloException, AccumuloSecurityException, TableNotFoundException, TableExistsException {
+        List<String> entries = new LinkedList<>();
+        entries.add("C:B");
+        entries.add("B:A");
+        writeTable(table, entries);
+    }
+
+    private static void writeTable(String table, List<String> entries) throws TableExistsException, AccumuloSecurityException, AccumuloException, TableNotFoundException {
+        if (tops.exists(table)) {
+            return;
+        }
+        tops.create(table);
+
+        BatchWriterConfig config = new BatchWriterConfig();
+        config.setMaxMemory(10000L);
+        BatchWriter bw = conn.createBatchWriter(table, config);
 
         for (String entry : entries) {
             byte[] row = entry.split(":")[0].getBytes();

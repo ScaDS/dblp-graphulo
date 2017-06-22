@@ -1,8 +1,8 @@
 package de.alkern.graphulo.connected_components.data;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * List implementation of {@see VisitedNodes}
@@ -10,19 +10,15 @@ import java.util.List;
  */
 public class VisitedNodesList implements VisitedNodes {
 
-    private List<String> visited;
+    private Set<String> visited;
 
     public VisitedNodesList() {
-        visited = new ArrayList<>();
+        visited = new HashSet<>();
     }
 
     @Override
     public void visitNode(String node) {
-        if (!visited.contains(node)) {
-            visited.add(node);
-            return;
-        }
-        throw new RuntimeException("Node " + node + " could not be added because it was already visited!");
+        visited.add(node);
     }
 
     @Override
