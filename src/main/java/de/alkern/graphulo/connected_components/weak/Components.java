@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 /**
  * Data structure to hold the single connected components and identify subparts.
- * For the graph c -> b -> a the algorithm would give three components (a, ba and cba).
+ * For the graph c -> b -> a the algorithm would give three components (a, ba and cba). This class only saves
  */
 public class Components {
 
@@ -21,11 +21,18 @@ public class Components {
         this.components = new HashMap<>();
     }
 
+    /**
+     * Add a new component to the collection.
+     * If a smaller version of the component is already in it, it will be overwritten by the bigger one.
+     * @param key
+     * @param value
+     */
     public void put(String key, String value) {
         List<String> parts = GraphuloUtil.d4mRowToTexts(value).stream().map(Text::toString).collect(Collectors.toList());
         for (String part : parts) {
             if (this.components.keySet().contains(part)) {
-                return;
+                this.components.remove(part);
+                break;
             }
         }
         this.components.put(key, value);
@@ -37,5 +44,9 @@ public class Components {
 
     public Set<Map.Entry<String, String>> entrySet() {
         return this.components.entrySet();
+    }
+
+    public long size() {
+        return this.components.size();
     }
 }
