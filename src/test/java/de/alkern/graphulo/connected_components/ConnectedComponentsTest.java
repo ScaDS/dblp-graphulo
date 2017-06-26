@@ -2,6 +2,8 @@ package de.alkern.graphulo.connected_components;
 
 import org.apache.accumulo.core.client.AccumuloException;
 import org.apache.accumulo.core.client.AccumuloSecurityException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Collection;
@@ -10,13 +12,22 @@ import static org.junit.Assert.*;
 
 public class ConnectedComponentsTest {
 
+    @BeforeClass
+    public static void init() {
+        TestUtils.fillDatabase();
+    }
+
+    @AfterClass
+    public static void cleanup() {
+        TestUtils.clearDatabase();
+        TestUtils.deleteTable("test_cc1");
+        TestUtils.deleteTable("test_cc2");
+        TestUtils.deleteTable("l_cc1");
+        TestUtils.deleteTable("l_cc2");
+    }
+
     @Test
     public void shortExample() throws Exception {
-        //prepare if previous run failed
-        if (TestUtils.tops.exists("test_cc1")) TestUtils.tops.delete("test_cc1");
-        if (TestUtils.tops.exists("test_cc2")) TestUtils.tops.delete("test_cc2");
-
-        //splitConnectedComponents connected components
         new ConnectedComponents(TestUtils.graphulo).splitConnectedComponents( "test", "test_deg");
         assertTrue(TestUtils.tops.exists("test_cc1"));
         assertTrue(TestUtils.tops.exists("test_cc2"));
@@ -25,36 +36,20 @@ public class ConnectedComponentsTest {
         assertEquals(6, TestUtils.graphulo.countEntries("test_cc1"));
         assertEquals(2, TestUtils.graphulo.countEntries("test_cc2"));
         assertEquals(TestUtils.graphulo.countEntries("test"), TestUtils.graphulo.countEntries("test_cc1") + TestUtils.graphulo.countEntries("test_cc2"));
-
-        //clean up
-//        TestUtils.tops.delete("test");
-//        TestUtils.tops.delete("test_deg");
-        TestUtils.tops.delete("test_cc1");
-        TestUtils.tops.delete("test_cc2");
     }
 
     @Test
     public void longerExample() throws Exception {
-        //prepare if previous run failed
-        if (TestUtils.tops.exists("l_cc1")) TestUtils.tops.delete("l_cc1");
-        if (TestUtils.tops.exists("l_cc2")) TestUtils.tops.delete("l_cc2");
-
         //splitConnectedComponents connected components
         new ConnectedComponents(TestUtils.graphulo).splitConnectedComponents( "l", "l_deg");
         assertTrue(TestUtils.tops.exists("l_cc1"));
         assertTrue(TestUtils.tops.exists("l_cc2"));
         assertFalse(TestUtils.tops.exists("l_cc3"));
 
-        assertEquals(12, TestUtils.graphulo.countEntries("l_cc1"));
+        assertEquals(10, TestUtils.graphulo.countEntries("l_cc1"));
         assertEquals(6, TestUtils.graphulo.countEntries("l_cc2"));
         assertEquals(TestUtils.graphulo.countEntries("l"),
                 TestUtils.graphulo.countEntries("l_cc1") + TestUtils.graphulo.countEntries("l_cc2"));
-
-        //clean up
-//        TestUtils.tops.delete("test");
-//        TestUtils.tops.delete("test_deg");
-        TestUtils.tops.delete("l_cc1");
-        TestUtils.tops.delete("l_cc2");
     }
 
     @Test

@@ -1,9 +1,6 @@
 package de.alkern.graphulo.connected_components;
 
-import org.apache.accumulo.core.client.AccumuloException;
-import org.apache.accumulo.core.client.AccumuloSecurityException;
-import org.apache.accumulo.core.client.TableExistsException;
-import org.apache.accumulo.core.client.TableNotFoundException;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -17,8 +14,13 @@ public class BFSTest {
     private static final String TABLE = "BFSTEST";
 
     @BeforeClass
-    public static void init() throws AccumuloException, AccumuloSecurityException, TableNotFoundException, TableExistsException {
+    public static void init() {
         TestUtils.createExampleMatrix(TABLE);
+    }
+
+    @AfterClass
+    public static void cleanup() {
+        TestUtils.deleteTable(TABLE);
     }
 
     @Test

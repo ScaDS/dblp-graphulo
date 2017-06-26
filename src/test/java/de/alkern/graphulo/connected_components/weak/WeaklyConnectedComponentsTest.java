@@ -1,11 +1,13 @@
-package de.alkern.graphulo.connected_components;
+package de.alkern.graphulo.connected_components.weak;
 
+import de.alkern.graphulo.connected_components.TestUtils;
 import de.alkern.graphulo.connected_components.data.VisitedNodesList;
 import de.alkern.graphulo.connected_components.weak.WeaklyConnectedComponents;
 import org.apache.accumulo.core.client.AccumuloException;
 import org.apache.accumulo.core.client.AccumuloSecurityException;
 import org.apache.accumulo.core.client.TableExistsException;
 import org.apache.accumulo.core.client.TableNotFoundException;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -21,16 +23,20 @@ public class WeaklyConnectedComponentsTest {
     private static WeaklyConnectedComponents wcc;
 
     @BeforeClass
-    public static void init() throws AccumuloException, AccumuloSecurityException, TableNotFoundException, TableExistsException {
-        try {
-            TestUtils.tops.delete("WEAK_cc1");
-            TestUtils.tops.delete("WEAK_cc2");
-            TestUtils.tops.delete("ERROR_cc1");
-            TestUtils.tops.delete("ERROR_cc2");
-        } catch (TableNotFoundException e) {}
+    public static void init() {
         TestUtils.createWeakExampleMatrix(TABLE);
         TestUtils.createDirectedErrorCase(ERROR_CASE);
         wcc = new WeaklyConnectedComponents(TestUtils.graphulo, new VisitedNodesList());
+    }
+
+    @AfterClass
+    public static void cleanup() {
+        TestUtils.deleteTable(TABLE);
+        TestUtils.deleteTable(ERROR_CASE);
+        TestUtils.deleteTable("WEAK_cc1");
+        TestUtils.deleteTable("WEAK_cc2");
+        TestUtils.deleteTable("ERROR_cc1");
+        TestUtils.deleteTable("ERROR_cc2");
     }
 
     @Test
