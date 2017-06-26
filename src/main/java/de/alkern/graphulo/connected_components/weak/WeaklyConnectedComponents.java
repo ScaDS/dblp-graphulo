@@ -15,6 +15,12 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.SortedSet;
 
+/**
+ * Algorithm to get all weakly connected components from an adjacency matrix.
+ * Weakly connected components are all nodes which have some kind of connection in between.
+ * If the graph is undirected it is also a strongly connected component.
+ * Every connected component is saved in a table named original table + _cc + number
+ */
 public class WeaklyConnectedComponents {
 
     private final static String SUFFIX = "_cc";
@@ -35,22 +41,32 @@ public class WeaklyConnectedComponents {
     }
 
     public void calculateConnectedComponents(String table) throws TableNotFoundException, TableExistsException, AccumuloSecurityException, AccumuloException {
+        //reset class variables for this run
         this.table = table;
         this.components.clear();
         this.alreadyVisited.clear();
         Scanner scanner = conn.createScanner(table, Authorizations.EMPTY);
         scanner.setRange(new Range());
-        scanner.iterator().forEachRemaining(this::visit);
+        //iterate over every row in the table
+        RowIterator rowIterator = new RowIterator(scanner);
+        while (rowIterator.hasNext()) {
+            visit(rowIterator.next().next());  //visit each row exactly once
+        }
         scanner.close();
         copyComponents();
     }
 
+    /**
+     * Visit an entry in the table and calculate the whole component that belongs to this
+     * @param entry
+     */
     private void visit(Map.Entry<Key, Value> entry) {
         String row = entry.getKey().getRow().toString();
         if (alreadyVisited.hasVisited(row)) {
             return;
         }
         int counter = 1;
+        //increment number of steps until all neighbours are found and the neighbourhood string does not change anymore
         String oldNeighbours;
         String newNeighbours = "";
         do {
@@ -60,11 +76,15 @@ public class WeaklyConnectedComponents {
                     Integer.MAX_VALUE, null, null, null, true,
                     null);
         } while (!oldNeighbours.equals(newNeighbours));
+        //add all nodes in neighbourhood to alreadyVisited
         alreadyVisited.visitNode(row);
         Arrays.stream(newNeighbours.split(";")).forEach(alreadyVisited::visitNode);
         components.put(row, newNeighbours);
     }
 
+    /**
+     * copy the calculated components in new tables
+     */
     private void copyComponents() throws TableNotFoundException, TableExistsException, AccumuloSecurityException, AccumuloException {
         int componentNumber = 1;
         for (Map.Entry<String, String> entry: components.entrySet()) {
@@ -78,7 +98,7 @@ public class WeaklyConnectedComponents {
                     g.basicRemoteOpts("", ccName, null, null)));
             tops.create(ccName);
             for (Map.Entry<Key, Value> k : bs) {
-
+                //visit every node and copy it -> could be used for something useful, e.g. get component size
             }
             bs.close();
         }
