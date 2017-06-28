@@ -1,5 +1,6 @@
 package de.alkern.graphulo.connected_components.weak;
 
+import de.alkern.graphulo.connected_components.ConnectedComponentsUtils;
 import de.alkern.graphulo.connected_components.data.VisitedNodes;
 import edu.mit.ll.graphulo.Graphulo;
 import edu.mit.ll.graphulo.skvi.RemoteWriteIterator;
@@ -65,17 +66,7 @@ public class WeaklyConnectedComponents {
         if (alreadyVisited.hasVisited(row)) {
             return;
         }
-        int counter = 1;
-        //increment number of steps until all neighbours are found and the neighbourhood string does not change anymore
-        String oldNeighbours;
-        String newNeighbours = "";
-        do {
-            oldNeighbours = newNeighbours;
-            newNeighbours = g.AdjBFS(table, row + ";", counter++, null, null, null,
-                    4, null, null, false, 0,
-                    Integer.MAX_VALUE, null, null, null, true,
-                    null);
-        } while (!oldNeighbours.equals(newNeighbours));
+        String newNeighbours = ConnectedComponentsUtils.getAllNeighbours(g, table, row);
         //add all nodes in neighbourhood to alreadyVisited
         alreadyVisited.visitNode(row);
         Arrays.stream(newNeighbours.split(";")).forEach(alreadyVisited::visitNode);
