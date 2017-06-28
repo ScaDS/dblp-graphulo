@@ -1,10 +1,6 @@
 package de.alkern.graphulo.connected_components.strong;
 
 import de.alkern.graphulo.connected_components.TestUtils;
-import edu.mit.ll.graphulo.util.DebugUtil;
-import org.apache.accumulo.core.client.AccumuloException;
-import org.apache.accumulo.core.client.AccumuloSecurityException;
-import org.apache.accumulo.core.client.TableExistsException;
 import org.apache.accumulo.core.client.TableNotFoundException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -27,6 +23,7 @@ public class StronglyConnectedComponentsTest {
         TestUtils.deleteTable(STRONG_EXAMPLE);
         TestUtils.deleteTable(STRONG_EXAMPLE + "_c");
         TestUtils.deleteTable(STRONG_EXAMPLE + "_ct");
+        TestUtils.deleteTable(STRONG_EXAMPLE + "_res");
         TestUtils.deleteTable(STRONG_EXAMPLE + "_cc1");
         TestUtils.deleteTable(STRONG_EXAMPLE + "_cc2");
         TestUtils.deleteTable(STRONG_EXAMPLE + "_cc3");
@@ -37,8 +34,6 @@ public class StronglyConnectedComponentsTest {
     public void testStronglyConnectedComponents() throws TableNotFoundException {
         StronglyConnectedComponents scc = new StronglyConnectedComponents(TestUtils.graphulo);
         scc.calculateStronglyConnectedComponents(STRONG_EXAMPLE);
-        DebugUtil.printTable("C-Table", TestUtils.conn, STRONG_EXAMPLE + "_c");
-        DebugUtil.printTable("CT-Table", TestUtils.conn, STRONG_EXAMPLE + "_ct");
         assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc1"));
         assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc2"));
         assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc3"));

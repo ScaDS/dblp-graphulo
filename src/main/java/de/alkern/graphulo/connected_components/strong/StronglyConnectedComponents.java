@@ -2,7 +2,6 @@ package de.alkern.graphulo.connected_components.strong;
 
 import de.alkern.graphulo.connected_components.ConnectedComponentsUtils;
 import edu.mit.ll.graphulo.Graphulo;
-import edu.mit.ll.graphulo.util.DebugUtil;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.client.admin.TableOperations;
 import org.apache.accumulo.core.data.Key;
@@ -43,6 +42,7 @@ public class StronglyConnectedComponents {
         scanner.close();
 
         buildCTables();
+        andOnCTables();
     }
 
     private void visit(Map.Entry<Key, Value> entry) {
@@ -84,5 +84,15 @@ public class StronglyConnectedComponents {
         } catch (MutationsRejectedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void andOnCTables() {
+        String cTable = table + "_c";
+        String ctTable = table + "_ct";
+        String resultTable = table + "_res";
+        g.SpEWiseX(cTable, ctTable, resultTable, null, 5, LogicalAndOp.class,
+                null, null, null, null, null, null,
+                null, null, null, null, -1,
+                Authorizations.EMPTY, Authorizations.EMPTY);
     }
 }
