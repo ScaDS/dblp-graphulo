@@ -1,7 +1,13 @@
 package de.alkern.graphulo.connected_components.strong;
 
 import de.alkern.graphulo.connected_components.ConnectedComponentsUtils;
+import de.alkern.graphulo.connected_components.data.VisitedNodes;
+import de.alkern.graphulo.connected_components.data.VisitedNodesList;
+import edu.mit.ll.graphulo.DynamicIteratorSetting;
 import edu.mit.ll.graphulo.Graphulo;
+import edu.mit.ll.graphulo.skvi.D4mRangeFilter;
+import edu.mit.ll.graphulo.skvi.RemoteWriteIterator;
+import edu.mit.ll.graphulo.util.GraphuloUtil;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.client.admin.TableOperations;
 import org.apache.accumulo.core.data.Key;
@@ -11,7 +17,9 @@ import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.Authorizations;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.SortedSet;
 
 /**
  * Calculator for strongly connected components
@@ -24,17 +32,23 @@ public class StronglyConnectedComponents {
     private final Graphulo g;
     private final TableOperations tops;
     private String table;
-    private Map<String, String> reachableNodes;
+    private final Map<String, String> reachableNodes;
+    private final VisitedNodes visited;
+    private int counter;
 
     public StronglyConnectedComponents(Graphulo graphulo) {
         g = graphulo;
         tops = g.getConnector().tableOperations();
         reachableNodes = new HashMap<>();
+        visited = new VisitedNodesList();
     }
 
     public void calculateStronglyConnectedComponents(String table) throws TableNotFoundException {
+        //TODO add flag to simplify for directed graphs -> no transpose and ewise needed
         this.reachableNodes.clear();
         this.table = table;
+        this.visited.clear();
+        this.counter = 1;
 
         Scanner scanner = g.getConnector().createScanner(table, Authorizations.EMPTY);
         scanner.setRange(new Range());
@@ -43,6 +57,7 @@ public class StronglyConnectedComponents {
 
         buildCTables();
         andOnCTables();
+        extractComponents();
     }
 
     private void visit(Map.Entry<Key, Value> entry) {
@@ -51,6 +66,10 @@ public class StronglyConnectedComponents {
         this.reachableNodes.put(row, reachable);
     }
 
+    /**
+     * Build the c-Table and its transposed version
+     * The c table shows every node that is reachable from the row-node
+     */
     private void buildCTables() {
         try {
             tops.create(table + "_c");
@@ -68,6 +87,8 @@ public class StronglyConnectedComponents {
             }
             cWriter.flush();
             ctWriter.flush();
+            cWriter.close();
+            ctWriter.close();
         } catch (Exception e) {
             throw new RuntimeException("Error while building cTables", e);
         }
@@ -86,6 +107,11 @@ public class StronglyConnectedComponents {
         }
     }
 
+    /**
+     * Logical and on the c- and cT-Table
+     * Result shows strongly connected components
+     * Result is saved in table with _res-postfix
+     */
     private void andOnCTables() {
         String cTable = table + "_c";
         String ctTable = table + "_ct";
@@ -94,5 +120,60 @@ public class StronglyConnectedComponents {
                 null, null, null, null, null, null,
                 null, null, null, null, -1,
                 Authorizations.EMPTY, Authorizations.EMPTY);
+    }
+
+    private void extractComponents() {
+        try {
+            Scanner scanner = g.getConnector().createScanner(table + "_res", Authorizations.EMPTY);
+            scanner.setRange(new Range());
+            RowIterator rowIterator = new RowIterator(scanner);
+            rowIterator.forEachRemaining(this::extractRow);
+        } catch (Exception e) {
+            throw new RuntimeException("Error while extracting components", e);
+        }
+    }
+
+    /**
+     * Extract and copy a single strongly connected component
+     * This method also checks if a component was already copied and returns in this case
+     * @param entryIterator
+     */
+    private void extractRow(Iterator<Map.Entry<Key, Value>> entryIterator) {
+        try {
+            //concatenate all nodes belonging to a component as dm4-string
+            String row = "";
+            StringBuilder range = new StringBuilder();
+            while (entryIterator.hasNext()) {
+                Map.Entry<Key, Value> entry = entryIterator.next();
+                row = entry.getKey().getRow().toString();
+                String column = entry.getKey().getColumnQualifier().toString();
+                if (visited.hasVisited(column)) {
+                    return;
+                }
+                range.append(column);
+                range.append(";");
+            }
+            visited.visitNode(row);
+
+            //create the component table and copy all relevant entries
+            String componentTable = table + "_cc" + counter++;
+            tops.create(componentTable);
+            BatchScanner bs = g.getConnector().createBatchScanner(table, Authorizations.EMPTY, 50);
+            SortedSet<Range> rangeSet = GraphuloUtil.d4mRowToRanges(range.toString());
+            bs.setRanges(rangeSet);
+
+            //filter entries that lead to rows which are not in the component
+            DynamicIteratorSetting dis = new DynamicIteratorSetting(5, "");
+            dis.append(D4mRangeFilter.iteratorSetting(6, D4mRangeFilter.KeyPart.COLQ, range.toString()));
+            dis.append(new IteratorSetting(10, "RMW " + componentTable, RemoteWriteIterator.class,
+                    g.basicRemoteOpts("", componentTable, "", Authorizations.EMPTY)));
+            dis.addToScanner(bs);
+            for (Map.Entry<Key, Value> entry : bs) {
+
+            }
+            bs.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

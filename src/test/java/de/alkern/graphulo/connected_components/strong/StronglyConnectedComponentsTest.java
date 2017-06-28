@@ -6,6 +6,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -35,9 +36,13 @@ public class StronglyConnectedComponentsTest {
         StronglyConnectedComponents scc = new StronglyConnectedComponents(TestUtils.graphulo);
         scc.calculateStronglyConnectedComponents(STRONG_EXAMPLE);
         assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc1"));
+        assertEquals(3, TestUtils.graphulo.countEntries(STRONG_EXAMPLE + "_cc1"));
         assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc2"));
+        assertEquals(2, TestUtils.graphulo.countEntries(STRONG_EXAMPLE + "_cc2"));
         assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc3"));
+        assertEquals(2, TestUtils.graphulo.countEntries(STRONG_EXAMPLE + "_cc3"));
         assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc4"));
+        assertEquals(1, TestUtils.graphulo.countEntries(STRONG_EXAMPLE + "_cc4"));
         assertFalse(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc5"));
     }
 }
