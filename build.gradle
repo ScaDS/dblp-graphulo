@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.dblp', name: 'dblp-parser', version: '0.1.1'
+    compile group: 'org.dblp', name: 'dblp-parser', version: '0.2.1'
     compile group: 'org.apache.accumulo', name: 'accumulo-core', version: '1.8.1'
     compile group: 'edu.mit.ll', name: 'graphulo', version: '1.0.0-SNAPSHOT'
 }

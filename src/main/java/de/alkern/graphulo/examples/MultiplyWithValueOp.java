@@ -14,6 +14,7 @@ import org.apache.hadoop.io.Text;
 import java.io.IOException;
 import java.util.*;
 
+//simple test for an implementation
 public class MultiplyWithValueOp implements ApplyOp {
 
     @Override

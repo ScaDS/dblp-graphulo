@@ -28,6 +28,7 @@ public class Components {
      * @param value
      */
     public void put(String key, String value) {
+        //TODO just save and compare first parts
         List<String> parts = GraphuloUtil.d4mRowToTexts(value).stream().map(Text::toString).collect(Collectors.toList());
         for (String part : parts) {
             if (this.components.keySet().contains(part)) {
