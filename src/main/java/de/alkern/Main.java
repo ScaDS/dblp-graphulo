@@ -2,6 +2,8 @@ package de.alkern;
 
 import de.alkern.author.AuthorProcessor;
 import de.alkern.graphulo.GraphuloConnector;
+import de.alkern.graphulo.connected_components.ComponentType;
+import de.alkern.graphulo.connected_components.analysis.HistogramBuilder;
 import de.alkern.infrastructure.ExampleData;
 import de.alkern.infrastructure.GraphuloProcessor;
 import de.alkern.infrastructure.connector.AccumuloConnector;
@@ -16,12 +18,13 @@ public class Main {
     public static void main(String[] args)
             throws AccumuloSecurityException, AccumuloException, TableExistsException, TableNotFoundException {
         Connector conn = AccumuloConnector.local();
-        Repository repo = new RepositoryImpl("authors", conn, new AdjacencyEntry.AdjacencyBuilder());
-        GraphuloProcessor processor = new AuthorProcessor(repo);
-        processor.parse(ExampleData.DBLP);
-        processor.scan().forEach(System.out::println);
+//        Repository repo = new RepositoryImpl("authors", conn, new AdjacencyEntry.AdjacencyBuilder());
+//        GraphuloProcessor processor = new AuthorProcessor(repo);
+//        processor.parse(ExampleData.DBLP);
+//        processor.scan().forEach(System.out::println);
         Graphulo graphulo = GraphuloConnector.local(conn);
 //        graphulo.generateDegreeTable("authors", "authors_deg", true);
         //processor.clear();
+        new HistogramBuilder(graphulo).getChartsAsPNG("authors", ComponentType.WEAK, "test");
     }
 }

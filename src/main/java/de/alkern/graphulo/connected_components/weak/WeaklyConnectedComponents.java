@@ -1,5 +1,6 @@
 package de.alkern.graphulo.connected_components.weak;
 
+import de.alkern.graphulo.connected_components.ComponentType;
 import de.alkern.graphulo.connected_components.ConnectedComponentsUtils;
 import de.alkern.graphulo.connected_components.data.VisitedNodes;
 import edu.mit.ll.graphulo.Graphulo;
@@ -23,8 +24,6 @@ import java.util.SortedSet;
  * Every connected component is saved in a table named original table + _wcc + number
  */
 public class WeaklyConnectedComponents {
-
-    private final static String SUFFIX = "_wcc";
 
     private Graphulo g;
     private Connector conn;
@@ -82,7 +81,7 @@ public class WeaklyConnectedComponents {
             SortedSet<Range> rangeSet = GraphuloUtil.d4mRowToRanges(entry.getValue());
             rangeSet.add(new Range(entry.getKey()));
 
-            String ccName = table + SUFFIX + componentNumber++;
+            String ccName = table + ComponentType.WEAK + componentNumber++;
             BatchScanner bs = conn.createBatchScanner(table, Authorizations.EMPTY, 10);
             bs.setRanges(rangeSet);
             bs.addScanIterator(new IteratorSetting(10, "Writer for " + ccName, RemoteWriteIterator.class,

@@ -1,5 +1,6 @@
 package de.alkern.graphulo.connected_components.strong;
 
+import de.alkern.graphulo.connected_components.ComponentType;
 import de.alkern.graphulo.connected_components.ConnectedComponentsUtils;
 import de.alkern.graphulo.connected_components.data.VisitedNodes;
 import de.alkern.graphulo.connected_components.data.VisitedNodesList;
@@ -157,7 +158,7 @@ public class StronglyConnectedComponents {
             visited.visitNode(row);
 
             //create the component table and copy all relevant entries
-            String componentTable = table + "_scc" + counter++;
+            String componentTable = table + ComponentType.STRONG + counter++;
             tops.create(componentTable);
             BatchScanner bs = g.getConnector().createBatchScanner(table, Authorizations.EMPTY, 50);
             SortedSet<Range> rangeSet = GraphuloUtil.d4mRowToRanges(range.toString());
