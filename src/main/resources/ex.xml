@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE dblp SYSTEM "dblp.dtd">
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE dblp SYSTEM "build/resources/main/dblp.dtd">
 <dblp>
 <www mdate="2005-10-06" key="persons/Ley93">
 <author>Michael Ley</author>
@@ -51,7 +51,7 @@
 <article mdate="2002-01-03" key="persons/Tresch96">
 <author>Markus Tresch</author>
 <title>Principles of Distributed Object Database Languages.</title>
-<journal>technical Report 248, ETH ZÃ¼rich, Dept. of Computer Science</journal>
+<journal>technical Report 248, ETH Zürich, Dept. of Computer Science</journal>
 <month>July</month>
 <year>1996</year>
 </article>
@@ -117,7 +117,7 @@
 <author>Gayane Grigoryan</author>
 <author>Oliver Gronz</author>
 <author>Oliver Gutjahr</author>
-<author>GÃ¼nther Heinemann</author>
+<author>Günther Heinemann</author>
 <author>Rita Ley</author>
 <author>Andreas Rock</author>
 <title>Analysis of projected hydrological behavior of catchments based on signature indices</title>
@@ -153,7 +153,7 @@
 <inproceedings mdate="2002-01-03" key="persons/JohnLM94">
 <author>Werner John</author>
 <author>Dominik Ley</author>
-<author>Joachim MÃ¼ller</author>
+<author>Joachim Müller</author>
 <title>ROSAR - Rule Oriented System for Analysis of Reflections on Printed Circuit Boards</title>
 <pages>40-43</pages>
 <year>1994</year>
@@ -186,7 +186,7 @@
 <title>XXX</title>
 </article>
 <incollection mdate="2011-11-25" key="reference/algo/Makinen08" publtype="encyclopedia entry">
-<author>Veli MÃ¤kinen</author>
+<author>Veli Mäkinen</author>
 <title>Compressed Suffix Array.</title>
 <year>2008</year>
 <booktitle>Encyclopedia of Algorithms</booktitle>
@@ -275,7 +275,7 @@
 <url>db/reference/algo/algo2016.html#Srinivasan16</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/MakinenU16" publtype="encyclopedia entry">
-<author>Veli MÃ¤kinen</author>
+<author>Veli Mäkinen</author>
 <author>Esko Ukkonen</author>
 <title>Point Pattern Matching.</title>
 <pages>1589-1592</pages>
@@ -285,7 +285,7 @@
 <url>db/reference/algo/algo2016.html#MakinenU16</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/Ambuhl16" publtype="encyclopedia entry">
-<author>Christoph AmbÃ¼hl</author>
+<author>Christoph Ambühl</author>
 <title>Minimum Energy Broadcasting in Wireless Geometric Networks.</title>
 <pages>1305-1308</pages>
 <year>2016</year>
@@ -542,7 +542,7 @@
 <url>db/reference/algo/algo2008.html#Niedermeier08</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/Furer08" publtype="encyclopedia entry">
-<author>Martin FÃ¼rer</author>
+<author>Martin Fürer</author>
 <title>Degree-Bounded Trees.</title>
 <year>2008</year>
 <booktitle>Encyclopedia of Algorithms</booktitle>
@@ -551,7 +551,7 @@
 <url>db/reference/algo/algo2008.html#Furer08</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/BjorklundH16" publtype="encyclopedia entry">
-<author>Andreas BjÃ¶rklund</author>
+<author>Andreas Björklund</author>
 <author>Thore Husfeldt</author>
 <title>Exact Graph Coloring Using Inclusion-Exclusion.</title>
 <pages>694-695</pages>
@@ -614,10 +614,10 @@
 <url>db/reference/algo/algo2016.html#Chao16</url>
 </incollection>
 <book mdate="2011-11-25" key="reference/algo/2008t">
-<editor>Berthold VÃ¶cking</editor>
+<editor>Berthold Vöcking</editor>
 <editor>Helmut Alt</editor>
 <editor>Martin Dietzfelbinger</editor>
-<editor>RÃ¼diger Reischuk</editor>
+<editor>Rüdiger Reischuk</editor>
 <editor>Christian Scheideler</editor>
 <editor>Heribert Vollmer</editor>
 <editor>Dorothea Wagner</editor>
@@ -669,7 +669,7 @@
 <url>db/reference/algo/algo2008.html#Kontogiannis08</url>
 </incollection>
 <incollection mdate="2012-04-24" key="reference/algo/Hopfner08">
-<author>Hagen HÃ¶pfner</author>
+<author>Hagen Höpfner</author>
 <title>Topologisches Sortieren - Mit welcher Aufgabe meiner ToDo-Liste fange ich an?</title>
 <pages>43-49</pages>
 <year>2008</year>
@@ -992,7 +992,7 @@
 <url>db/reference/algo/algo2008.html#DemetrescuI08a</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/Sahinalp08" publtype="encyclopedia entry">
-<author>SÃ¼leyman Cenk Sahinalp</author>
+<author>Süleyman Cenk Sahinalp</author>
 <title>Edit Distance Under Block Operations.</title>
 <year>2008</year>
 <booktitle>Encyclopedia of Algorithms</booktitle>
@@ -1405,7 +1405,7 @@
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/KrystaV16" publtype="encyclopedia entry">
 <author>Piotr Krysta</author>
-<author>Berthold VÃ¶cking</author>
+<author>Berthold Vöcking</author>
 <title>Utilitarian Mechanism Design for Single-Minded Agents.</title>
 <pages>2312-2318</pages>
 <year>2016</year>
@@ -1461,7 +1461,7 @@
 <url>db/reference/algo/algo2016.html#Rudra16</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/MakinenN16" publtype="encyclopedia entry">
-<author>Veli MÃ¤kinen</author>
+<author>Veli Mäkinen</author>
 <author>Gonzalo Navarro</author>
 <title>Compressed Text Indexing.</title>
 <pages>394-397</pages>
@@ -2088,7 +2088,7 @@
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/KreveldL16" publtype="encyclopedia entry">
 <author>Marc J. van Kreveld</author>
-<author>Maarten LÃ¶ffler</author>
+<author>Maarten Löffler</author>
 <title>Range Searching.</title>
 <pages>1767-1771</pages>
 <year>2016</year>
@@ -2244,9 +2244,9 @@
 </incollection>
 <incollection mdate="2012-04-24" key="reference/algo/WagnerGM08">
 <author>Dorothea Wagner</author>
-<author>Robert GÃ¶rke</author>
+<author>Robert Görke</author>
 <author>Steffen Mecke</author>
-<title>Maximale FlÃ¼sse - Die ganze Stadt will zum Stadion.</title>
+<title>Maximale Flüsse - Die ganze Stadt will zum Stadion.</title>
 <pages>361-372</pages>
 <year>2008</year>
 <booktitle>Taschenbuch der Algorithmen</booktitle>
@@ -2370,7 +2370,7 @@
 </incollection>
 <incollection mdate="2012-04-24" key="reference/algo/DomHN08">
 <author>Michael Dom</author>
-<author>Falk HÃ¼ffner</author>
+<author>Falk Hüffner</author>
 <author>Rolf Niedermeier</author>
 <title>Tiefensuche (Ariadne und Co.).</title>
 <pages>61-73</pages>
@@ -2611,7 +2611,7 @@
 <url>db/reference/algo/algo2008.html#X08bd</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/Csuros08" publtype="encyclopedia entry">
-<author>MiklXXXs CsÃ¼rÃ¶s</author>
+<author>MiklXXXs Csürös</author>
 <title>Distance-Based Phylogeny Reconstruction (Fast-Converging).</title>
 <year>2008</year>
 <booktitle>Encyclopedia of Algorithms</booktitle>
@@ -2739,7 +2739,7 @@
 <url>db/reference/algo/algo2008.html#X08l</url>
 </incollection>
 <incollection mdate="2012-04-24" key="reference/algo/Blomer08">
-<author>Johannes BlÃ¶mer</author>
+<author>Johannes Blömer</author>
 <title>Teilen von Geheimnissen.</title>
 <pages>171-180</pages>
 <year>2008</year>
@@ -2820,7 +2820,7 @@
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/BelazzouguiMV16" publtype="encyclopedia entry">
 <author>Djamal Belazzougui</author>
-<author>Veli MÃ¤kinen</author>
+<author>Veli Mäkinen</author>
 <author>Daniel Valenzuela</author>
 <title>Compressed Suffix Array.</title>
 <pages>386-390</pages>
@@ -2839,7 +2839,7 @@
 </incollection>
 <incollection mdate="2012-04-24" key="reference/algo/Tantau08">
 <author>Till Tantau</author>
-<title>Der One-Time-Pad-Algorithmus: Der einfachste und sicherste VerschlÃ¼sselungsalgorithmus.</title>
+<title>Der One-Time-Pad-Algorithmus: Der einfachste und sicherste Verschlüsselungsalgorithmus.</title>
 <pages>149-155</pages>
 <year>2008</year>
 <booktitle>Taschenbuch der Algorithmen</booktitle>
@@ -3335,7 +3335,7 @@
 <incollection mdate="2012-04-24" key="reference/algo/SkutellaS08">
 <author>Katharina Skutella</author>
 <author>Martin Skutella</author>
-<title>Minimale aufspannende BÃ¤ume (Wenn das Naheliegende das Beste ist... ).</title>
+<title>Minimale aufspannende Bäume (Wenn das Naheliegende das Beste ist... ).</title>
 <pages>353-360</pages>
 <year>2008</year>
 <booktitle>Taschenbuch der Algorithmen</booktitle>
@@ -3512,9 +3512,9 @@
 <url>db/reference/algo/algo2016.html#FerraginaS16</url>
 </incollection>
 <incollection mdate="2012-04-24" key="reference/algo/ReischukH08">
-<author>RÃ¼diger Reischuk</author>
+<author>Rüdiger Reischuk</author>
 <author>Markus Hinkelmann</author>
-<title>Einweg-Funktionen: Vorsicht Falle - RÃ¼ckweg nur fÃ¼r Eingeweihte!.</title>
+<title>Einweg-Funktionen: Vorsicht Falle - Rückweg nur für Eingeweihte!.</title>
 <pages>139-148</pages>
 <year>2008</year>
 <booktitle>Taschenbuch der Algorithmen</booktitle>
@@ -3875,7 +3875,7 @@
 <url>db/reference/algo/algo2016.html#CaiCL16</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/Sahinalp16" publtype="encyclopedia entry">
-<author>SÃ¼leyman Cenk Sahinalp</author>
+<author>Süleyman Cenk Sahinalp</author>
 <title>Edit Distance Under Block Operations.</title>
 <pages>611-614</pages>
 <year>2016</year>
@@ -3920,7 +3920,7 @@
 <url>db/reference/algo/algo2008.html#Ferragina08</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/KarkkainenU08" publtype="encyclopedia entry">
-<author>Juha KÃ¤rkkÃ¤inen</author>
+<author>Juha Kärkkäinen</author>
 <author>Esko Ukkonen</author>
 <title>Multidimensional String Matching.</title>
 <year>2008</year>
@@ -4179,7 +4179,7 @@
 </incollection>
 <incollection mdate="2012-04-24" key="reference/algo/Kowalk08">
 <author>Wolfgang P. Kowalk</author>
-<title>Sortieren durch EinfÃ¼gen.</title>
+<title>Sortieren durch Einfügen.</title>
 <pages>15-19</pages>
 <year>2008</year>
 <booktitle>Taschenbuch der Algorithmen</booktitle>
@@ -4199,7 +4199,7 @@
 <incollection mdate="2017-01-06" key="reference/algo/SandersS08">
 <author>Peter Sanders 0001</author>
 <author>Johannes Singler</author>
-<title>KÃ¼rzeste Wege.</title>
+<title>Kürzeste Wege.</title>
 <pages>345-352</pages>
 <year>2008</year>
 <booktitle>Taschenbuch der Algorithmen</booktitle>
@@ -4366,7 +4366,7 @@
 <url>db/reference/algo/algo2016.html#Lokshtanov16</url>
 </incollection>
 <incollection mdate="2012-04-24" key="reference/algo/Naher08">
-<author>Stefan NÃ¤her</author>
+<author>Stefan Näher</author>
 <title>Das Travelling Salesman Problem.</title>
 <pages>413-422</pages>
 <year>2008</year>
@@ -4469,7 +4469,7 @@
 <url>db/reference/algo/algo2008.html#FakcharoenpholR08</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/BrandstadtN16" publtype="encyclopedia entry">
-<author>Andreas BrandstÃ¤dt</author>
+<author>Andreas Brandstädt</author>
 <author>Ragnar Nevries</author>
 <title>Efficient Dominating and Edge Dominating Sets for Graphs and Hypergraphs.</title>
 <pages>618-621</pages>
@@ -4722,7 +4722,7 @@
 <url>db/reference/algo/algo2016.html#Dick16</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/BjorklundH08" publtype="encyclopedia entry">
-<author>Andreas BjÃ¶rklund</author>
+<author>Andreas Björklund</author>
 <author>Thore Husfeldt</author>
 <title>Exact Graph Coloring Using Inclusion-Exclusion.</title>
 <year>2008</year>
@@ -5477,7 +5477,7 @@
 </incollection>
 <incollection mdate="2012-04-24" key="reference/algo/BeierV08">
 <author>RenXXX Beier</author>
-<author>Berthold VÃ¶cking</author>
+<author>Berthold Vöcking</author>
 <title>Das Rucksackproblem.</title>
 <pages>405-411</pages>
 <year>2008</year>
@@ -5628,8 +5628,8 @@
 <url>db/reference/algo/algo2008.html#Pruhs08</url>
 </incollection>
 <incollection mdate="2012-04-24" key="reference/algo/Konemann08">
-<author>Jochen KÃ¶nemann</author>
-<title>Gewinnstrategie fÃ¼r ein Streichholzspiel.</title>
+<author>Jochen Könemann</author>
+<title>Gewinnstrategie für ein Streichholzspiel.</title>
 <pages>267-273</pages>
 <year>2008</year>
 <booktitle>Taschenbuch der Algorithmen</booktitle>
@@ -6069,7 +6069,7 @@
 <url>db/reference/algo/algo2016.html#Newman16</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/Rotteler08" publtype="encyclopedia entry">
-<author>Martin RÃ¶tteler</author>
+<author>Martin Rötteler</author>
 <title>Quantum Error Correction.</title>
 <year>2008</year>
 <booktitle>Encyclopedia of Algorithms</booktitle>
@@ -6133,7 +6133,7 @@
 <url>db/reference/algo/algo2016.html#Spirakis16</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/Roglin16" publtype="encyclopedia entry">
-<author>Heiko RÃ¶glin</author>
+<author>Heiko Röglin</author>
 <title>Smoothed Analysis.</title>
 <pages>2014-2017</pages>
 <year>2016</year>
@@ -6600,7 +6600,7 @@
 <url>db/reference/algo/algo2016.html#MunroN16</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/Karkkainen08" publtype="encyclopedia entry">
-<author>Juha KÃ¤rkkÃ¤inen</author>
+<author>Juha Kärkkäinen</author>
 <title>Suffix Array Construction.</title>
 <year>2008</year>
 <booktitle>Encyclopedia of Algorithms</booktitle>
@@ -6773,7 +6773,7 @@
 <url>db/reference/algo/algo2008.html#X08bx</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/Blaser08" publtype="encyclopedia entry">
-<author>Markus BlÃ¤ser</author>
+<author>Markus Bläser</author>
 <title>Metric TSP.</title>
 <year>2008</year>
 <booktitle>Encyclopedia of Algorithms</booktitle>
@@ -6801,7 +6801,7 @@
 <url>db/reference/algo/algo2016.html#Przytycka16</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/Dosa16" publtype="encyclopedia entry">
-<author>GyÃ¶rgy DXXXsa</author>
+<author>György DXXXsa</author>
 <title>First Fit Algorithm for Bin Packing.</title>
 <pages>753-755</pages>
 <year>2016</year>
@@ -6939,7 +6939,7 @@
 <url>db/reference/algo/algo2008.html#KhullerR08</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/MakinenN08" publtype="encyclopedia entry">
-<author>Veli MÃ¤kinen</author>
+<author>Veli Mäkinen</author>
 <author>Gonzalo Navarro</author>
 <title>Compressed Text Indexing.</title>
 <year>2008</year>
@@ -7286,7 +7286,7 @@
 <url>db/reference/algo/algo2016.html#FujiwaraK16</url>
 </incollection>
 <incollection mdate="2012-04-24" key="reference/algo/MohringO08">
-<author>Rolf H. MÃ¶hring</author>
+<author>Rolf H. Möhring</author>
 <author>Martin Oellrich</author>
 <title>Das Sieb des Eratosthenes: Wie schnell kann man eine Primzahlentabelle berechnen?.</title>
 <pages>127-138</pages>
@@ -7426,7 +7426,7 @@
 </incollection>
 <incollection mdate="2012-04-24" key="reference/algo/FreundlR08">
 <author>Christoph Freundl</author>
-<author>Ulrich RÃ¼de</author>
+<author>Ulrich Rüde</author>
 <title>GauXXX-Seidel Iteration zur Berechnung physikalischer Probleme.</title>
 <pages>313-321</pages>
 <year>2008</year>
@@ -7454,7 +7454,7 @@
 </incollection>
 <incollection mdate="2012-04-24" key="reference/algo/BrandesD08">
 <author>Ulrik Brandes</author>
-<author>Gabi DorfmÃ¼ller</author>
+<author>Gabi Dorfmüller</author>
 <title>PageRank: Was ist wichtig im World Wide Web?.</title>
 <pages>95-101</pages>
 <year>2008</year>
@@ -7491,7 +7491,7 @@
 <url>db/reference/algo/algo2016.html#Mor16</url>
 </incollection>
 <incollection mdate="2012-04-24" key="reference/algo/Muller-ClostermannJ08">
-<author>Bruno MÃ¼ller-Clostermann</author>
+<author>Bruno Müller-Clostermann</author>
 <author>Tim Jonischkat</author>
 <title>Zufallszahlen: Wie kommt der Zufall in den Rechner?.</title>
 <pages>255-265</pages>
@@ -7549,7 +7549,7 @@
 <url>db/reference/algo/algo2016.html#Mestre16</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/Huffner08" publtype="encyclopedia entry">
-<author>Falk HÃ¼ffner</author>
+<author>Falk Hüffner</author>
 <title>Automated Search Tree Generation.</title>
 <year>2008</year>
 <booktitle>Encyclopedia of Algorithms</booktitle>
@@ -7930,7 +7930,7 @@
 <url>db/reference/algo/algo2008.html#X08as</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/Schafer08" publtype="encyclopedia entry">
-<author>Guido SchÃ¤fer</author>
+<author>Guido Schäfer</author>
 <title>Steiner Forest.</title>
 <year>2008</year>
 <booktitle>Encyclopedia of Algorithms</booktitle>
@@ -8111,7 +8111,7 @@
 <incollection mdate="2012-04-24" key="reference/algo/BlumK08">
 <author>Norbert Blum</author>
 <author>Matthias Kretschmer</author>
-<title>Dynamische Programmierung: EvolutionÃ¤re Distanz.</title>
+<title>Dynamische Programmierung: Evolutionäre Distanz.</title>
 <pages>323-330</pages>
 <year>2008</year>
 <booktitle>Taschenbuch der Algorithmen</booktitle>
@@ -8200,7 +8200,7 @@
 <url>db/reference/algo/algo2008.html#X08q</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/Blaser16" publtype="encyclopedia entry">
-<author>Markus BlÃ¤ser</author>
+<author>Markus Bläser</author>
 <title>Metric TSP.</title>
 <pages>1276-1279</pages>
 <year>2016</year>
@@ -8896,7 +8896,7 @@
 <url>db/reference/algo/algo2016.html#Ruskey16</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/Karkkainen16" publtype="encyclopedia entry">
-<author>Juha KÃ¤rkkÃ¤inen</author>
+<author>Juha Kärkkäinen</author>
 <title>Multidimensional String Matching.</title>
 <pages>1369-1372</pages>
 <year>2016</year>
@@ -8999,7 +8999,7 @@
 <url>db/reference/algo/algo2008.html#Nikoletseas08a</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/Wahlstrom16" publtype="encyclopedia entry">
-<author>Magnus WahlstrÃ¶m</author>
+<author>Magnus Wahlström</author>
 <title>Kernelization, Matroid Methods.</title>
 <pages>1017-1021</pages>
 <year>2016</year>
@@ -9137,7 +9137,7 @@
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/KrystaV08" publtype="encyclopedia entry">
 <author>Piotr Krysta</author>
-<author>Berthold VÃ¶cking</author>
+<author>Berthold Vöcking</author>
 <title>Utilitarian Mechanism Design for Single-Minded Agents.</title>
 <year>2008</year>
 <booktitle>Encyclopedia of Algorithms</booktitle>
@@ -9254,7 +9254,7 @@
 <url>db/reference/algo/algo2016.html#FerraginaM16</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/Furer16" publtype="encyclopedia entry">
-<author>Martin FÃ¼rer</author>
+<author>Martin Fürer</author>
 <title>Degree-Bounded Trees.</title>
 <pages>516-519</pages>
 <year>2016</year>
@@ -9318,7 +9318,7 @@
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/CzumajV16" publtype="encyclopedia entry">
 <author>Artur Czumaj</author>
-<author>Berthold VÃ¶cking</author>
+<author>Berthold Vöcking</author>
 <title>Price of Anarchy for Machines Models.</title>
 <pages>1614-1618</pages>
 <year>2016</year>
@@ -9542,7 +9542,7 @@
 <url>db/reference/algo/algo2008.html#Fang08b</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/Ambuhl08" publtype="encyclopedia entry">
-<author>Christoph AmbÃ¼hl</author>
+<author>Christoph Ambühl</author>
 <title>Minimum Energy Broadcasting in Wireless Geometric Networks.</title>
 <year>2008</year>
 <booktitle>Encyclopedia of Algorithms</booktitle>
@@ -9745,7 +9745,7 @@
 <url>db/reference/algo/algo2016.html#ApostolicoC16</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/Csuros16" publtype="encyclopedia entry">
-<author>MiklXXXs CsÃ¼rÃ¶s</author>
+<author>MiklXXXs Csürös</author>
 <title>Distance-Based Phylogeny Reconstruction (Fast-Converging).</title>
 <pages>564-567</pages>
 <year>2016</year>
@@ -9802,7 +9802,7 @@
 <url>db/reference/algo/algo2016.html#Lee16</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/Schafer16" publtype="encyclopedia entry">
-<author>Guido SchÃ¤fer</author>
+<author>Guido Schäfer</author>
 <title>Steiner Forest.</title>
 <pages>2099-2102</pages>
 <year>2016</year>
@@ -9859,7 +9859,7 @@
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/CzumajV08" publtype="encyclopedia entry">
 <author>Artur Czumaj</author>
-<author>Berthold VÃ¶cking</author>
+<author>Berthold Vöcking</author>
 <title>Price of Anarchy for Machines Models.</title>
 <year>2008</year>
 <booktitle>Encyclopedia of Algorithms</booktitle>
@@ -10214,7 +10214,7 @@
 <author>Burkhard Monien</author>
 <author>Ulf Lorenz</author>
 <author>Daniel Warner</author>
-<title>Der Alphabeta-Algorithmus fÃ¼r SpielbÃ¤ume: Wie bringe ich meinen Computer zum Schachspielen?.</title>
+<title>Der Alphabeta-Algorithmus für Spielbäume: Wie bringe ich meinen Computer zum Schachspielen?.</title>
 <pages>285-294</pages>
 <year>2008</year>
 <booktitle>Taschenbuch der Algorithmen</booktitle>
@@ -10262,7 +10262,7 @@
 <url>db/reference/algo/algo2016.html#AzizP16</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/Karkkainen16a" publtype="encyclopedia entry">
-<author>Juha KÃ¤rkkÃ¤inen</author>
+<author>Juha Kärkkäinen</author>
 <title>Suffix Array Construction.</title>
 <pages>2141-2144</pages>
 <year>2016</year>
@@ -10587,7 +10587,7 @@
 <url>db/reference/algo/algo2008.html#X08e</url>
 </incollection>
 <incollection mdate="2016-04-28" key="reference/algo/Huffner16" publtype="encyclopedia entry">
-<author>Falk HÃ¼ffner</author>
+<author>Falk Hüffner</author>
 <title>Automated Search Tree Generation.</title>
 <pages>162-165</pages>
 <year>2016</year>
@@ -10734,7 +10734,7 @@
 <incollection mdate="2014-12-18" key="reference/algo/SeidlE08">
 <author>Thomas Seidl 0001</author>
 <author>Jost Enderle</author>
-<title>BinÃ¤re Suche.</title>
+<title>Binäre Suche.</title>
 <pages>7-13</pages>
 <year>2008</year>
 <booktitle>Taschenbuch der Algorithmen</booktitle>
@@ -10962,7 +10962,7 @@
 <url>db/reference/algo/algo2008.html#Navarro08a</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/algo/MakinenU08" publtype="encyclopedia entry">
-<author>Veli MÃ¤kinen</author>
+<author>Veli Mäkinen</author>
 <author>Esko Ukkonen</author>
 <title>Point Pattern Matching.</title>
 <year>2008</year>
@@ -11099,7 +11099,7 @@
 <url>db/reference/npe/npe2011.html#BelzarenaS11</url>
 </incollection>
 <incollection mdate="2011-04-19" key="reference/npe/AtmacaN11">
-<author>TÃ¼lin Atmaca</author>
+<author>Tülin Atmaca</author>
 <author>Viet Hung Nguyen</author>
 <title>Optical Metropolitan Networks: Packet Format, MAC Protocols and Quality of Service.</title>
 <pages>808-834</pages>
@@ -11305,7 +11305,7 @@
 <incollection mdate="2011-04-19" key="reference/npe/MkwawaKBHGK11">
 <author>Is-Haka Mkwawa</author>
 <author>Demetres D. Kouvatsos</author>
-<author>Wolfgang BrandstÃ¤tter</author>
+<author>Wolfgang Brandstätter</author>
 <author>Gerhard Horak</author>
 <author>Alfons Geier</author>
 <author>Christoforos D. Kavadias</author>
@@ -11584,7 +11584,7 @@
 <url>db/reference/nc/nc2012.html#Kari12</url>
 </incollection>
 <incollection mdate="2013-07-22" key="reference/nc/Rudolph12">
-<author>GÃ¼nter Rudolph</author>
+<author>Günter Rudolph</author>
 <title>Evolutionary Strategies.</title>
 <pages>673-698</pages>
 <year>2012</year>
@@ -11647,7 +11647,7 @@
 <url>db/reference/nc/nc2012.html#Paun12a</url>
 </incollection>
 <incollection mdate="2013-07-22" key="reference/nc/Rudolph12a">
-<author>GÃ¼nter Rudolph</author>
+<author>Günter Rudolph</author>
 <title>Stochastic Convergence.</title>
 <pages>847-869</pages>
 <year>2012</year>
@@ -11867,7 +11867,7 @@
 </incollection>
 <book mdate="2013-07-22" key="reference/nc/2012">
 <editor>Grzegorz Rozenberg</editor>
-<editor>Thomas BÃ¤ck</editor>
+<editor>Thomas Bäck</editor>
 <editor>Joost N. Kok</editor>
 <title>Handbook of Natural Computing</title>
 <year>2012</year>
@@ -12960,7 +12960,7 @@
 <url>db/reference/gis/gis2008.html#X08xtn</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/gis/Bohm08" publtype="encyclopedia entry">
-<author>Christian BÃ¶hm</author>
+<author>Christian Böhm</author>
 <title>Pyramid Technique.</title>
 <pages>929-930</pages>
 <year>2008</year>
@@ -18081,7 +18081,7 @@
 <url>db/reference/gis/gis2008.html#X08zr</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/gis/DuzgunK08" publtype="encyclopedia entry">
-<author>H. Sebnem DÃ¼zgÃ¼n</author>
+<author>H. Sebnem Düzgün</author>
 <author>Serkan KemeXXX</author>
 <title>Spatial and Geographically Weighted Regression.</title>
 <pages>1073-1077</pages>
@@ -19181,7 +19181,7 @@
 <url>db/reference/gis/gis2008.html#Kamel08</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/gis/Dollner08" publtype="encyclopedia entry">
-<author>JÃ¼rgen DÃ¶llner</author>
+<author>Jürgen Döllner</author>
 <title>Visualization, Photorealistic and Non-photorealistic.</title>
 <pages>1223-1228</pages>
 <year>2008</year>
@@ -19597,7 +19597,7 @@
 <url>db/reference/gis/gis2008.html#X08qx</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/gis/Guting08a" publtype="encyclopedia entry">
-<author>Ralf Hartmut GÃ¼ting</author>
+<author>Ralf Hartmut Güting</author>
 <title>Spatio-temporal Data Types.</title>
 <pages>1113-1114</pages>
 <year>2008</year>
@@ -19959,7 +19959,7 @@
 <url>db/reference/gis/gis2008.html#X08xoh</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/gis/Guting08b" publtype="encyclopedia entry">
-<author>Ralf Hartmut GÃ¼ting</author>
+<author>Ralf Hartmut Güting</author>
 <title>Trajectory.</title>
 <pages>1173</pages>
 <year>2008</year>
@@ -22048,7 +22048,7 @@
 <url>db/reference/gis/gis2008.html#X08vv</url>
 </incollection>
 <incollection mdate="2015-06-08" key="reference/gis/WaskeB14" publtype="encyclopedia entry">
-<author>BjÃ¶rn Waske</author>
+<author>Björn Waske</author>
 <author>JXXXn Atli Benediktsson</author>
 <title>Decision Fusion, Classification of Multisource Data.</title>
 <pages>140-144</pages>
@@ -22400,7 +22400,7 @@
 <url>db/reference/gis/gis2008.html#X08xqv</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/gis/Ronsdorf08" publtype="encyclopedia entry">
-<author>Carsten RÃ¶nsdorf</author>
+<author>Carsten Rönsdorf</author>
 <title>Positional Accuracy Improvement (PAI).</title>
 <pages>885-891</pages>
 <year>2008</year>
@@ -22437,7 +22437,7 @@
 <url>db/reference/gis/gis2008.html#X08wi</url>
 </incollection>
 <incollection mdate="2015-06-08" key="reference/gis/WaskeB14a" publtype="encyclopedia entry">
-<author>BjÃ¶rn Waske</author>
+<author>Björn Waske</author>
 <author>JXXXn Atli Benediktsson</author>
 <title>Pattern Recognition and Classification.</title>
 <pages>503-509</pages>
@@ -27802,7 +27802,7 @@
 <url>db/reference/gis/gis2008.html#X08it</url>
 </incollection>
 <incollection mdate="2011-11-25" key="reference/gis/Guting08" publtype="encyclopedia entry">
-<author>Ralf Hartmut GÃ¼ting</author>
+<author>Ralf Hartmut Güting</author>
 <title>Moving Object Languages.</title>
 <pages>732-740</pages>
 <year>2008</year>
@@ -28060,7 +28060,7 @@
 </incollection>
 <incollection mdate="2008-11-09" key="reference/spatial/BennettD07">
 <author>Brandon Bennett</author>
-<author>Ivo DÃ¼ntsch</author>
+<author>Ivo Düntsch</author>
 <title>Axioms, Algebras and Topology.</title>
 <pages>99-159</pages>
 <year>2007</year>
@@ -29148,7 +29148,7 @@
 <url>db/reference/cn/cn2014.html#Cutsuridis14</url>
 </incollection>
 <incollection mdate="2015-02-10" key="reference/cn/Knosche14a" publtype="encyclopedia entry">
-<author>Thomas R. KnÃ¶sche</author>
+<author>Thomas R. Knösche</author>
 <title>Chaos, Neural Population Models and.</title>
 <year>2014</year>
 <booktitle>Encyclopedia of Computational Neuroscience</booktitle>
@@ -29389,7 +29389,7 @@
 <url>db/reference/cn/cn2014.html#Harris-Warrick14</url>
 </incollection>
 <incollection mdate="2015-02-10" key="reference/cn/Schoner14" publtype="encyclopedia entry">
-<author>Gregor SchÃ¶ner</author>
+<author>Gregor Schöner</author>
 <title>Embodied Cognition, Dynamic Field Theory of.</title>
 <year>2014</year>
 <booktitle>Encyclopedia of Computational Neuroscience</booktitle>
@@ -29810,7 +29810,7 @@
 <url>db/reference/cn/cn2014.html#BarrettS14</url>
 </incollection>
 <incollection mdate="2015-02-10" key="reference/cn/GutigS14" publtype="encyclopedia entry">
-<author>Robert GÃ¼tig</author>
+<author>Robert Gütig</author>
 <author>Haim Sompolinsky</author>
 <title>Tempotron Learning.</title>
 <year>2014</year>

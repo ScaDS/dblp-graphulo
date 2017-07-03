@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE dblp SYSTEM "dblp.dtd">
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE dblp SYSTEM "build/resources/main/dblp.dtd">
 <dblp>
     <incollection mdate="" key="">
         <author>Autor1</author>
