@@ -15,6 +15,7 @@ import org.apache.accumulo.core.security.Authorizations;
 import java.util.Collections;
 import java.util.Map;
 
+@Deprecated
 public class Laplacian {
 
     private final Graphulo graphulo;

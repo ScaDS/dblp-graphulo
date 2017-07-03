@@ -21,6 +21,7 @@ import java.util.Map;
  * Node1 : [] value1 -> Node1 :Node1 [] value1
  * Used to create a laplacian matrix from degTable - adjTable
  */
+@Deprecated
 public class LaplacianPrepareOp implements ApplyOp {
 
     public static IteratorSetting iteratorSetting(int priority) {

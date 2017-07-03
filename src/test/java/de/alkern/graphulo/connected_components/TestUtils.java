@@ -61,6 +61,7 @@ public class TestUtils {
         deleteTable("l");
         deleteTable("test_deg");
         deleteTable("l_deg");
+        deleteTable("test_lap");
     }
 
     /**

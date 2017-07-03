@@ -14,6 +14,10 @@ import org.apache.accumulo.core.security.Authorizations;
 
 import java.util.*;
 
+/**
+ * First implementation of cc
+ */
+@Deprecated
 public class ConnectedComponents {
 
     private static final String COMPONENT_SUFFIX = "_cc";

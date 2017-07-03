@@ -1,6 +1,5 @@
 package de.alkern.graphulo.connected_components;
 
-import edu.mit.ll.graphulo.util.DebugUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
