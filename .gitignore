@@ -6,3 +6,4 @@ out
 *.log
 *.out
 *.synctex.gz
+dblp.xml

@@ -20,11 +20,11 @@ import java.util.SortedSet;
  * Algorithm to get all weakly connected components from an adjacency matrix.
  * Weakly connected components are all nodes which have some kind of connection in between.
  * If the graph is undirected it is also a strongly connected component.
- * Every connected component is saved in a table named original table + _cc + number
+ * Every connected component is saved in a table named original table + _wcc + number
  */
 public class WeaklyConnectedComponents {
 
-    private final static String SUFFIX = "_cc";
+    private final static String SUFFIX = "_wcc";
 
     private Graphulo g;
     private Connector conn;

@@ -18,10 +18,10 @@ public class Main {
         Connector conn = AccumuloConnector.local();
         Repository repo = new RepositoryImpl("authors", conn, new AdjacencyEntry.AdjacencyBuilder());
         GraphuloProcessor processor = new AuthorProcessor(repo);
-        processor.parse(ExampleData.EXAMPLE_DATA);
+        processor.parse(ExampleData.DBLP);
         processor.scan().forEach(System.out::println);
         Graphulo graphulo = GraphuloConnector.local(conn);
-        graphulo.generateDegreeTable("authors", "authors_deg", true);
+//        graphulo.generateDegreeTable("authors", "authors_deg", true);
         //processor.clear();
     }
 }
