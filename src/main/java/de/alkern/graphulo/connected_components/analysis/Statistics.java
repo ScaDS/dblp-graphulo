@@ -11,6 +11,7 @@ import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.Authorizations;
 import org.apache.hadoop.io.Text;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,9 +21,22 @@ import java.util.Map;
  */
 public class Statistics {
 
+    public enum SizeType {
+        EDGES("edges"), NODES("nodes");
+
+        private String name;
+
+        SizeType(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
+
     public final static String META_SUFFIX = "_meta";
-    private final static String LABEL_EDGES = "edges";
-    private final static String LABEL_NODES = "nodes";
 
     private final Graphulo g;
 
@@ -62,9 +76,9 @@ public class Statistics {
     private void analyzeTables(BatchWriter bw, List<String> components, String table, ComponentType type) throws MutationsRejectedException {
         for (String component : components) {
             Mutation numberEdges = new Mutation(component);
-            numberEdges.put(empty(), LABEL_EDGES, Long.toString(g.countEntries(component)));
+            numberEdges.put(empty(), SizeType.EDGES.toString(), Long.toString(g.countEntries(component)));
             Mutation numberNodes = new Mutation(component);
-            numberNodes.put(empty(), LABEL_NODES, Long.toString(g.countRows(component)));
+            numberNodes.put(empty(), SizeType.NODES.toString(), Long.toString(g.countRows(component)));
             bw.addMutation(numberEdges);
             bw.addMutation(numberNodes);
         }
@@ -95,7 +109,7 @@ public class Statistics {
      * @return how many edges are in the component
      */
     public int getNumberOfEdges(String table, ComponentType type, int componentNumber) {
-        return get(table, table + type + componentNumber, LABEL_EDGES);
+        return get(table, table + type + componentNumber, SizeType.EDGES.toString());
     }
 
     /**
@@ -106,7 +120,15 @@ public class Statistics {
      * @return how many nodes are in the component
      */
     public int getNumberOfNodes(String table, ComponentType type, int componentNumber) {
-        return get(table, table + type + componentNumber, LABEL_NODES);
+        return get(table, table + type + componentNumber, SizeType.NODES.toString());
+    }
+
+    private int getNumberOf(String table, ComponentType type, int componentNumber, SizeType size) {
+        switch (size) {
+            case EDGES: return getNumberOfEdges(table, type, componentNumber);
+            case NODES: return getNumberOfNodes(table, type, componentNumber);
+            default: throw new RuntimeException("Invalid SizeType " + size + ". Should not happen.");
+        }
     }
 
     private int get(String table, String row, String column) {
@@ -124,5 +146,25 @@ public class Statistics {
         } catch (TableNotFoundException e) {
             throw new RuntimeException("Metatable does not exist", e);
         }
+    }
+
+    /**
+     * Get the number of nodes in all components
+     * @param table original table name
+     * @param type component type
+     * @param sizeType size to check
+     * @return
+     */
+    double[] getComponentSizes(String table, ComponentType type, SizeType sizeType) {
+        List<Integer> sizes = new LinkedList<>();
+        int size = getNumberOfComponents(table, type);
+        for (int i = 1; i <= size; i++) {
+            sizes.add(getNumberOf(table, type, i, sizeType));
+        }
+        double[] result = new double[sizes.size()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = sizes.get(i).doubleValue();
+        }
+        return result;
     }
 }

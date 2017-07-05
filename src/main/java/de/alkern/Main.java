@@ -25,6 +25,6 @@ public class Main {
         Graphulo graphulo = GraphuloConnector.local(conn);
 //        graphulo.generateDegreeTable("authors", "authors_deg", true);
         //processor.clear();
-        new HistogramBuilder(graphulo).getChartsAsPNG("authors", ComponentType.WEAK, "test");
+//        new HistogramBuilder(graphulo).getChartsAsPNG("authors", ComponentType.WEAK, "test");
     }
 }
