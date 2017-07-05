@@ -22,24 +22,24 @@ public class StronglyConnectedComponentsTest {
     @AfterClass
     public static void cleanup() {
         TestUtils.deleteTable(STRONG_EXAMPLE);
-        TestUtils.deleteTable(STRONG_EXAMPLE + "_cc1");
-        TestUtils.deleteTable(STRONG_EXAMPLE + "_cc2");
-        TestUtils.deleteTable(STRONG_EXAMPLE + "_cc3");
-        TestUtils.deleteTable(STRONG_EXAMPLE + "_cc4");
+        TestUtils.deleteTable(STRONG_EXAMPLE + "_scc1");
+        TestUtils.deleteTable(STRONG_EXAMPLE + "_scc2");
+        TestUtils.deleteTable(STRONG_EXAMPLE + "_scc3");
+        TestUtils.deleteTable(STRONG_EXAMPLE + "_scc4");
     }
 
     @Test
     public void testStronglyConnectedComponents() throws TableNotFoundException {
         StronglyConnectedComponents scc = new StronglyConnectedComponents(TestUtils.graphulo);
         scc.calculateConnectedComponents(STRONG_EXAMPLE);
-        assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc1"));
-        assertEquals(3, TestUtils.graphulo.countEntries(STRONG_EXAMPLE + "_cc1"));
-        assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc2"));
-        assertEquals(2, TestUtils.graphulo.countEntries(STRONG_EXAMPLE + "_cc2"));
-        assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc3"));
-        assertEquals(2, TestUtils.graphulo.countEntries(STRONG_EXAMPLE + "_cc3"));
-        assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc4"));
-        assertEquals(1, TestUtils.graphulo.countEntries(STRONG_EXAMPLE + "_cc4"));
-        assertFalse(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc5"));
+        assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_scc1"));
+        assertEquals(3, TestUtils.graphulo.countEntries(STRONG_EXAMPLE + "_scc1"));
+        assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_scc2"));
+        assertEquals(2, TestUtils.graphulo.countEntries(STRONG_EXAMPLE + "_scc2"));
+        assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_scc3"));
+        assertEquals(2, TestUtils.graphulo.countEntries(STRONG_EXAMPLE + "_scc3"));
+        assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_scc4"));
+        assertEquals(1, TestUtils.graphulo.countEntries(STRONG_EXAMPLE + "_scc4"));
+        assertFalse(TestUtils.tops.exists(STRONG_EXAMPLE + "_scc5"));
     }
 }
