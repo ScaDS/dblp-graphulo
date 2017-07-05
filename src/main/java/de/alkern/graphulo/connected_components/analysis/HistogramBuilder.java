@@ -1,6 +1,7 @@
 package de.alkern.graphulo.connected_components.analysis;
 
 import de.alkern.graphulo.connected_components.ComponentType;
+import de.alkern.graphulo.connected_components.SizeType;
 import edu.mit.ll.graphulo.Graphulo;
 import org.apache.commons.lang.ArrayUtils;
 import org.jfree.chart.ChartFactory;
@@ -29,17 +30,17 @@ public class HistogramBuilder {
     }
 
     public void createAll(String table) {
-        getChartsAsPNG(table, ComponentType.WEAK, Statistics.SizeType.EDGES);
-        getChartsAsPNG(table, ComponentType.WEAK, Statistics.SizeType.NODES);
-        getChartsAsPNG(table, ComponentType.STRONG, Statistics.SizeType.EDGES);
-        getChartsAsPNG(table, ComponentType.STRONG, Statistics.SizeType.NODES);
+        getChartsAsPNG(table, ComponentType.WEAK, SizeType.EDGES);
+        getChartsAsPNG(table, ComponentType.WEAK, SizeType.NODES);
+        getChartsAsPNG(table, ComponentType.STRONG, SizeType.EDGES);
+        getChartsAsPNG(table, ComponentType.STRONG, SizeType.NODES);
     }
 
-    public void getChartsAsPNG(String table, ComponentType type, Statistics.SizeType sizeType) {
+    public void getChartsAsPNG(String table, ComponentType type, SizeType sizeType) {
         getChartsAsPNG(table, type, sizeType, 800, 600);
     }
 
-    public void getChartsAsPNG(String table, ComponentType type, Statistics.SizeType sizeType, int width, int height) {
+    public void getChartsAsPNG(String table, ComponentType type, SizeType sizeType, int width, int height) {
         double[] sizes = s.getComponentSizes(table, type, sizeType);
         int max = Collections.max(Arrays.asList(ArrayUtils.toObject(sizes))).intValue();
         HistogramDataset ds = new HistogramDataset();

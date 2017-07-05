@@ -32,7 +32,7 @@ public class AuthorProcessorTest {
     @Test
     public void testProcess() {
         List<String> relations = authorProcessor.parse(ExampleData.EXAMPLE_DATA)
-                .stream().map(it -> it.toString()).collect(Collectors.toList());
+                .stream().map(AccumuloEntry::toString).collect(Collectors.toList());
         assertTrue(relations.contains("Michael Ley :Michael Ley []   -> 1"));
         assertTrue(relations.contains("E. F. Codd :C. J. Date []   -> 1"));
         assertTrue(relations.contains("C. J. Date :E. F. Codd []   -> 1"));

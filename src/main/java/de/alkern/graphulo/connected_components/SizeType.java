@@ -1,14 +1,16 @@
-package de.alkern.graphulo.connected_components.analysis;public class SizeTyp{enum SizeType {
-        EDGES("edges"), NODES("nodes");
+package de.alkern.graphulo.connected_components;
 
-        private java.lang.String name;
+public enum SizeType {
+    EDGES("edges"), NODES("nodes");
 
-        SizeType(java.lang.String name) {
-            this.name = name;
-        }
+    private String name;
 
-        @java.lang.Override
-        public java.lang.String toString() {
-            return name;
-        }
-    }}
+    SizeType(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+}

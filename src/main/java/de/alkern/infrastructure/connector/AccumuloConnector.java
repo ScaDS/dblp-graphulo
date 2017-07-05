@@ -12,6 +12,6 @@ public abstract class AccumuloConnector {
     }
 
     public static Connector local() throws AccumuloSecurityException, AccumuloException {
-        return getConnector("bdp", "localhost:2181", "root", "acc");
+        return getConnector("bdp", "192.168.2.123:2181", "root", "acc");
     }
 }

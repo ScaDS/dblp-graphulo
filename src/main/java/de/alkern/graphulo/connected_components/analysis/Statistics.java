@@ -2,6 +2,7 @@ package de.alkern.graphulo.connected_components.analysis;
 
 import de.alkern.graphulo.connected_components.ComponentType;
 import de.alkern.graphulo.connected_components.ConnectedComponentsUtils;
+import de.alkern.graphulo.connected_components.SizeType;
 import edu.mit.ll.graphulo.Graphulo;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.data.Key;
@@ -20,21 +21,6 @@ import java.util.Map;
  * Saves the number of components, and the sizes of the single components into a table with _meta-suffix
  */
 public class Statistics {
-
-    public enum SizeType {
-        EDGES("edges"), NODES("nodes");
-
-        private String name;
-
-        SizeType(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
 
     public final static String META_SUFFIX = "_meta";
 
