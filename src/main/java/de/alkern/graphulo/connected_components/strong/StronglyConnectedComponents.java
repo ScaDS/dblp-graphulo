@@ -45,7 +45,7 @@ public class StronglyConnectedComponents {
         visited = new VisitedNodesList();
     }
 
-    public void calculateStronglyConnectedComponents(String table) throws TableNotFoundException {
+    public void calculateConnectedComponents(String table) throws TableNotFoundException {
         //TODO add flag to simplify for directed graphs -> no transpose and ewise needed
         this.reachableNodes.clear();
         this.table = table;
@@ -130,6 +130,7 @@ public class StronglyConnectedComponents {
             scanner.setRange(new Range());
             RowIterator rowIterator = new RowIterator(scanner);
             rowIterator.forEachRemaining(this::extractRow);
+            deleteTempTables();
         } catch (Exception e) {
             throw new RuntimeException("Error while extracting components", e);
         }
@@ -176,6 +177,16 @@ public class StronglyConnectedComponents {
             bs.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void deleteTempTables() {
+        try {
+            tops.delete(table + "_c");
+            tops.delete(table + "_ct");
+            tops.delete(table + "_res");
+        } catch (Exception e) {
+            throw new RuntimeException("Could not delete temp tables of strongly connected components", e);
         }
     }
 }

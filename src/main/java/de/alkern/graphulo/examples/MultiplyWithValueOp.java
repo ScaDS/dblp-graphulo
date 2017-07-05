@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.*;
 
 //simple test for an implementation
+@Deprecated
 public class MultiplyWithValueOp implements ApplyOp {
 
     @Override

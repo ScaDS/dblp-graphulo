@@ -22,9 +22,6 @@ public class StronglyConnectedComponentsTest {
     @AfterClass
     public static void cleanup() {
         TestUtils.deleteTable(STRONG_EXAMPLE);
-        TestUtils.deleteTable(STRONG_EXAMPLE + "_c");
-        TestUtils.deleteTable(STRONG_EXAMPLE + "_ct");
-        TestUtils.deleteTable(STRONG_EXAMPLE + "_res");
         TestUtils.deleteTable(STRONG_EXAMPLE + "_cc1");
         TestUtils.deleteTable(STRONG_EXAMPLE + "_cc2");
         TestUtils.deleteTable(STRONG_EXAMPLE + "_cc3");
@@ -34,7 +31,7 @@ public class StronglyConnectedComponentsTest {
     @Test
     public void testStronglyConnectedComponents() throws TableNotFoundException {
         StronglyConnectedComponents scc = new StronglyConnectedComponents(TestUtils.graphulo);
-        scc.calculateStronglyConnectedComponents(STRONG_EXAMPLE);
+        scc.calculateConnectedComponents(STRONG_EXAMPLE);
         assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc1"));
         assertEquals(3, TestUtils.graphulo.countEntries(STRONG_EXAMPLE + "_cc1"));
         assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_cc2"));

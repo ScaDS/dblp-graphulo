@@ -1,6 +1,7 @@
 package de.alkern.graphulo.connected_components.analysis;
 
 import de.alkern.graphulo.connected_components.ComponentType;
+import de.alkern.graphulo.connected_components.ConnectedComponentsUtils;
 import edu.mit.ll.graphulo.Graphulo;
 import org.apache.accumulo.core.client.admin.TableOperations;
 import org.apache.commons.lang.ArrayUtils;
@@ -48,14 +49,17 @@ public class HistogramBuilder {
         }
     }
 
+    /**
+     * Get the number of nodes in all components
+     * @param table original table name
+     * @param type component type
+     * @return
+     */
     private double[] getComponentSizes(String table, ComponentType type) {
         List<Long> sizes = new LinkedList<>();
-        TableOperations tops = g.getConnector().tableOperations();
-        long counter = 1;
-        String t = table + type + counter++;
-        while (tops.exists(t)) {
-            sizes.add(g.countRows(t));
-            t = table + type + counter++;
+        List<String> ccTables = ConnectedComponentsUtils.getExistingComponentTables(g, table, type);
+        for (String ccTable : ccTables) {
+            sizes.add(g.countRows(ccTable));
         }
         double[] result = new double[sizes.size()];
         for (int i = 0; i < result.length; i++) {
