@@ -45,14 +45,19 @@ public class StronglyConnectedComponents {
         visited = new VisitedNodesList();
     }
 
-    public void calculateConnectedComponents(String table) throws TableNotFoundException {
+    public void calculateConnectedComponents(String table) {
         //TODO add flag to simplify for directed graphs -> no transpose and ewise needed
         this.reachableNodes.clear();
         this.table = table;
         this.visited.clear();
         this.counter = 1;
 
-        Scanner scanner = g.getConnector().createScanner(table, Authorizations.EMPTY);
+        Scanner scanner;
+        try {
+            scanner = g.getConnector().createScanner(table, Authorizations.EMPTY);
+        } catch (TableNotFoundException e) {
+            throw new RuntimeException("Could not calculate strongly ccs", e);
+        }
         scanner.setRange(new Range());
         scanner.iterator().forEachRemaining(this::visit);
         scanner.close();

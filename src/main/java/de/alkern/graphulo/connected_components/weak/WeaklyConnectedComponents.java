@@ -40,20 +40,24 @@ public class WeaklyConnectedComponents {
         this.alreadyVisited = visited;
     }
 
-    public void calculateConnectedComponents(String table) throws TableNotFoundException, TableExistsException, AccumuloSecurityException, AccumuloException {
-        //reset class variables for this run
-        this.table = table;
-        this.components.clear();
-        this.alreadyVisited.clear();
-        Scanner scanner = conn.createScanner(table, Authorizations.EMPTY);
-        scanner.setRange(new Range());
-        //iterate over every row in the table
-        RowIterator rowIterator = new RowIterator(scanner);
-        while (rowIterator.hasNext()) {
-            visit(rowIterator.next().next());  //visit each row exactly once
-        }
-        scanner.close();
-        copyComponents();
+    public void calculateConnectedComponents(String table) {
+       try {
+           //reset class variables for this run
+           this.table = table;
+           this.components.clear();
+           this.alreadyVisited.clear();
+           Scanner scanner = conn.createScanner(table, Authorizations.EMPTY);
+           scanner.setRange(new Range());
+           //iterate over every row in the table
+           RowIterator rowIterator = new RowIterator(scanner);
+           while (rowIterator.hasNext()) {
+               visit(rowIterator.next().next());  //visit each row exactly once
+           }
+           scanner.close();
+           copyComponents();
+       } catch (Exception e) {
+           throw new RuntimeException("Could not calculate weakly ccs", e);
+       }
     }
 
     /**

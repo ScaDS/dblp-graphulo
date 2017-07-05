@@ -110,6 +110,39 @@ public class TestUtils {
     }
 
     /**
+     *    R1 R2 R3 R4 R5 R6 R7 R8
+     * R1  1  1
+     * R2     1  1     1  1
+     * R3        1  1        1
+     * R4        1  1           1
+     * R5  1           1  1
+     * R6                 1  1
+     * R7                 1  1  1
+     * R8                       1
+     *
+     * Every node has a connection to itself
+     * @param table table name
+     */
+    public static void createExampleMatrixWithSelfConnections(String table) {
+        List<String> entries = new LinkedList<>();
+        entries.add("ROW1:ROW2");
+        entries.add("ROW2:ROW3");
+        entries.add("ROW2:ROW5");
+        entries.add("ROW2:ROW6");
+        entries.add("ROW3:ROW4");
+        entries.add("ROW3:ROW7");
+        entries.add("ROW4:ROW3");
+        entries.add("ROW4:ROW8");
+        entries.add("ROW5:ROW1");
+        entries.add("ROW5:ROW6");
+        entries.add("ROW6:ROW7");
+        entries.add("ROW7:ROW6");
+        entries.add("ROW7:ROW8");
+        entries.add("ROW8:ROW8");
+        writeTable(table, entries);
+    }
+
+    /**
      *    R1 R2 R3 R4 R5 R6 R7 R8 R10
      * R1     1
      * R2        1     1  1

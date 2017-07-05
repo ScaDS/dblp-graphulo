@@ -9,8 +9,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class AuthorProcessorTest {
 
@@ -29,15 +31,18 @@ public class AuthorProcessorTest {
 
     @Test
     public void testProcess() {
-        List<AccumuloEntry> relations = authorProcessor.parse(ExampleData.EXAMPLE_DATA);
-        assertEquals("E. F. Codd :C. J. Date []   -> 1", relations.get(0).toString());
-        assertEquals("C. J. Date :E. F. Codd []   -> 1", relations.get(1).toString());
+        List<String> relations = authorProcessor.parse(ExampleData.EXAMPLE_DATA)
+                .stream().map(it -> it.toString()).collect(Collectors.toList());
+        assertTrue(relations.contains("Michael Ley :Michael Ley []   -> 1"));
+        assertTrue(relations.contains("E. F. Codd :C. J. Date []   -> 1"));
+        assertTrue(relations.contains("C. J. Date :E. F. Codd []   -> 1"));
+        assertEquals(13, relations.size());
     }
 
     @Test
     public void testErrorWithShinnosuke() {
         List<AccumuloEntry> relations = authorProcessor.parse(ExampleData.SHORT_EXAMPLE);
-        assertEquals(6, relations.size());
+        assertEquals(9, relations.size());
     }
 
 }

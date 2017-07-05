@@ -25,9 +25,7 @@ public class AuthorProcessor extends GraphuloProcessor {
         Collection<String> authors = element.attributes.get("author");
         for (String author1 : authors) {
             for (String author2 : authors) {
-                if (!author1.equals(author2)) {
-                    repo.save(new AdjacencyEntry(author1, author2, "1"));
-                }
+                repo.save(new AdjacencyEntry(author1, author2, "1"));
             }
         }
     }
