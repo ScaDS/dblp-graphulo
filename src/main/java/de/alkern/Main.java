@@ -1,15 +1,7 @@
 package de.alkern;
 
-import de.alkern.author.AuthorProcessor;
-import de.alkern.graphulo.GraphuloConnector;
-import de.alkern.graphulo.connected_components.ComponentType;
-import de.alkern.graphulo.connected_components.analysis.HistogramBuilder;
-import de.alkern.infrastructure.ExampleData;
-import de.alkern.infrastructure.GraphuloProcessor;
+import de.alkern.infrastructure.connector.GraphuloConnector;
 import de.alkern.infrastructure.connector.AccumuloConnector;
-import de.alkern.infrastructure.entry.AdjacencyEntry;
-import de.alkern.infrastructure.repository.RepositoryImpl;
-import de.alkern.infrastructure.repository.Repository;
 import edu.mit.ll.graphulo.Graphulo;
 import org.apache.accumulo.core.client.*;
 
