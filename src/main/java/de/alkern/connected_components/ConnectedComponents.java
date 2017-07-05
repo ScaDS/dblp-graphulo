@@ -4,7 +4,6 @@ import de.alkern.connected_components.data.VisitQueue;
 import de.alkern.connected_components.data.VisitQueueImpl;
 import de.alkern.connected_components.data.VisitedNodes;
 import de.alkern.connected_components.data.VisitedNodesList;
-import de.alkern.graphulo.connected_components.data.*;
 import de.alkern.infrastructure.entry.AdjacencyEntry;
 import edu.mit.ll.graphulo.DynamicIteratorSetting;
 import edu.mit.ll.graphulo.Graphulo;

@@ -6,6 +6,7 @@ import java.util.Collection;
 /**
  * Queue to hold all nodes which yet need to be visited by the connected components algorithm
  */
+@Deprecated
 public interface VisitQueue {
 
     /**

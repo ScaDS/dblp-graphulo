@@ -8,6 +8,7 @@ import java.util.Queue;
 /**
  * Main memory implementation of {@see VisitQueue} using a PriorityQueue
  */
+@Deprecated
 public class VisitQueueImpl implements VisitQueue {
 
     private Queue<String> queue;
