@@ -58,6 +58,12 @@ public class StatisticsTest {
         assertEquals(1, stats.getHighestOutDegree(TABLE, ComponentType.STRONG, 3));
         assertEquals(1, stats.getHighestOutDegree(TABLE, ComponentType.STRONG, 4));
         assertEquals(3, stats.getHighestOutDegree(TABLE, ComponentType.WEAK, 1));
+
+        assertEquals(1, stats.getHighestInDegree(TABLE, ComponentType.STRONG, 1));
+        assertEquals(1, stats.getHighestInDegree(TABLE, ComponentType.STRONG, 2));
+        assertEquals(1, stats.getHighestInDegree(TABLE, ComponentType.STRONG, 3));
+        assertEquals(1, stats.getHighestInDegree(TABLE, ComponentType.STRONG, 4));
+        assertEquals(3, stats.getHighestInDegree(TABLE, ComponentType.WEAK, 1));
     }
 
 }

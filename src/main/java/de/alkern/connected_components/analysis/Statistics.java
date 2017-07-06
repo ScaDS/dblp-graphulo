@@ -7,15 +7,14 @@ import edu.mit.ll.graphulo.DynamicIteratorSetting;
 import edu.mit.ll.graphulo.Graphulo;
 import edu.mit.ll.graphulo.apply.KeyRetainOnlyApply;
 import org.apache.accumulo.core.client.*;
+import org.apache.accumulo.core.client.Scanner;
 import org.apache.accumulo.core.data.*;
 import org.apache.accumulo.core.security.Authorizations;
 import org.apache.hadoop.io.Text;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Analyzer for connected components
@@ -23,12 +22,14 @@ import java.util.Map;
  *
  * - number of components
  * - sizes of the single components
+ * - highest in degree of a node in the component
  * - highest out degree of a node in the component
  */
 public class Statistics {
 
     public final static String META_SUFFIX = "_meta";
     public final static String MAX_DEGREE_OUT = "MaxOutDegree";
+    public final static String MAX_DEGREE_IN = "MaxInDegree";
 
     private final Graphulo g;
 
@@ -76,6 +77,7 @@ public class Statistics {
             bw.addMutation(numberNodes);
 
             bw.addMutation(getHighestOutDegree(component));
+            bw.addMutation(getHighestInDegree(component));
         }
         Mutation numberComponents = new Mutation(table);
         numberComponents.put(emptyCFam(), type.repr(), Integer.toString(components.size()));
@@ -107,8 +109,35 @@ public class Statistics {
             BigDecimal current = new BigDecimal(entry.getValue().toString());
             max = max.max(current);
         }
+        bs.close();
         Mutation mutation = new Mutation(component);
         mutation.put(emptyCFam(), MAX_DEGREE_OUT, max.toString());
+        return mutation;
+    }
+
+    private Mutation getHighestInDegree(String component) {
+        BatchScanner bs;
+        try {
+            bs = g.getConnector().createBatchScanner(component, Authorizations.EMPTY, 15);
+        } catch (TableNotFoundException e) {
+            throw new RuntimeException("Could not scan table " + component, e);
+        }
+        bs.setRanges(Collections.singleton(new Range()));
+        bs.addScanIterator(KeyRetainOnlyApply.iteratorSetting(1, PartialKey.ROW_COLFAM_COLQUAL));
+
+        //count incoming edges for each node
+        Map<String, AtomicInteger> counter = new HashMap<>();
+        for (Map.Entry<Key, Value> entry : bs) {
+            String node = entry.getKey().getColumnQualifier().toString();
+            AtomicInteger value = counter.get(node);
+            if (value != null) value.incrementAndGet();
+            else counter.put(node, new AtomicInteger(1));
+        }
+        bs.close();
+
+        int max = counter.values().stream().map(AtomicInteger::intValue).max(Integer::compare).orElse(0);
+        Mutation mutation = new Mutation(component);
+        mutation.put(emptyCFam(), MAX_DEGREE_IN, String.valueOf(max));
         return mutation;
     }
 
@@ -160,6 +189,10 @@ public class Statistics {
 
     public int getHighestOutDegree(String table, ComponentType type, int componentNumber) {
         return get(table, ConnectedComponentsUtils.getComponentTableName(table, type, componentNumber), MAX_DEGREE_OUT);
+    }
+
+    public int getHighestInDegree(String table, ComponentType type, int componentNumber) {
+        return get(table, ConnectedComponentsUtils.getComponentTableName(table, type, componentNumber), MAX_DEGREE_IN);
     }
 
     private int get(String table, String row, String column) {
