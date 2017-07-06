@@ -47,8 +47,7 @@ public class RepositoryImpl implements Repository {
             Mutation mutation = entry.toMutation();
             writer.addMutation(mutation);
         } catch (AccumuloException e) {
-            System.err.println("Could not save");
-            throw new RuntimeException(e);
+            throw new RuntimeException("Could not save", e);
         }
     }
 
@@ -73,8 +72,7 @@ public class RepositoryImpl implements Repository {
                 operations.delete(tableName);
             }
         } catch (AccumuloException | AccumuloSecurityException | TableNotFoundException e) {
-            System.err.println("Could not delete table " + tableName);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Could not delete table " + tableName, e);
         }
     }
 
@@ -83,13 +81,16 @@ public class RepositoryImpl implements Repository {
         try {
             writer.close();
         } catch (MutationsRejectedException e) {
-            System.err.println("Could not close writer");
-            throw new RuntimeException(e);
+            throw new RuntimeException("Could not close writer", e);
         }
     }
 
     @Override
-    public void flush() throws MutationsRejectedException {
-        writer.flush();
+    public void flush() {
+        try {
+            writer.flush();
+        } catch (MutationsRejectedException e) {
+            throw new RuntimeException("Could not flush", e);
+        }
     }
 }

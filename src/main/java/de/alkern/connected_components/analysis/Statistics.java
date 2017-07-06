@@ -27,11 +27,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Statistics {
 
-    public final static String META_SUFFIX = "_meta";
-    public final static String MAX_DEGREE_OUT = "MaxOutDegree";
-    public final static String MAX_DEGREE_IN = "MaxInDegree";
+    private static final String META_SUFFIX = "_meta";
+    static final String MAX_DEGREE_OUT = "MaxOutDegree";
+    static final String MAX_DEGREE_IN = "MaxInDegree";
+    static final String EMPTY_CFAM = "";
 
     private final Graphulo g;
+    private final Analyzer analyzer;
 
     public static String METATABLE(String table) {
         return table + META_SUFFIX;
@@ -39,6 +41,7 @@ public class Statistics {
 
     public Statistics(Graphulo graphulo) {
         this.g = graphulo;
+        this.analyzer = new Analyzer(g);
     }
 
     /**
@@ -47,102 +50,7 @@ public class Statistics {
      * @param table
      */
     public void buildMetadataTable(String table) {
-        BatchWriter bw;
-        try {
-            g.getConnector().tableOperations().create(METATABLE(table));
-            bw = g.getConnector().createBatchWriter(METATABLE(table), new BatchWriterConfig());
-        } catch (Exception e) {
-            throw new RuntimeException("Could not create meta table for " + table, e);
-        }
-
-        try {
-            List<String> weakComponents = ConnectedComponentsUtils.getExistingComponentTables(g, table, ComponentType.WEAK);
-            analyzeTables(bw, weakComponents, table, ComponentType.WEAK);
-            List<String> strongComponents = ConnectedComponentsUtils.getExistingComponentTables(g, table, ComponentType.STRONG);
-            analyzeTables(bw, strongComponents, table, ComponentType.STRONG);
-            bw.flush();
-        } catch (MutationsRejectedException e) {
-            throw new RuntimeException("Could not save metadata entries", e);
-        }
-    }
-
-    private void analyzeTables(BatchWriter bw, List<String> components, String table, ComponentType type) throws MutationsRejectedException {
-        for (String component : components) {
-            //calculate component sizes
-            Mutation numberEdges = new Mutation(component);
-            numberEdges.put(emptyCFam(), SizeType.EDGES.toString(), Long.toString(g.countEntries(component)));
-            Mutation numberNodes = new Mutation(component);
-            numberNodes.put(emptyCFam(), SizeType.NODES.toString(), Long.toString(g.countRows(component)));
-            bw.addMutation(numberEdges);
-            bw.addMutation(numberNodes);
-
-            bw.addMutation(getHighestOutDegree(component));
-            bw.addMutation(getHighestInDegree(component));
-        }
-        Mutation numberComponents = new Mutation(table);
-        numberComponents.put(emptyCFam(), type.repr(), Integer.toString(components.size()));
-        bw.addMutation(numberComponents);
-    }
-
-    /**
-     * Calculate the node with the heighest degree in the table
-     * @param component name of the table
-     * @return mutation with the highest degree
-     */
-    private Mutation getHighestOutDegree(String component) {
-        BatchScanner bs;
-        try {
-            bs = g.getConnector().createBatchScanner(component, Authorizations.EMPTY, 15);
-        } catch (TableNotFoundException e) {
-            throw new RuntimeException("Could not scan table " + component, e);
-        }
-        bs.setRanges(Collections.singleton(new Range()));
-        //set Iterators to sum neighbours
-        DynamicIteratorSetting dis = new DynamicIteratorSetting(22, "getMaxDegree");
-        dis
-                .append(KeyRetainOnlyApply.iteratorSetting(1, PartialKey.ROW))
-                .append(Graphulo.PLUS_ITERATOR_BIGDECIMAL);
-        dis.addToScanner(bs);
-        //find the highest degree in the table
-        BigDecimal max = BigDecimal.ZERO;
-        for (Map.Entry<Key, Value> entry : bs) {
-            BigDecimal current = new BigDecimal(entry.getValue().toString());
-            max = max.max(current);
-        }
-        bs.close();
-        Mutation mutation = new Mutation(component);
-        mutation.put(emptyCFam(), MAX_DEGREE_OUT, max.toString());
-        return mutation;
-    }
-
-    private Mutation getHighestInDegree(String component) {
-        BatchScanner bs;
-        try {
-            bs = g.getConnector().createBatchScanner(component, Authorizations.EMPTY, 15);
-        } catch (TableNotFoundException e) {
-            throw new RuntimeException("Could not scan table " + component, e);
-        }
-        bs.setRanges(Collections.singleton(new Range()));
-        bs.addScanIterator(KeyRetainOnlyApply.iteratorSetting(1, PartialKey.ROW_COLFAM_COLQUAL));
-
-        //count incoming edges for each node
-        Map<String, AtomicInteger> counter = new HashMap<>();
-        for (Map.Entry<Key, Value> entry : bs) {
-            String node = entry.getKey().getColumnQualifier().toString();
-            AtomicInteger value = counter.get(node);
-            if (value != null) value.incrementAndGet();
-            else counter.put(node, new AtomicInteger(1));
-        }
-        bs.close();
-
-        int max = counter.values().stream().map(AtomicInteger::intValue).max(Integer::compare).orElse(0);
-        Mutation mutation = new Mutation(component);
-        mutation.put(emptyCFam(), MAX_DEGREE_IN, String.valueOf(max));
-        return mutation;
-    }
-
-    private String emptyCFam() {
-        return "";
+        analyzer.buildMetadataTable(table);
     }
 
     /**
@@ -199,7 +107,7 @@ public class Statistics {
         try {
             Scanner s = g.getConnector().createScanner(METATABLE(table), Authorizations.EMPTY);
             s.setRange(new Range(row));
-            s.fetchColumn(new Text(emptyCFam()), new Text(column));
+            s.fetchColumn(new Text(EMPTY_CFAM), new Text(column));
 
             int result = 0;
             for (Map.Entry<Key, Value> entry : s) {

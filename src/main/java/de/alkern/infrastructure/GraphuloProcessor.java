@@ -76,11 +76,7 @@ public abstract class GraphuloProcessor implements DblpElementProcessor {
 
     public List<AccumuloEntry> parse(String file) {
         DblpParser.load(this, file);
-        try {
-            repo.flush();
-        } catch (MutationsRejectedException e) {
-            e.printStackTrace();
-        }
+        repo.flush();
         return scan();
     }
 }

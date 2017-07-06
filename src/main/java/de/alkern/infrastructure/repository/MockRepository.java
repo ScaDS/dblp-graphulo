@@ -39,12 +39,8 @@ public class MockRepository implements Repository {
     }
 
     @Override
-    public void close() {
-
-    }
+    public void close() {}
 
     @Override
-    public void flush() throws MutationsRejectedException {
-
-    }
+    public void flush() {}
 }

@@ -47,5 +47,5 @@ public interface Repository {
     /**
      * Flush saved mutations
      */
-    void flush() throws MutationsRejectedException;
+    void flush();
 }
