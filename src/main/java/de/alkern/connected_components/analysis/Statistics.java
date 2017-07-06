@@ -3,30 +3,36 @@ package de.alkern.connected_components.analysis;
 import de.alkern.connected_components.ComponentType;
 import de.alkern.connected_components.ConnectedComponentsUtils;
 import de.alkern.connected_components.SizeType;
+import edu.mit.ll.graphulo.DynamicIteratorSetting;
 import edu.mit.ll.graphulo.Graphulo;
+import edu.mit.ll.graphulo.apply.KeyRetainOnlyApply;
 import org.apache.accumulo.core.client.*;
-import org.apache.accumulo.core.data.Key;
-import org.apache.accumulo.core.data.Mutation;
-import org.apache.accumulo.core.data.Range;
-import org.apache.accumulo.core.data.Value;
+import org.apache.accumulo.core.data.*;
 import org.apache.accumulo.core.security.Authorizations;
 import org.apache.hadoop.io.Text;
 
+import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Analyzer for connected components
- * Saves the number of components, and the sizes of the single components into a table with _meta-suffix
+ * Calculates and saves additional information into a table with _meta-suffix
+ *
+ * - number of components
+ * - sizes of the single components
+ * - highest out degree of a node in the component
  */
 public class Statistics {
 
     public final static String META_SUFFIX = "_meta";
+    public final static String MAX_DEGREE_OUT = "MaxOutDegree";
 
     private final Graphulo g;
 
-    public static String metatable(String table) {
+    public static String METATABLE(String table) {
         return table + META_SUFFIX;
     }
 
@@ -42,8 +48,8 @@ public class Statistics {
     public void buildMetadataTable(String table) {
         BatchWriter bw;
         try {
-            g.getConnector().tableOperations().create(metatable(table));
-            bw = g.getConnector().createBatchWriter(metatable(table), new BatchWriterConfig());
+            g.getConnector().tableOperations().create(METATABLE(table));
+            bw = g.getConnector().createBatchWriter(METATABLE(table), new BatchWriterConfig());
         } catch (Exception e) {
             throw new RuntimeException("Could not create meta table for " + table, e);
         }
@@ -61,19 +67,52 @@ public class Statistics {
 
     private void analyzeTables(BatchWriter bw, List<String> components, String table, ComponentType type) throws MutationsRejectedException {
         for (String component : components) {
+            //calculate component sizes
             Mutation numberEdges = new Mutation(component);
-            numberEdges.put(empty(), SizeType.EDGES.toString(), Long.toString(g.countEntries(component)));
+            numberEdges.put(emptyCFam(), SizeType.EDGES.toString(), Long.toString(g.countEntries(component)));
             Mutation numberNodes = new Mutation(component);
-            numberNodes.put(empty(), SizeType.NODES.toString(), Long.toString(g.countRows(component)));
+            numberNodes.put(emptyCFam(), SizeType.NODES.toString(), Long.toString(g.countRows(component)));
             bw.addMutation(numberEdges);
             bw.addMutation(numberNodes);
+
+            bw.addMutation(getHighestOutDegree(component));
         }
         Mutation numberComponents = new Mutation(table);
-        numberComponents.put(empty(), type.repr(), Integer.toString(components.size()));
+        numberComponents.put(emptyCFam(), type.repr(), Integer.toString(components.size()));
         bw.addMutation(numberComponents);
     }
 
-    private String empty() {
+    /**
+     * Calculate the node with the heighest degree in the table
+     * @param component name of the table
+     * @return mutation with the highest degree
+     */
+    private Mutation getHighestOutDegree(String component) {
+        BatchScanner bs;
+        try {
+            bs = g.getConnector().createBatchScanner(component, Authorizations.EMPTY, 15);
+        } catch (TableNotFoundException e) {
+            throw new RuntimeException("Could not scan table " + component, e);
+        }
+        bs.setRanges(Collections.singleton(new Range()));
+        //set Iterators to sum neighbours
+        DynamicIteratorSetting dis = new DynamicIteratorSetting(22, "getMaxDegree");
+        dis
+                .append(KeyRetainOnlyApply.iteratorSetting(1, PartialKey.ROW))
+                .append(Graphulo.PLUS_ITERATOR_BIGDECIMAL);
+        dis.addToScanner(bs);
+        //find the highest degree in the table
+        BigDecimal max = BigDecimal.ZERO;
+        for (Map.Entry<Key, Value> entry : bs) {
+            BigDecimal current = new BigDecimal(entry.getValue().toString());
+            max = max.max(current);
+        }
+        Mutation mutation = new Mutation(component);
+        mutation.put(emptyCFam(), MAX_DEGREE_OUT, max.toString());
+        return mutation;
+    }
+
+    private String emptyCFam() {
         return "";
     }
 
@@ -95,7 +134,8 @@ public class Statistics {
      * @return how many edges are in the component
      */
     public int getNumberOfEdges(String table, ComponentType type, int componentNumber) {
-        return get(table, table + type + componentNumber, SizeType.EDGES.toString());
+        return get(table, ConnectedComponentsUtils.getComponentTableName(table, type, componentNumber),
+                SizeType.EDGES.toString());
     }
 
     /**
@@ -106,7 +146,8 @@ public class Statistics {
      * @return how many nodes are in the component
      */
     public int getNumberOfNodes(String table, ComponentType type, int componentNumber) {
-        return get(table, table + type + componentNumber, SizeType.NODES.toString());
+        return get(table, ConnectedComponentsUtils.getComponentTableName(table, type, componentNumber),
+                SizeType.NODES.toString());
     }
 
     private int getNumberOf(String table, ComponentType type, int componentNumber, SizeType size) {
@@ -117,11 +158,15 @@ public class Statistics {
         }
     }
 
+    public int getHighestOutDegree(String table, ComponentType type, int componentNumber) {
+        return get(table, ConnectedComponentsUtils.getComponentTableName(table, type, componentNumber), MAX_DEGREE_OUT);
+    }
+
     private int get(String table, String row, String column) {
         try {
-            Scanner s = g.getConnector().createScanner(metatable(table), Authorizations.EMPTY);
+            Scanner s = g.getConnector().createScanner(METATABLE(table), Authorizations.EMPTY);
             s.setRange(new Range(row));
-            s.fetchColumn(new Text(empty()), new Text(column));
+            s.fetchColumn(new Text(emptyCFam()), new Text(column));
 
             int result = 0;
             for (Map.Entry<Key, Value> entry : s) {

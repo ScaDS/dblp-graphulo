@@ -1,6 +1,7 @@
 package de.alkern.connected_components.strong;
 
 import de.alkern.connected_components.TestUtils;
+import de.alkern.connected_components.data.VisitedNodesList;
 import org.apache.accumulo.core.client.TableNotFoundException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -30,7 +31,7 @@ public class StronglyConnectedComponentsTest {
 
     @Test
     public void testStronglyConnectedComponents() throws TableNotFoundException {
-        StronglyConnectedComponents scc = new StronglyConnectedComponents(TestUtils.graphulo);
+        StronglyConnectedComponents scc = new StronglyConnectedComponents(TestUtils.graphulo, new VisitedNodesList());
         scc.calculateConnectedComponents(STRONG_EXAMPLE);
         assertTrue(TestUtils.tops.exists(STRONG_EXAMPLE + "_scc1"));
         assertEquals(3, TestUtils.graphulo.countEntries(STRONG_EXAMPLE + "_scc1"));

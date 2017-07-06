@@ -85,7 +85,8 @@ public class WeaklyConnectedComponents {
             SortedSet<Range> rangeSet = GraphuloUtil.d4mRowToRanges(entry.getValue());
             rangeSet.add(new Range(entry.getKey()));
 
-            String ccName = table + ComponentType.WEAK + componentNumber++;
+            String ccName = ConnectedComponentsUtils.getComponentTableName(table, ComponentType.WEAK,
+                    componentNumber++);
             BatchScanner bs = conn.createBatchScanner(table, Authorizations.EMPTY, 10);
             bs.setRanges(rangeSet);
             bs.addScanIterator(new IteratorSetting(10, "Writer for " + ccName, RemoteWriteIterator.class,

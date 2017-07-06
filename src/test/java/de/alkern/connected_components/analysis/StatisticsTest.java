@@ -5,6 +5,7 @@ import de.alkern.connected_components.TestUtils;
 import de.alkern.connected_components.data.VisitedNodesList;
 import de.alkern.connected_components.strong.StronglyConnectedComponents;
 import de.alkern.connected_components.weak.WeaklyConnectedComponents;
+import edu.mit.ll.graphulo.util.DebugUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,13 +29,13 @@ public class StatisticsTest {
         TestUtils.deleteTable(TABLE + "_scc2");
         TestUtils.deleteTable(TABLE + "_scc3");
         TestUtils.deleteTable(TABLE + "_scc4");
-        TestUtils.deleteTable(Statistics.metatable(TABLE));
+        TestUtils.deleteTable(Statistics.METATABLE(TABLE));
     }
 
     @Test
     public void buildMetadataTable() throws Exception {
         new WeaklyConnectedComponents(TestUtils.graphulo, new VisitedNodesList()).calculateConnectedComponents(TABLE);
-        new StronglyConnectedComponents(TestUtils.graphulo).calculateConnectedComponents(TABLE);
+        new StronglyConnectedComponents(TestUtils.graphulo, new VisitedNodesList()).calculateConnectedComponents(TABLE);
         Statistics stats = new Statistics(TestUtils.graphulo);
         stats.buildMetadataTable(TABLE);
 
@@ -51,6 +52,12 @@ public class StatisticsTest {
         assertEquals(1, stats.getNumberOfNodes(TABLE, ComponentType.STRONG, 4));
         assertEquals(14, stats.getNumberOfEdges(TABLE, ComponentType.WEAK, 1));
         assertEquals(8, stats.getNumberOfNodes(TABLE, ComponentType.WEAK, 1));
+
+        assertEquals(1, stats.getHighestOutDegree(TABLE, ComponentType.STRONG, 1));
+        assertEquals(1, stats.getHighestOutDegree(TABLE, ComponentType.STRONG, 2));
+        assertEquals(1, stats.getHighestOutDegree(TABLE, ComponentType.STRONG, 3));
+        assertEquals(1, stats.getHighestOutDegree(TABLE, ComponentType.STRONG, 4));
+        assertEquals(3, stats.getHighestOutDegree(TABLE, ComponentType.WEAK, 1));
     }
 
 }

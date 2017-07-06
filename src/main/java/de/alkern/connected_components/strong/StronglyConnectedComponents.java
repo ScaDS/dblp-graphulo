@@ -38,11 +38,11 @@ public class StronglyConnectedComponents {
     private final VisitedNodes visited;
     private int counter;
 
-    public StronglyConnectedComponents(Graphulo graphulo) {
+    public StronglyConnectedComponents(Graphulo graphulo, VisitedNodes visited) {
         g = graphulo;
         tops = g.getConnector().tableOperations();
         reachableNodes = new HashMap<>();
-        visited = new VisitedNodesList();
+        this.visited = visited;
     }
 
     public void calculateConnectedComponents(String table) {
@@ -65,6 +65,7 @@ public class StronglyConnectedComponents {
         buildCTables();
         andOnCTables();
         extractComponents();
+        deleteTempTables();
     }
 
     private void visit(Map.Entry<Key, Value> entry) {
@@ -135,7 +136,6 @@ public class StronglyConnectedComponents {
             scanner.setRange(new Range());
             RowIterator rowIterator = new RowIterator(scanner);
             rowIterator.forEachRemaining(this::extractRow);
-            deleteTempTables();
         } catch (Exception e) {
             throw new RuntimeException("Error while extracting components", e);
         }
@@ -164,7 +164,8 @@ public class StronglyConnectedComponents {
             visited.visitNode(row);
 
             //create the component table and copy all relevant entries
-            String componentTable = table + ComponentType.STRONG + counter++;
+            String componentTable = ConnectedComponentsUtils.getComponentTableName(table, ComponentType.STRONG,
+                    counter++);
             tops.create(componentTable);
             BatchScanner bs = g.getConnector().createBatchScanner(table, Authorizations.EMPTY, 50);
             SortedSet<Range> rangeSet = GraphuloUtil.d4mRowToRanges(range.toString());

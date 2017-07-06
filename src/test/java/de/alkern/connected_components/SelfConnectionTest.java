@@ -36,7 +36,7 @@ public class SelfConnectionTest {
     @Test
     public void test() {
         new WeaklyConnectedComponents(TestUtils.graphulo, new VisitedNodesList()).calculateConnectedComponents(TABLE);
-        new StronglyConnectedComponents(TestUtils.graphulo).calculateConnectedComponents(TABLE);
+        new StronglyConnectedComponents(TestUtils.graphulo, new VisitedNodesList()).calculateConnectedComponents(TABLE);
 
         assertTrue(TestUtils.tops.exists(TABLE + "_wcc1"));
         assertFalse(TestUtils.tops.exists(TABLE + "_wcc2"));

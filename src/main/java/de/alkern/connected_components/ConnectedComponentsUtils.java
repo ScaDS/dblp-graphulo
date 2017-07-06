@@ -48,4 +48,15 @@ public class ConnectedComponentsUtils {
         }
         return result;
     }
+
+    /**
+     * Build the name of the table containing a certain connected component
+     * @param table
+     * @param type
+     * @param componentNumber
+     * @return
+     */
+    public static String getComponentTableName(String table, ComponentType type, int componentNumber) {
+        return table + type + componentNumber;
+    }
 }
