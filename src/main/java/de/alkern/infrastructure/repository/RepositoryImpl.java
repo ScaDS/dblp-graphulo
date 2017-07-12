@@ -30,7 +30,7 @@ public class RepositoryImpl implements Repository {
         this.entryBuilder = entryBuilder;
         createTable();
         BatchWriterConfig config = new BatchWriterConfig();
-        config.setMaxMemory(10000L);
+        config.setMaxMemory(5000L);
         writer = connector.createBatchWriter(tableName, config);
         scanner = connector.createScanner(tableName, new Authorizations());
     }

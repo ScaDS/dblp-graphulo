@@ -1,22 +1,78 @@
 package de.alkern;
 
+import de.alkern.author.AuthorProcessor;
+import de.alkern.connected_components.ComponentType;
+import de.alkern.connected_components.SizeType;
+import de.alkern.connected_components.analysis.HistogramBuilder;
+import de.alkern.connected_components.analysis.Statistics;
+import de.alkern.connected_components.data.VisitedNodesList;
+import de.alkern.connected_components.strong.StronglyConnectedComponents;
+import de.alkern.connected_components.weak.WeaklyConnectedComponents;
+import de.alkern.infrastructure.ExampleData;
+import de.alkern.infrastructure.GraphuloProcessor;
 import de.alkern.infrastructure.connector.GraphuloConnector;
 import de.alkern.infrastructure.connector.AccumuloConnector;
+import de.alkern.infrastructure.entry.AdjacencyEntry;
+import de.alkern.infrastructure.repository.Repository;
+import de.alkern.infrastructure.repository.RepositoryImpl;
 import edu.mit.ll.graphulo.Graphulo;
 import org.apache.accumulo.core.client.*;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 public class Main {
+
+    private static final String TABLE = "authors";
 
     public static void main(String[] args)
             throws AccumuloSecurityException, AccumuloException, TableExistsException, TableNotFoundException {
+        Map<String, Long> elapsedTimes = new HashMap<>();
         Connector conn = AccumuloConnector.local();
-//        Repository repo = new RepositoryImpl("authors", conn, new AdjacencyEntry.AdjacencyBuilder());
-//        GraphuloProcessor processor = new AuthorProcessor(repo);
-//        processor.parse(ExampleData.DBLP);
-//        processor.scan().forEach(System.out::println);
         Graphulo graphulo = GraphuloConnector.local(conn);
-//        graphulo.generateDegreeTable("authors", "authors_deg", true);
-        //processor.clear();
-//        new HistogramBuilder(graphulo).getChartsAsPNG("authors", ComponentType.WEAK, "test");
+//        Repository repo = new RepositoryImpl(TABLE, conn, new AdjacencyEntry.AdjacencyBuilder());
+//        GraphuloProcessor processor = new AuthorProcessor(repo);
+//
+//        long startParsing = System.nanoTime();
+//        processor.parse(ExampleData.DBLP);
+//        long endParsing = System.nanoTime();
+//        long parseTime = endParsing - startParsing;
+//        elapsedTimes.put("Parsing", TimeUnit.NANOSECONDS.toSeconds(parseTime));
+//        System.out.println("Parsing took " + parseTime + " ns");
+//
+//        WeaklyConnectedComponents wcc = new WeaklyConnectedComponents(graphulo, new VisitedNodesList());
+//        StronglyConnectedComponents scc = new StronglyConnectedComponents(graphulo, new VisitedNodesList());
+//
+//        long startWcc = System.nanoTime();
+//        wcc.calculateConnectedComponents(TABLE);
+//        long endWcc = System.nanoTime();
+//        long wccTime = endWcc - startWcc;
+//        elapsedTimes.put("Weakly", TimeUnit.NANOSECONDS.toSeconds(wccTime));
+//        System.out.println(TimeUnit.NANOSECONDS.toSeconds(wccTime));
+//
+//        long startScc = System.nanoTime();
+//        scc.calculateConnectedComponents(TABLE);
+//        long endScc = System.nanoTime();
+//        long sccTime = endScc - startScc;
+//        elapsedTimes.put("Strongly", TimeUnit.NANOSECONDS.toSeconds(sccTime));
+//        System.out.println(TimeUnit.NANOSECONDS.toSeconds(sccTime));
+//
+//        Statistics s = new Statistics(graphulo);
+//
+//        long startStat = System.nanoTime();
+//        s.buildMetadataTable(TABLE);
+//        long endStat = System.nanoTime();
+//        long statTime = endStat - startStat;
+//        elapsedTimes.put("Statistics", TimeUnit.NANOSECONDS.toSeconds(statTime));
+//        System.out.println(TimeUnit.NANOSECONDS.toSeconds(statTime));
+//
+//        for (Map.Entry<String, Long> entry : elapsedTimes.entrySet()) {
+//            System.out.println(entry.getKey() + ": " + entry.getValue());
+//        }
+
+        HistogramBuilder h = new HistogramBuilder(graphulo);
+        h.getChartsAsPNG(TABLE, ComponentType.WEAK, SizeType.EDGES, 1920, 1080);
+        h.getChartsAsPNG(TABLE, ComponentType.WEAK, SizeType.NODES, 1920, 1080);
     }
 }
