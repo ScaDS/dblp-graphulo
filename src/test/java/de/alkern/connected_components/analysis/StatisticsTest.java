@@ -66,4 +66,30 @@ public class StatisticsTest {
         assertEquals(3, stats.getHighestInDegree(TABLE, ComponentType.WEAK, 1));
     }
 
+    @Test
+    public void testOutDegreeOfNode() {
+        Statistics stats = new Statistics(TestUtils.graphulo);
+        assertEquals(1, stats.getOutDegree(TABLE, "ROW1"));
+        assertEquals(3, stats.getOutDegree(TABLE, "ROW2"));
+        assertEquals(2, stats.getOutDegree(TABLE, "ROW3"));
+        assertEquals(2, stats.getOutDegree(TABLE, "ROW4"));
+        assertEquals(2, stats.getOutDegree(TABLE, "ROW5"));
+        assertEquals(1, stats.getOutDegree(TABLE, "ROW6"));
+        assertEquals(2, stats.getOutDegree(TABLE, "ROW7"));
+        assertEquals(1, stats.getOutDegree(TABLE, "ROW8"));
+    }
+
+    @Test
+    public void testInDegreeOfNode() {
+        Statistics stats = new Statistics(TestUtils.graphulo);
+        assertEquals(1, stats.getInDegree(TABLE, "ROW1"));
+        assertEquals(1, stats.getInDegree(TABLE, "ROW2"));
+        assertEquals(2, stats.getInDegree(TABLE, "ROW3"));
+        assertEquals(1, stats.getInDegree(TABLE, "ROW4"));
+        assertEquals(1, stats.getInDegree(TABLE, "ROW5"));
+        assertEquals(3, stats.getInDegree(TABLE, "ROW6"));
+        assertEquals(2, stats.getInDegree(TABLE, "ROW7"));
+        assertEquals(3, stats.getInDegree(TABLE, "ROW8"));
+    }
+
 }

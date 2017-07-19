@@ -6,6 +6,7 @@ import de.alkern.connected_components.SizeType;
 import edu.mit.ll.graphulo.DynamicIteratorSetting;
 import edu.mit.ll.graphulo.Graphulo;
 import edu.mit.ll.graphulo.apply.KeyRetainOnlyApply;
+import edu.mit.ll.graphulo.skvi.D4mRangeFilter;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.client.Scanner;
 import org.apache.accumulo.core.data.*;
@@ -95,12 +96,71 @@ public class Statistics {
         }
     }
 
+    /**
+     * @param table original table name
+     * @param type component type
+     * @param componentNumber number of the component
+     * @return highest out degree in the given component table
+     */
     public int getHighestOutDegree(String table, ComponentType type, int componentNumber) {
         return get(table, ConnectedComponentsUtils.getComponentTableName(table, type, componentNumber), MAX_DEGREE_OUT);
     }
 
+    /**
+     * @param table original table name
+     * @param type component type
+     * @param componentNumber number of the component
+     * @return highest in degree in the given component table
+     */
     public int getHighestInDegree(String table, ComponentType type, int componentNumber) {
         return get(table, ConnectedComponentsUtils.getComponentTableName(table, type, componentNumber), MAX_DEGREE_IN);
+    }
+
+    /**
+     * Ad hoc calculated out degree value
+     * @param table table to check
+     * @param node name of the node
+     * @return out degree value of the given node
+     */
+    public int getOutDegree(String table, String node) {
+        BatchScanner bs;
+        try {
+            bs = g.getConnector().createBatchScanner(table, Authorizations.EMPTY, 15);
+        } catch (TableNotFoundException e) {
+            throw new RuntimeException("Could not scan table " + table, e);
+        }
+        bs.setRanges(Collections.singleton(new Range(node)));
+
+        DynamicIteratorSetting dis = new DynamicIteratorSetting(22, "getOutDegree");
+        dis
+                .append(KeyRetainOnlyApply.iteratorSetting(1, PartialKey.ROW))
+                .append(Graphulo.PLUS_ITERATOR_BIGDECIMAL);
+        dis.addToScanner(bs);
+
+        return Integer.valueOf(bs.iterator().next().getValue().toString());
+    }
+
+    /**
+     * Ad hoc calculated in degree value
+     * @param table table to check
+     * @param node name of the node
+     * @return in degree value of the given node
+     */
+    public int getInDegree(String table, String node) {
+        BatchScanner bs;
+        try {
+            bs = g.getConnector().createBatchScanner(table, Authorizations.EMPTY, 15);
+        } catch (TableNotFoundException e) {
+            throw new RuntimeException("Could not scan table " + table, e);
+        }
+        bs.setRanges(Collections.singleton(new Range()));
+        bs.addScanIterator(D4mRangeFilter.iteratorSetting(1, D4mRangeFilter.KeyPart.COLQ, node + ";"));
+
+        int counter = 0;
+        for (Map.Entry<Key, Value> entry : bs) {
+            counter++;
+        }
+        return counter;
     }
 
     private int get(String table, String row, String column) {
