@@ -7,15 +7,18 @@ import edu.mit.ll.graphulo.DynamicIteratorSetting;
 import edu.mit.ll.graphulo.Graphulo;
 import edu.mit.ll.graphulo.apply.KeyRetainOnlyApply;
 import edu.mit.ll.graphulo.skvi.D4mRangeFilter;
+import edu.mit.ll.graphulo.util.GraphuloUtil;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.client.Scanner;
 import org.apache.accumulo.core.data.*;
 import org.apache.accumulo.core.security.Authorizations;
 import org.apache.hadoop.io.Text;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * Analyzer for connected components
@@ -163,6 +166,9 @@ public class Statistics {
         return counter;
     }
 
+    /**
+     * Helper Method to get a certain value in a table
+     */
     private int get(String table, String row, String column) {
         try {
             Scanner s = g.getConnector().createScanner(METATABLE(table), Authorizations.EMPTY);
@@ -178,6 +184,36 @@ public class Statistics {
         } catch (TableNotFoundException e) {
             throw new RuntimeException("Metatable does not exist", e);
         }
+    }
+
+    /**
+     * Ad hoc calculated closeness centrality
+     * Closeness centrality is 1 / sum of shortest paths to all reachable nodes
+     * @param table table to check
+     * @param node to check
+     * @return closeness centrality, Double.POSITIVE_INFINITY if node has no neighbours
+     */
+    public double getClosenessCentrality(String table, String node) {
+        Map<String, Integer> shortestPaths = new HashMap<>();
+        shortestPaths.put(node, 0);
+        boolean addedSomething = true;
+        int distance = 1;
+
+        while (addedSomething) {
+            String neighbours = g.AdjBFS(table, node + ";", distance, null, null,
+                    null,null, false, 0, Integer.MAX_VALUE);
+            Collection<String> neighbourList = GraphuloUtil.d4mRowToTexts(neighbours).stream().map(Text::toString)
+                    .collect(Collectors.toCollection(TreeSet::new));
+            addedSomething = false;
+            for (String it : neighbourList) {
+                if (!shortestPaths.keySet().contains(it)) {
+                    shortestPaths.put(it, distance);
+                    addedSomething = true;
+                }
+            }
+            distance++;
+        }
+        return 1d / shortestPaths.values().stream().reduce(0, Integer::sum);
     }
 
     /**
