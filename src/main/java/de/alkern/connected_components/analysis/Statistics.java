@@ -167,7 +167,7 @@ public class Statistics {
     }
 
     /**
-     * Helper Method to get a certain value in a table
+     * Helper Method to get a certain value in the metatable
      */
     private int get(String table, String row, String column) {
         try {

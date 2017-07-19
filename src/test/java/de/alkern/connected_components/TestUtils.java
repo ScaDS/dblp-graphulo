@@ -9,6 +9,7 @@ import de.alkern.infrastructure.entry.AdjacencyEntry;
 import de.alkern.infrastructure.repository.Repository;
 import de.alkern.infrastructure.repository.RepositoryImpl;
 import edu.mit.ll.graphulo.Graphulo;
+import org.apache.accumulo.core.client.BatchScanner;
 import org.apache.accumulo.core.client.BatchWriter;
 import org.apache.accumulo.core.client.BatchWriterConfig;
 import org.apache.accumulo.core.client.Connector;
@@ -17,6 +18,8 @@ import org.apache.accumulo.core.data.Mutation;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestUtils {
     public static Connector conn;
@@ -172,6 +175,28 @@ public class TestUtils {
         entries.add("ROW7:ROW8");
         entries.add("ROW8:ROW8");
         entries.add("ROW9:ROW10");
+        writeTable(table, entries);
+    }
+
+    /**
+     *    R1 R2 R3 R4 R5
+     * R1     1
+     * R2  1     1  1
+     * R3     1
+     * R4     1        1
+     * R5           1
+     * @param table table name
+     */
+    public static void createUndirectedExampleMatrix(String table) {
+        List<String> entries = new LinkedList<>();
+        entries.add("ROW1:ROW2");
+        entries.add("ROW2:ROW1");
+        entries.add("ROW2:ROW3");
+        entries.add("ROW3:ROW2");
+        entries.add("ROW2:ROW4");
+        entries.add("ROW4:ROW2");
+        entries.add("ROW4:ROW5");
+        entries.add("ROW5:ROW4");
         writeTable(table, entries);
     }
 

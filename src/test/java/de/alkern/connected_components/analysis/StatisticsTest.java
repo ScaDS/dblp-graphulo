@@ -95,14 +95,14 @@ public class StatisticsTest {
     @Test
     public void testClosenessCentrality() {
         Statistics stats = new Statistics(TestUtils.graphulo);
-        assertEquals("", 0.0588235, stats.getClosenessCentrality(TABLE, "ROW1"), 0.005d);
-        assertEquals("", 0.0833333, stats.getClosenessCentrality(TABLE, "ROW2"), 0.005d);
-        assertEquals("", 0.1666666, stats.getClosenessCentrality(TABLE, "ROW3"), 0.005d);
-        assertEquals("", 0.1428571, stats.getClosenessCentrality(TABLE, "ROW4"), 0.005d);
-        assertEquals("", 0.0625, stats.getClosenessCentrality(TABLE, "ROW5"), 0.005d);
-        assertEquals("", 0.3333333, stats.getClosenessCentrality(TABLE, "ROW6"), 0.005d);
-        assertEquals("", 0.5, stats.getClosenessCentrality(TABLE, "ROW7"), 0.005d);
-        assertEquals("", Double.POSITIVE_INFINITY, stats.getClosenessCentrality(TABLE, "ROW8"), 0.005d);
+        assertEquals(0.0588235, stats.getClosenessCentrality(TABLE, "ROW1"), 0.005d);
+        assertEquals(0.0833333, stats.getClosenessCentrality(TABLE, "ROW2"), 0.005d);
+        assertEquals(0.1666666, stats.getClosenessCentrality(TABLE, "ROW3"), 0.005d);
+        assertEquals(0.1428571, stats.getClosenessCentrality(TABLE, "ROW4"), 0.005d);
+        assertEquals(0.0625, stats.getClosenessCentrality(TABLE, "ROW5"), 0.005d);
+        assertEquals(0.3333333, stats.getClosenessCentrality(TABLE, "ROW6"), 0.005d);
+        assertEquals(0.5, stats.getClosenessCentrality(TABLE, "ROW7"), 0.005d);
+        assertEquals(Double.POSITIVE_INFINITY, stats.getClosenessCentrality(TABLE, "ROW8"), 0.005d);
     }
 
 }
