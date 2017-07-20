@@ -5,20 +5,26 @@ import de.alkern.connected_components.TestUtils;
 import de.alkern.connected_components.data.VisitedNodesList;
 import de.alkern.connected_components.strong.StronglyConnectedComponents;
 import de.alkern.connected_components.weak.WeaklyConnectedComponents;
+import de.alkern.infrastructure.ExampleData;
 import edu.mit.ll.graphulo.util.DebugUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class StatisticsTest {
 
     private static final String TABLE = "STATS";
+    private static final String JAC_TABLE = "STATS_JACCARD";
+    private static final String JAC_RESULT_TABLE = "STATS_JACCARD_RES";
 
     @BeforeClass
     public static void init() {
         TestUtils.createExampleMatrix(TABLE);
+        TestUtils.createFromResource(JAC_TABLE, ExampleData.CC_EXAMPLE);
     }
 
     @AfterClass
@@ -30,6 +36,8 @@ public class StatisticsTest {
         TestUtils.deleteTable(TABLE + "_scc3");
         TestUtils.deleteTable(TABLE + "_scc4");
         TestUtils.deleteTable(Statistics.METATABLE(TABLE));
+        TestUtils.deleteTable(JAC_TABLE);
+        TestUtils.deleteTable(JAC_RESULT_TABLE);
     }
 
     @Test
@@ -103,6 +111,13 @@ public class StatisticsTest {
         assertEquals(0.3333333, stats.getClosenessCentrality(TABLE, "ROW6"), 0.005d);
         assertEquals(0.5, stats.getClosenessCentrality(TABLE, "ROW7"), 0.005d);
         assertEquals(Double.POSITIVE_INFINITY, stats.getClosenessCentrality(TABLE, "ROW8"), 0.005d);
+    }
+
+    @Test
+    public void testJaccardCalculation() {
+        Statistics stats = new Statistics(TestUtils.graphulo);
+        List<JaccardAlikes> alikes = stats.getJaccardAlike(JAC_TABLE, 0.75d);
+        assertEquals(6, alikes.size());
     }
 
 }

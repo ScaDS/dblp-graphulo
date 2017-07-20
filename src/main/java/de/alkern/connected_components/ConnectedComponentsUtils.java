@@ -1,8 +1,14 @@
 package de.alkern.connected_components;
 
 import edu.mit.ll.graphulo.Graphulo;
+import org.apache.accumulo.core.client.BatchScanner;
+import org.apache.accumulo.core.client.TableNotFoundException;
 import org.apache.accumulo.core.client.admin.TableOperations;
+import org.apache.accumulo.core.data.Range;
+import org.apache.accumulo.core.security.Authorizations;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,5 +64,33 @@ public class ConnectedComponentsUtils {
      */
     public static String getComponentTableName(String table, ComponentType type, int componentNumber) {
         return table + type + componentNumber;
+    }
+
+    /**
+     * Create a BatchScanner for all rows in the given table
+     */
+    public static BatchScanner createBatchScanner(Graphulo g, String table) {
+        return createBatchScanner(g, table, "");
+    }
+
+    /**
+     * Create a BatchScanner for one row in the given table
+     */
+    public static BatchScanner createBatchScanner(Graphulo g, String table, String node) {
+        return createBatchScanner(g, table, Collections.singleton(new Range(node)));
+    }
+
+    /**
+     * Create a BatchScanner for all given rows in the given table
+     */
+    public static BatchScanner createBatchScanner(Graphulo g, String table, Collection<Range> ranges) {
+        BatchScanner bs;
+        try {
+            bs = g.getConnector().createBatchScanner(table, Authorizations.EMPTY, 15);
+        } catch (TableNotFoundException e) {
+            throw new RuntimeException("Could not create scanner for table " + table);
+        }
+        bs.setRanges(ranges);
+        return bs;
     }
 }

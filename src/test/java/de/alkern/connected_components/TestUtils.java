@@ -37,17 +37,9 @@ public class TestUtils {
     }
 
     public static void fillDatabase() {
+        createFromResource("test", ExampleData.TWO_COMPONENTS_EXAMPLE);
+        createFromResource("l", ExampleData.CC_EXAMPLE);
         try {
-            if (!tops.exists("test")) {
-                Repository repo = new RepositoryImpl("test", conn, new AdjacencyEntry.AdjacencyBuilder());
-                GraphuloProcessor processor = new AuthorProcessor(repo);
-                processor.parse(ExampleData.TWO_COMPONENTS_EXAMPLE);
-            }
-            if (!tops.exists("l")) {
-                Repository repo = new RepositoryImpl("l", conn, new AdjacencyEntry.AdjacencyBuilder());
-                GraphuloProcessor processor = new AuthorProcessor(repo);
-                processor.parse(ExampleData.CC_EXAMPLE);
-            }
             if (!tops.exists("test_deg")) {
                 graphulo.generateDegreeTable("test", "test_deg", false);
             }
@@ -56,6 +48,18 @@ public class TestUtils {
             }
         } catch (Exception e) {
             throw new RuntimeException("Could not init database", e);
+        }
+    }
+
+    public static void createFromResource(String table, String res) {
+        try {
+            if (!tops.exists(table)) {
+                Repository repo = new RepositoryImpl(table, conn, new AdjacencyEntry.AdjacencyBuilder());
+                GraphuloProcessor processor = new AuthorProcessor(repo);
+                processor.parse(res);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Could not create table " + table + " from file " + res, e);
         }
     }
 
@@ -197,6 +201,26 @@ public class TestUtils {
         entries.add("ROW4:ROW2");
         entries.add("ROW4:ROW5");
         entries.add("ROW5:ROW4");
+        writeTable(table, entries);
+    }
+
+    /**
+     *    R1 R2 R3 R4 R5
+     * R1     1  1
+     * R2
+     * R3
+     * R4  1
+     * R5     1  1  1
+     * @param table table name
+     */
+    public static void createDirectedJaccardExampleMatrix(String table) {
+        List<String> entries = new LinkedList<>();
+        entries.add("ROW1:ROW2");
+        entries.add("ROW1:ROW3");
+        entries.add("ROW5:ROW2");
+        entries.add("ROW5:ROW3");
+        entries.add("ROW5:ROW4");
+        entries.add("ROW4:ROW1");
         writeTable(table, entries);
     }
 

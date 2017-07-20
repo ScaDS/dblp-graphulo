@@ -6,10 +6,13 @@ import de.alkern.connected_components.SizeType;
 import edu.mit.ll.graphulo.DynamicIteratorSetting;
 import edu.mit.ll.graphulo.Graphulo;
 import edu.mit.ll.graphulo.apply.KeyRetainOnlyApply;
+import edu.mit.ll.graphulo.simplemult.MathTwoScalar;
 import edu.mit.ll.graphulo.skvi.D4mRangeFilter;
+import edu.mit.ll.graphulo.skvi.MinMaxFilter;
 import edu.mit.ll.graphulo.util.GraphuloUtil;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.client.Scanner;
+import org.apache.accumulo.core.client.admin.TableOperations;
 import org.apache.accumulo.core.data.*;
 import org.apache.accumulo.core.security.Authorizations;
 import org.apache.hadoop.io.Text;
@@ -234,5 +237,44 @@ public class Statistics {
             result[i] = sizes.get(i).doubleValue();
         }
         return result;
+    }
+
+    public List<JaccardAlikes> getJaccardAlike(String table, double threshold) {
+        TableOperations tops = g.getConnector().tableOperations();
+        String jacTable = table + "_jac";
+        if (!tops.exists(jacTable)) {
+            g.Jaccard_Client(table, jacTable, "", Authorizations.EMPTY, null);
+        }
+
+        //find all node pairs with jaccard alike >= threshold
+        BatchScanner bs = ConnectedComponentsUtils.createBatchScanner(g, jacTable, Collections.singleton(new Range()));
+        bs.addScanIterator(MinMaxFilter.iteratorSetting(1, MathTwoScalar.ScalarType.DOUBLE, threshold, 1));
+
+        List<JaccardAlikes> alikes = new LinkedList<>();
+        for (Map.Entry<Key, Value> entry : bs) {
+            String node1 = entry.getKey().getRow().toString();
+            String node2 = entry.getKey().getColumnQualifier().toString();
+            double similarity = Double.valueOf(entry.getValue().toString());
+            alikes.add(new JaccardAlikes(node1, node2, similarity));
+        }
+        bs.close();
+
+        //find neighbours of alike nodes
+        for (JaccardAlikes alike : alikes) {
+            String node1 = alike.getNode1();
+            BatchScanner bs1 = ConnectedComponentsUtils.createBatchScanner(g, table, node1);
+            for (Map.Entry<Key, Value> entry : bs1) {
+                alike.addNeighbour(node1, entry.getKey().getColumnQualifier().toString());
+            }
+            bs1.close();
+
+            String node2 = alike.getNode2();
+            BatchScanner bs2 = ConnectedComponentsUtils.createBatchScanner(g, table, node2);
+            for (Map.Entry<Key, Value> entry : bs2) {
+                alike.addNeighbour(node2, entry.getKey().getColumnQualifier().toString());
+            }
+            bs2.close();
+        }
+        return alikes;
     }
 }
