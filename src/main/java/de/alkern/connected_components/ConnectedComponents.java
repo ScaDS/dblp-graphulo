@@ -15,7 +15,10 @@ import org.apache.accumulo.core.data.Range;
 import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.Authorizations;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * First implementation of cc
@@ -54,14 +57,7 @@ public class ConnectedComponents {
         this.ccNumber = 0L;
 
         // Iterate over the whole table once, to ensure every node is visited
-        BatchScanner bs;
-        try {
-            bs = graphulo.getConnector().createBatchScanner(table, Authorizations.EMPTY, 25);
-            bs.setRanges(Collections.singleton(new Range()));
-        } catch (TableNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
+        BatchScanner bs = ConnectedComponentsUtils.createBatchScanner(graphulo, table);
         for (Map.Entry<Key, Value> entry : bs) {
             visitEntry(entry);
         }
@@ -88,13 +84,7 @@ public class ConnectedComponents {
      * @param node
      */
     private void copyAllEntriesForNode(String node) {
-        BatchScanner bs;
-        try {
-            bs = graphulo.getConnector().createBatchScanner(table, Authorizations.EMPTY, 50);
-            bs.setRanges(Collections.singleton(new Range(node))); //just check entries for the given node
-        } catch (TableNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        BatchScanner bs = ConnectedComponentsUtils.createBatchScanner(graphulo, table, node);
 
         //create table for the current cc
         String currentComponentTable = table + COMPONENT_SUFFIX + ccNumber;

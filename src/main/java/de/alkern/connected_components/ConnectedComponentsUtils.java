@@ -70,7 +70,7 @@ public class ConnectedComponentsUtils {
      * Create a BatchScanner for all rows in the given table
      */
     public static BatchScanner createBatchScanner(Graphulo g, String table) {
-        return createBatchScanner(g, table, "");
+        return createBatchScanner(g, table, Collections.singleton(new Range()));
     }
 
     /**

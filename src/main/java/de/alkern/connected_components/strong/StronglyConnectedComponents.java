@@ -167,9 +167,8 @@ public class StronglyConnectedComponents {
             String componentTable = ConnectedComponentsUtils.getComponentTableName(table, ComponentType.STRONG,
                     counter++);
             tops.create(componentTable);
-            BatchScanner bs = g.getConnector().createBatchScanner(table, Authorizations.EMPTY, 50);
             SortedSet<Range> rangeSet = GraphuloUtil.d4mRowToRanges(range.toString());
-            bs.setRanges(rangeSet);
+            BatchScanner bs = ConnectedComponentsUtils.createBatchScanner(g, table, rangeSet);
 
             //filter entries that lead to rows which are not in the component
             DynamicIteratorSetting dis = new DynamicIteratorSetting(5, "");

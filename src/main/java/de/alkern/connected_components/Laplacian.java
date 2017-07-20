@@ -41,13 +41,7 @@ public class Laplacian {
         }
 
         //scan degreeTable and fix degreeEntries
-        BatchScanner degreeTableScanner;
-        try {
-            degreeTableScanner = graphulo.getConnector().createBatchScanner(degreeTable, Authorizations.EMPTY, 15);
-            degreeTableScanner.setRanges(Collections.singleton(new Range()));
-        } catch (TableNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        BatchScanner degreeTableScanner = ConnectedComponentsUtils.createBatchScanner(graphulo, degreeTable);
         DynamicIteratorSetting degreeItSet = new DynamicIteratorSetting(1, "copyTables");
         degreeItSet.append(LaplacianPrepareOp.iteratorSetting(3));
         degreeItSet.append(new IteratorSetting(10, RemoteWriteIterator.class,

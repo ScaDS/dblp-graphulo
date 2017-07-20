@@ -2,18 +2,14 @@ package de.alkern.connected_components;
 
 import de.alkern.infrastructure.ExampleData;
 import edu.mit.ll.graphulo.util.DebugUtil;
-import edu.mit.ll.graphulo.util.GraphuloUtil;
 import org.apache.accumulo.core.client.BatchScanner;
-import org.apache.accumulo.core.client.TableNotFoundException;
 import org.apache.accumulo.core.data.Key;
-import org.apache.accumulo.core.data.Range;
 import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.security.Authorizations;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -27,8 +23,8 @@ public class JaccardTest {
 
     private final static String UNDIRECTED_TABLE = "jaccard_undir";
     private final static String DIRECTED_TABLE = "jaccard_dir";
-    private static final String UNDIRECTED_RESULT_TABLE = "jaccard_dir_res";
-    private static final String DIRECTED_RESULT_TABLE = "jaccard_undir_res";
+    private static final String UNDIRECTED_RESULT_TABLE = "jaccard_undir_res";
+    private static final String DIRECTED_RESULT_TABLE = "jaccard_dir_res";
     private static final String CC_EXAMPLE = "jaccard_cc";
     private static final String CC_EXAMPLE_RESULT = "jaccard_cc_res";
 
@@ -52,13 +48,7 @@ public class JaccardTest {
     @Test
     public void testJaccard() {
         TestUtils.graphulo.Jaccard_Client(UNDIRECTED_TABLE, UNDIRECTED_RESULT_TABLE, "", Authorizations.EMPTY, null);
-        BatchScanner bs;
-        try {
-            bs = TestUtils.conn.createBatchScanner(UNDIRECTED_RESULT_TABLE, Authorizations.EMPTY, 15);
-        } catch (TableNotFoundException e) {
-            throw new RuntimeException("Could not create scanner for table " + UNDIRECTED_RESULT_TABLE);
-        }
-        bs.setRanges(Collections.singleton(new Range()));
+        BatchScanner bs = ConnectedComponentsUtils.createBatchScanner(TestUtils.graphulo, UNDIRECTED_RESULT_TABLE);
         Iterator<Map.Entry<Key, Value>> it = bs.iterator();
 
         testNextEquals(it, 1.0);
@@ -75,13 +65,7 @@ public class JaccardTest {
     @Test
     public void testJaccardOfDirectedGraphIsEmpty() {
         TestUtils.graphulo.Jaccard_Client(DIRECTED_TABLE, DIRECTED_RESULT_TABLE, "", Authorizations.EMPTY, null);
-        BatchScanner bs;
-        try {
-            bs = TestUtils.conn.createBatchScanner(DIRECTED_RESULT_TABLE, Authorizations.EMPTY, 15);
-        } catch (TableNotFoundException e) {
-            throw new RuntimeException("Could not create scanner for table " + UNDIRECTED_RESULT_TABLE);
-        }
-        bs.setRanges(Collections.singleton(new Range()));
+        BatchScanner bs = ConnectedComponentsUtils.createBatchScanner(TestUtils.graphulo, DIRECTED_RESULT_TABLE);
         assertFalse(bs.iterator().hasNext());
     }
 

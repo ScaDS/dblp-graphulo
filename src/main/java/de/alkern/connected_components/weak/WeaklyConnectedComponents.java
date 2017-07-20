@@ -87,8 +87,7 @@ public class WeaklyConnectedComponents {
 
             String ccName = ConnectedComponentsUtils.getComponentTableName(table, ComponentType.WEAK,
                     componentNumber++);
-            BatchScanner bs = conn.createBatchScanner(table, Authorizations.EMPTY, 10);
-            bs.setRanges(rangeSet);
+            BatchScanner bs  = ConnectedComponentsUtils.createBatchScanner(g, table, rangeSet);
             bs.addScanIterator(new IteratorSetting(10, "Writer for " + ccName, RemoteWriteIterator.class,
                     g.basicRemoteOpts("", ccName, null, null)));
             tops.create(ccName);

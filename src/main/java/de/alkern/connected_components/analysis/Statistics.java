@@ -129,17 +129,10 @@ public class Statistics {
      * @return out degree value of the given node
      */
     public int getOutDegree(String table, String node) {
-        BatchScanner bs;
-        try {
-            bs = g.getConnector().createBatchScanner(table, Authorizations.EMPTY, 15);
-        } catch (TableNotFoundException e) {
-            throw new RuntimeException("Could not scan table " + table, e);
-        }
-        bs.setRanges(Collections.singleton(new Range(node)));
+        BatchScanner bs = ConnectedComponentsUtils.createBatchScanner(g, table, node);
 
         DynamicIteratorSetting dis = new DynamicIteratorSetting(22, "getOutDegree");
-        dis
-                .append(KeyRetainOnlyApply.iteratorSetting(1, PartialKey.ROW))
+        dis.append(KeyRetainOnlyApply.iteratorSetting(1, PartialKey.ROW))
                 .append(Graphulo.PLUS_ITERATOR_BIGDECIMAL);
         dis.addToScanner(bs);
 
@@ -153,13 +146,7 @@ public class Statistics {
      * @return in degree value of the given node
      */
     public int getInDegree(String table, String node) {
-        BatchScanner bs;
-        try {
-            bs = g.getConnector().createBatchScanner(table, Authorizations.EMPTY, 15);
-        } catch (TableNotFoundException e) {
-            throw new RuntimeException("Could not scan table " + table, e);
-        }
-        bs.setRanges(Collections.singleton(new Range()));
+        BatchScanner bs = ConnectedComponentsUtils.createBatchScanner(g, table);
         bs.addScanIterator(D4mRangeFilter.iteratorSetting(1, D4mRangeFilter.KeyPart.COLQ, node + ";"));
 
         int counter = 0;

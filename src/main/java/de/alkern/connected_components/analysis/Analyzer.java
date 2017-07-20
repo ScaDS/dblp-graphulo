@@ -77,13 +77,7 @@ public class Analyzer {
      * @return mutation with the highest degree
      */
     private Mutation getHighestOutDegree(String component) {
-        BatchScanner bs;
-        try {
-            bs = g.getConnector().createBatchScanner(component, Authorizations.EMPTY, 15);
-        } catch (TableNotFoundException e) {
-            throw new RuntimeException("Could not scan table " + component, e);
-        }
-        bs.setRanges(Collections.singleton(new Range()));
+        BatchScanner bs = ConnectedComponentsUtils.createBatchScanner(g, component);
         //set Iterators to sum neighbours
         DynamicIteratorSetting dis = new DynamicIteratorSetting(22, "getMaxDegree");
         dis
@@ -103,13 +97,7 @@ public class Analyzer {
     }
 
     private Mutation getHighestInDegree(String component) {
-        BatchScanner bs;
-        try {
-            bs = g.getConnector().createBatchScanner(component, Authorizations.EMPTY, 15);
-        } catch (TableNotFoundException e) {
-            throw new RuntimeException("Could not scan table " + component, e);
-        }
-        bs.setRanges(Collections.singleton(new Range()));
+        BatchScanner bs = ConnectedComponentsUtils.createBatchScanner(g, component);
         bs.addScanIterator(KeyRetainOnlyApply.iteratorSetting(1, PartialKey.ROW_COLFAM_COLQUAL));
 
         //count incoming edges for each node
