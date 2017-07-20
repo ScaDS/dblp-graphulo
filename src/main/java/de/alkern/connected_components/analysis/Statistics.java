@@ -274,6 +274,7 @@ public class Statistics {
                 alike.addNeighbour(node2, entry.getKey().getColumnQualifier().toString());
             }
             bs2.close();
+            alike.calculate();
         }
         return alikes;
     }
