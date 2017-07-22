@@ -226,16 +226,25 @@ public class Statistics {
         return result;
     }
 
-    public List<JaccardAlikes> getJaccardAlike(String table, double threshold) {
+    /**
+     * Collect information about Jaccard-alike nodes. The Jaccard Coefficient is the percentage of same nodes in
+     * the neighbourhood of two given nodes.
+     * Calculate the Jaccard-table with graphulo if it does not exist
+     * @param table to check
+     * @param min Return just node pairs with a similarity greater or equal the min (between 0 and 1)
+     * @param max Return just node pairs with a similarity lesser or equal the min (between 0 and 1)
+     * @return List off JaccardAlikes. Every Alike contains shared and unique nodes and the similarity
+     */
+    public List<JaccardAlikes> getJaccardAlike(String table, double min, double max) {
         TableOperations tops = g.getConnector().tableOperations();
         String jacTable = table + "_jac";
         if (!tops.exists(jacTable)) {
             g.Jaccard_Client(table, jacTable, "", Authorizations.EMPTY, null);
         }
 
-        //find all node pairs with jaccard alike >= threshold
+        //find all node pairs with jaccard alike >= min
         BatchScanner bs = ConnectedComponentsUtils.createBatchScanner(g, jacTable, Collections.singleton(new Range()));
-        bs.addScanIterator(MinMaxFilter.iteratorSetting(1, MathTwoScalar.ScalarType.DOUBLE, threshold, 1));
+        bs.addScanIterator(MinMaxFilter.iteratorSetting(1, MathTwoScalar.ScalarType.DOUBLE, min, max));
 
         List<JaccardAlikes> alikes = new LinkedList<>();
         for (Map.Entry<Key, Value> entry : bs) {
@@ -264,5 +273,9 @@ public class Statistics {
             alike.calculate();
         }
         return alikes;
+    }
+
+    public void printJaccardAlikes(String table, double min, double max) {
+        getJaccardAlike(table, min, max).forEach(System.out::println);
     }
 }

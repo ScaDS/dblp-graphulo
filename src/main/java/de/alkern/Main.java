@@ -54,7 +54,7 @@ public class Main {
 //        sc.join();
 //
         Statistics s = new Statistics(graphulo);
-        s.getJaccardAlike("authors", 0.75);
+        s.printJaccardAlikes("authors", 0.75, 0.75);
 //
 //        long startStat = System.nanoTime();
 //        s.buildMetadataTable(TABLE);
