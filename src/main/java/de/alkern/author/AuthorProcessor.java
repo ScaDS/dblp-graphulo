@@ -13,15 +13,24 @@ import java.util.Collection;
  */
 public class AuthorProcessor extends GraphuloProcessor {
 
+    private double threshold = 1d;
+
     public AuthorProcessor(Repository repo) {
         super(repo);
     }
     public AuthorProcessor(Repository repo, int size) {
         super(repo, size);
     }
+    public AuthorProcessor(Repository repo, double threshold) {
+        super(repo);
+        this.threshold = threshold;
+    }
 
     @Override
     protected void processLogic(DblpElement element) {
+        if (Math.random() > threshold) {
+            return;
+        }
         Collection<String> authors = element.attributes.get("author");
         for (String author1 : authors) {
             for (String author2 : authors) {

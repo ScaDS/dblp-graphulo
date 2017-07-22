@@ -46,7 +46,7 @@ public class HistogramBuilder {
         HistogramDataset ds = new HistogramDataset();
         ds.setType(HistogramType.FREQUENCY);
         ds.addSeries("h", sizes, max); //@TODO if all sizes are equal, the histogram is just a thin line
-        JFreeChart chart = ChartFactory.createHistogram(type.repr(), "Size", "#Components", ds,
+        JFreeChart chart = ChartFactory.createHistogram(type.repr() + " " + sizeType, "Size", "#Components", ds,
                 PlotOrientation.VERTICAL, false, false, false);
         try {
             String filename = table + "_" + type + "_" + sizeType;
