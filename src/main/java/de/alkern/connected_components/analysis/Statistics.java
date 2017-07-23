@@ -207,6 +207,20 @@ public class Statistics {
     }
 
     /**
+     * Normalized closeness centrality
+     * Centrality times (N-1) where N is the number of nodes in the graph
+     * Allows to compare centrality over different sized graphs
+     * @param table table to check
+     * @param node to check
+     * @return closeness centrality, Double.POSITIVE_INFINITY if node has no neighbours
+     */
+    public double getNormalizedClosenessCentrality(String table, String node) {
+        long graphSize = g.countRows(table);
+        double centrality = getClosenessCentrality(table, node);
+        return centrality * (graphSize - 1);
+    }
+
+    /**
      * Get the number of nodes in all components
      * @param table original table name
      * @param type component type
@@ -236,24 +250,7 @@ public class Statistics {
      * @return List off JaccardAlikes. Every Alike contains shared and unique nodes and the similarity
      */
     public List<JaccardAlikes> getJaccardAlike(String table, double min, double max) {
-        TableOperations tops = g.getConnector().tableOperations();
-        String jacTable = table + "_jac";
-        if (!tops.exists(jacTable)) {
-            g.Jaccard_Client(table, jacTable, "", Authorizations.EMPTY, null);
-        }
-
-        //find all node pairs with jaccard alike >= min
-        BatchScanner bs = ConnectedComponentsUtils.createBatchScanner(g, jacTable, Collections.singleton(new Range()));
-        bs.addScanIterator(MinMaxFilter.iteratorSetting(1, MathTwoScalar.ScalarType.DOUBLE, min, max));
-
-        List<JaccardAlikes> alikes = new LinkedList<>();
-        for (Map.Entry<Key, Value> entry : bs) {
-            String node1 = entry.getKey().getRow().toString();
-            String node2 = entry.getKey().getColumnQualifier().toString();
-            double similarity = Double.valueOf(entry.getValue().toString());
-            alikes.add(new JaccardAlikes(node1, node2, similarity));
-        }
-        bs.close();
+        List<JaccardAlikes> alikes = getJaccardAlikesList(table, min, max);
 
         //find neighbours of alike nodes
         for (JaccardAlikes alike : alikes) {
@@ -275,7 +272,67 @@ public class Statistics {
         return alikes;
     }
 
+    /**
+     * @return the number of alike nodes in the given range
+     */
+    public int getNumberOfJaccardAlikes(String table, double min, double max) {
+        return getJaccardAlikesList(table, min, max).size();
+    }
+
+    private List<JaccardAlikes> getJaccardAlikesList(String table, double min, double max) {
+        List<JaccardAlikes> alikes = new LinkedList<>();
+
+        TableOperations tops = g.getConnector().tableOperations();
+        String jacTable = table + "_jac";
+        if (!tops.exists(jacTable)) {
+            g.Jaccard_Client(table, jacTable, "", Authorizations.EMPTY, null);
+        }
+
+        //find all node pairs with jaccard alike >= min
+        BatchScanner bs = ConnectedComponentsUtils.createBatchScanner(g, jacTable, Collections.singleton(new Range()));
+        bs.addScanIterator(MinMaxFilter.iteratorSetting(1, MathTwoScalar.ScalarType.DOUBLE, min, max));
+
+        for (Map.Entry<Key, Value> entry : bs) {
+            String node1 = entry.getKey().getRow().toString();
+            String node2 = entry.getKey().getColumnQualifier().toString();
+            double similarity = Double.valueOf(entry.getValue().toString());
+            alikes.add(new JaccardAlikes(node1, node2, similarity));
+        }
+        bs.close();
+        return alikes;
+    }
+
     public void printJaccardAlikes(String table, double min, double max) {
         getJaccardAlike(table, min, max).forEach(System.out::println);
+    }
+
+    /**
+     * Calculate the biggest connected component
+     * @param table original table
+     * @param componentType
+     * @param sizeType
+     * @return Biggest components seperated by ; and their size
+     */
+    public Map.Entry<String, Integer> getBiggestComponent(String table, ComponentType componentType, SizeType sizeType) {
+        int max = Integer.MIN_VALUE;
+        String component = "";
+        List<Range> ranges = ConnectedComponentsUtils.getExistingComponentTables(g, table, componentType)
+                .stream().map(Range::new).collect(Collectors.toList());
+        BatchScanner bs = ConnectedComponentsUtils.createBatchScanner(g, METATABLE(table), ranges);
+        bs.addScanIterator(D4mRangeFilter.iteratorSetting(1, D4mRangeFilter.KeyPart.COLQ,
+                sizeType.toString() + ";"));
+        for (Map.Entry<Key, Value> entry : bs) {
+            int value = Integer.valueOf(entry.getValue().toString());
+            String componentName = entry.getKey().getRow().toString();
+            if (value > max) {
+                component = componentName;
+            }
+            if (value == max) {
+                component += ";" + componentName;
+            }
+            max = Integer.max(max, value);
+        }
+        bs.close();
+        return new AbstractMap.SimpleEntry<>(component, max);
     }
 }

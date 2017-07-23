@@ -37,7 +37,7 @@ public class Main {
         Connector conn = AccumuloConnector.local();
         graphulo = GraphuloConnector.local(conn);
 //        Repository repo = new RepositoryImpl(TABLE, conn, new AdjacencyEntry.AdjacencyBuilder());
-//        GraphuloProcessor processor = new AuthorProcessor(repo, 0.0001d);
+//        GraphuloProcessor processor = new AuthorProcessor(repo, 0.0005d);
 //
 //        long startParsing = System.nanoTime();
 //        processor.parse(ExampleData.DBLP);
@@ -54,7 +54,11 @@ public class Main {
 //        sc.join();
 //
         Statistics s = new Statistics(graphulo);
-        s.printJaccardAlikes("authors", 0.75, 0.75);
+        System.out.println(s.getBiggestComponent(TABLE, ComponentType.WEAK, SizeType.NODES));
+        System.out.println(s.getBiggestComponent(TABLE, ComponentType.WEAK, SizeType.EDGES));
+//        System.out.println(s.getNormalizedClosenessCentrality(TABLE, "Wolfgang Schott"));
+//        System.out.println(s.getNumberOfJaccardAlikes(TABLE, 1, 1));
+//        s.printJaccardAlikes("authors", 1, 1);
 //
 //        long startStat = System.nanoTime();
 //        s.buildMetadataTable(TABLE);
