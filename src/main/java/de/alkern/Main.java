@@ -36,46 +36,43 @@ public class Main {
         elapsedTimes = new ConcurrentHashMap<>();
         Connector conn = AccumuloConnector.local();
         graphulo = GraphuloConnector.local(conn);
-//        Repository repo = new RepositoryImpl(TABLE, conn, new AdjacencyEntry.AdjacencyBuilder());
-//        GraphuloProcessor processor = new AuthorProcessor(repo, 0.0005d);
-//
-//        long startParsing = System.nanoTime();
-//        processor.parse(ExampleData.DBLP);
-//        long endParsing = System.nanoTime();
-//        long parseTime = endParsing - startParsing;
-//        elapsedTimes.put("Parsing", TimeUnit.NANOSECONDS.toSeconds(parseTime));
-//        System.out.println("Parsing took " + parseTime + " ns");
-//
-//        Thread wc = new Thread(Main::weak);
-//        Thread sc = new Thread(Main::strong);
-//        wc.start();
-//        sc.start();
-//        wc.join();
-//        sc.join();
-//
+        Repository repo = new RepositoryImpl(TABLE, conn, new AdjacencyEntry.AdjacencyBuilder());
+        GraphuloProcessor processor = new AuthorProcessor(repo, 0.0005d);
+
+        long startParsing = System.nanoTime();
+        processor.parse(ExampleData.DBLP);
+        long endParsing = System.nanoTime();
+        long parseTime = endParsing - startParsing;
+        elapsedTimes.put("Parsing", TimeUnit.NANOSECONDS.toSeconds(parseTime));
+        System.out.println("Parsing took " + parseTime + " ns");
+
+        Thread wc = new Thread(Main::weak);
+        Thread sc = new Thread(Main::strong);
+        wc.start();
+        sc.start();
+        wc.join();
+        sc.join();
+
         Statistics s = new Statistics(graphulo);
-        System.out.println(s.getBiggestComponent(TABLE, ComponentType.WEAK, SizeType.NODES));
-        System.out.println(s.getBiggestComponent(TABLE, ComponentType.WEAK, SizeType.EDGES));
-//        System.out.println(s.getNormalizedClosenessCentrality(TABLE, "Wolfgang Schott"));
-//        System.out.println(s.getNumberOfJaccardAlikes(TABLE, 1, 1));
-//        s.printJaccardAlikes("authors", 1, 1);
-//
-//        long startStat = System.nanoTime();
-//        s.buildMetadataTable(TABLE);
-//        long endStat = System.nanoTime();
-//        long statTime = endStat - startStat;
-//        elapsedTimes.put("Statistics", TimeUnit.NANOSECONDS.toSeconds(statTime));
-//        System.out.println(TimeUnit.NANOSECONDS.toSeconds(statTime));
-//
-//        for (Map.Entry<String, Long> entry : elapsedTimes.entrySet()) {
-//            System.out.println(entry.getKey() + ": " + entry.getValue() + "s");
-//        }
-//
-//        HistogramBuilder h = new HistogramBuilder(graphulo);
-//        h.getChartsAsPNG(TABLE, ComponentType.WEAK, SizeType.EDGES, 1920, 1080);
-//        h.getChartsAsPNG(TABLE, ComponentType.WEAK, SizeType.NODES, 1920, 1080);
-//        h.getChartsAsPNG(TABLE, ComponentType.STRONG, SizeType.EDGES, 1920, 1080);
-//        h.getChartsAsPNG(TABLE, ComponentType.STRONG, SizeType.NODES, 1920, 1080);
+        System.out.println(s.getNumberOfJaccardAlikes(TABLE, 1, 1));
+        s.printJaccardAlikes("authors", 1, 1);
+
+        long startStat = System.nanoTime();
+        s.buildMetadataTable(TABLE);
+        long endStat = System.nanoTime();
+        long statTime = endStat - startStat;
+        elapsedTimes.put("Statistics", TimeUnit.NANOSECONDS.toSeconds(statTime));
+        System.out.println(TimeUnit.NANOSECONDS.toSeconds(statTime));
+
+        for (Map.Entry<String, Long> entry : elapsedTimes.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue() + "s");
+        }
+
+        HistogramBuilder h = new HistogramBuilder(graphulo);
+        h.getChartsAsPNG(TABLE, ComponentType.WEAK, SizeType.EDGES, 1920, 1080);
+        h.getChartsAsPNG(TABLE, ComponentType.WEAK, SizeType.NODES, 1920, 1080);
+        h.getChartsAsPNG(TABLE, ComponentType.STRONG, SizeType.EDGES, 1920, 1080);
+        h.getChartsAsPNG(TABLE, ComponentType.STRONG, SizeType.NODES, 1920, 1080);
     }
 
     private static void weak() {

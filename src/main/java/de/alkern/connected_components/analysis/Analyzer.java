@@ -30,7 +30,7 @@ public class Analyzer {
      * It uses the existing component-tables
      * @param table
      */
-    public void buildMetadataTable(String table) {
+    void buildMetadataTable(String table) {
         BatchWriter bw;
         try {
             g.getConnector().tableOperations().create(Statistics.METATABLE(table));
