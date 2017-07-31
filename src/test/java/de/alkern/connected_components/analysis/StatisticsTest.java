@@ -6,14 +6,13 @@ import de.alkern.connected_components.data.VisitedNodesList;
 import de.alkern.connected_components.strong.StronglyConnectedComponents;
 import de.alkern.connected_components.weak.WeaklyConnectedComponents;
 import de.alkern.infrastructure.ExampleData;
-import edu.mit.ll.graphulo.util.DebugUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class StatisticsTest {
 
@@ -116,7 +115,7 @@ public class StatisticsTest {
     @Test
     public void testJaccardCalculation() {
         Statistics stats = new Statistics(TestUtils.graphulo);
-        List<JaccardAlikes> alikes = stats.getJaccardAlike(JAC_TABLE, 0.75d);
+        List<JaccardAlikes> alikes = stats.getJaccardAlike(JAC_TABLE, 0.75d, 0.75);
         assertEquals(6, alikes.size());
     }
 
